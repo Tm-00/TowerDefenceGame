@@ -16,7 +16,6 @@ public class BuffIdleState : BuffBaseState
 
     public override void Update(GameObject go)
     {
-    {
         
     }
 
