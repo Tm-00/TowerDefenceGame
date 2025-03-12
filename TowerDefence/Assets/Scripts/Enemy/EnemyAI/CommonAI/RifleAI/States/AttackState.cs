@@ -42,6 +42,7 @@ public class AttackState : BaseState
                     5f, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
+                //  maybe add a check to see if target hit == cloest target to fix bug
                 if (targethit != null)
                 {
                     AttackUnit(targethit);
