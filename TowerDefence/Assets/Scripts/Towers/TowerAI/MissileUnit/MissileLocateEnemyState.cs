@@ -38,7 +38,7 @@ public class MissileLocateEnemyState : MissileBaseState
     public override MissileBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(go.transform.position, closestTarget) <= 10)
+        if (Vector3.Distance(go.transform.position, closestTarget) <= 50)
         {
             return new MissileAttackState(go);
         }

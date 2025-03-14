@@ -7,13 +7,15 @@ using UnityEngine.AI;
 public class MissileAttackState : MissileBaseState
 {
     private Transform closestTarget;
-    private LayerMask layerMask = LayerMask.GetMask("Enemies");
+    private readonly LayerMask layerMask = LayerMask.GetMask("Enemies");
     private RaycastHit hit;
     private float cooldown = 5f;
     private float cooldownTime;
-    private int amount = 10;
     private float speed = 1.0f;
 
+    private float range = 50f; // Raycast range
+    private float aoeRadius = 5f; // AoE radius for damage
+    private float damageAmount = 50f; // Amount of damage for the AoE attack
     
 
     public MissileAttackState(GameObject go)
@@ -28,45 +30,75 @@ public class MissileAttackState : MissileBaseState
 
     public override void Update(GameObject go)
     {
-        //TODO change logic so that it finds and identifies the enemy first then shoots raycast
-
+        // Find and identify the closest enemy
         closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
 
-        if (closestTarget!= null)
+        if (closestTarget != null)
         {
-            // rotate towards target
-            Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
+            // Rotate towards the target
+            Vector3 targetDirection = new Vector3(
+                closestTarget.position.x - go.transform.position.x, 
+                0, 
                 closestTarget.position.z - go.transform.position.z).normalized;
+
             float singlestep = speed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
             go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        
-            // Debug lines to visualize the directions
-            Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
-        
-            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+
+            // Visualize the directions with debug rays
+            Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red points towards the target
+            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green shows forward direction
+
+            // Check if there is a clear line of sight (Raycast) to the target
+            Ray ray = new Ray(go.transform.position, go.transform.forward);
+            if (Physics.Raycast(ray, out hit, range, layerMask))
             {
-                GameObject targethit = hit.collider.gameObject;
-                if (targethit != null)
+                Debug.Log("Raycast hit: " + hit.transform.name);
+
+                // Visualize the ray and hit point for debugging
+                Debug.DrawRay(go.transform.position, go.transform.forward * hit.distance, Color.red, 1.0f);
+                Debug.DrawRay(hit.point, Vector3.up * 2f, Color.yellow, 2.0f);
+                if (cooldownTime <= 0)
                 {
-                    AttackEnemy(targethit);
+                    cooldownTime = cooldown;
+                    ApplyAOEDamage(hit.point);
                 }
-                EnemyHealth enemyHealth = targethit.GetComponent<EnemyHealth>();
-                if (enemyHealth.EnemyDeath())
+                else
                 {
-                    Debug.Log("array length " + UnitTracker.enemyArray.Length);
-                    if (UnitTracker.enemyArray.Length > 1)
-                    {
-                        //go.transform.LookAt(closestTarget);
-                    }
+                    cooldownTime -= Time.deltaTime;
                 }
             }
         }
-        else
+        
+    }
+
+    void ApplyAOEDamage(Vector3 aoeCenter)
+    {
+        // Find all colliders within the aoeRadius around the hit point
+        Collider[] hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius, layerMask);
+
+        // Loop through each object in the radius
+        foreach (var hitCollider in hitColliders)
         {
-            Debug.LogError("No target found");
+            // Get the GameObject that was hit
+            GameObject target = hitCollider.gameObject;
+                
+            // Check if the target has a health or enemy component
+            EnemyHealth enemyHealth = target.GetComponent<EnemyHealth>();
+
+            if (enemyHealth != null)
+            {
+                // Apply damage to the enemy
+                enemyHealth.EnemyTakeDamage(damageAmount);
+                Debug.Log("Damaged enemy: " + target.name);
+                if (enemyHealth.EnemyDeath())
+                {
+                    ObjectPoolManager.ReturnObjectToPool(target.gameObject);
+                }
+            }
         }
+        // Optional: Visualize the AoE sphere for debugging
+        Debug.DrawRay(aoeCenter, Vector3.up * 2f, Color.blue, 2.0f); // Draw the AoE center
     }
 
     public override void Exit(GameObject go)
@@ -79,28 +111,5 @@ public class MissileAttackState : MissileBaseState
         return null;
     }
     
-    // TODO change into a public method in a different class that all units can use
-    private void AttackEnemy(GameObject targethit)
-    {
-        if (targethit != null)
-        {
-            EnemyHealth enemyHealth = targethit.GetComponent<EnemyHealth>();
-            if (cooldownTime <= 0)
-            {
-                cooldownTime = cooldown;
-                enemyHealth.EnemyTakeDamage(amount);
-            }
-            else
-            {
-                cooldownTime -= Time.deltaTime;
-                //Debug.Log("active cd time " + cooldownTime);
-            }
-            if (enemyHealth.EnemyDeath())
-            {
-                ObjectPoolManager.ReturnObjectToPool(targethit);
-            }
-            //Debug.DrawRay(go.transform.position, go.transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
-        }
-        //Debug.Log("Did Hit");
-    }
+    
 }

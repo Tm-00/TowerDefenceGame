@@ -9,10 +9,11 @@ public class LaserAttackState : LaserBaseState
     private Transform closestTarget;
     private LayerMask layerMask = LayerMask.GetMask("Enemies");
     private RaycastHit hit;
-    private float cooldown = 5f;
+    private float cooldown = 7.5f;
     private float cooldownTime;
-    private int amount = 10;
+    private int damageAmount = 50;
     private float speed = 1.0f;
+    private float range = 100f;
 
     
 
@@ -45,7 +46,7 @@ public class LaserAttackState : LaserBaseState
             Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
             Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
         
-            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
                 if (targethit != null)
@@ -63,10 +64,6 @@ public class LaserAttackState : LaserBaseState
                 }
             }
         }
-        else
-        {
-            Debug.LogError("No target found");
-        }
     }
 
     public override void Exit(GameObject go)
@@ -79,7 +76,6 @@ public class LaserAttackState : LaserBaseState
         return null;
     }
     
-    // TODO change into a public method in a different class that all units can use
     private void AttackEnemy(GameObject targethit)
     {
         if (targethit != null)
@@ -88,7 +84,7 @@ public class LaserAttackState : LaserBaseState
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
-                enemyHealth.EnemyTakeDamage(amount);
+                enemyHealth.EnemyTakeDamage(damageAmount);
             }
             else
             {

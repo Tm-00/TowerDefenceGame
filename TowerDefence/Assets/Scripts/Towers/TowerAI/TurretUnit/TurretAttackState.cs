@@ -11,8 +11,9 @@ public class TurretAttackState : TurretBaseState
     private RaycastHit hit;
     private float cooldown = 5f;
     private float cooldownTime;
-    private int amount = 10;
+    private int damageAmount = 25;
     private float speed = 1.0f;
+    private float range = 50f;
 
     
 
@@ -45,7 +46,7 @@ public class TurretAttackState : TurretBaseState
             Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
             Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
         
-            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
                 if (targethit != null)
@@ -55,17 +56,9 @@ public class TurretAttackState : TurretBaseState
                 EnemyHealth enemyHealth = targethit.GetComponent<EnemyHealth>();
                 if (enemyHealth.EnemyDeath())
                 {
-                    Debug.Log("array length " + UnitTracker.enemyArray.Length);
-                    if (UnitTracker.enemyArray.Length > 1)
-                    {
-                        //go.transform.LookAt(closestTarget);
-                    }
+                    Debug.Log( "  enemy died and array length " + UnitTracker.enemyArray.Length);
                 }
             }
-        }
-        else
-        {
-            Debug.LogError("No target found");
         }
     }
 
@@ -88,7 +81,7 @@ public class TurretAttackState : TurretBaseState
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
-                enemyHealth.EnemyTakeDamage(amount);
+                enemyHealth.EnemyTakeDamage(damageAmount);
             }
             else
             {
