@@ -14,12 +14,12 @@ public class LaserAttackState : LaserBaseState
     private int damageAmount = 50;
     private float speed = 1.0f;
     private float range = 100f;
-
     
+    private Vector3 shootLocation;
 
     public LaserAttackState(GameObject go)
     {
-        
+        shootLocation = GameObject.FindWithTag("LaserShootLocation").transform.position;
     }
     
     public override void Enter(GameObject go)
@@ -43,10 +43,10 @@ public class LaserAttackState : LaserBaseState
             go.transform.localRotation = Quaternion.LookRotation(newDirection);
         
             // Debug lines to visualize the directions
-            Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
+            Debug.DrawRay(shootLocation, targetDirection * 10f, Color.red);  // Red line pointing towards target
             Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
         
-            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            if (Physics.Raycast(shootLocation, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
                 if (targethit != null)

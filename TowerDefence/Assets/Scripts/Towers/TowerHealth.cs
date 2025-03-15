@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class TowerHealth : MonoBehaviour
 {
-    private float maxHealth = 50f;
-    private float currentHealth;
+    public float maxHealth = 50f;
+    public float currentHealth;
     private UnitTracker unitTracker; 
     
     // Start is called before the first frame update

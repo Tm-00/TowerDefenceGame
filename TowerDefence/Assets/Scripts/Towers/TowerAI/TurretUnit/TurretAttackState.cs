@@ -15,11 +15,12 @@ public class TurretAttackState : TurretBaseState
     private float speed = 1.0f;
     private float range = 50f;
 
+    private Vector3 shootLocation;
     
 
     public TurretAttackState(GameObject go)
     {
-        
+        shootLocation = GameObject.FindWithTag("TurretShootLocation").transform.position;
     }
     
     public override void Enter(GameObject go)
@@ -43,10 +44,10 @@ public class TurretAttackState : TurretBaseState
             go.transform.localRotation = Quaternion.LookRotation(newDirection);
         
             // Debug lines to visualize the directions
-            Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
+            Debug.DrawRay(shootLocation, targetDirection * 10f, Color.red);  // Red line pointing towards target
             Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
         
-            if (Physics.Raycast(go.transform.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            if (Physics.Raycast(shootLocation, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
                 if (targethit != null)

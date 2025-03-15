@@ -13,14 +13,16 @@ public class MissileAttackState : MissileBaseState
     private float cooldownTime;
     private float speed = 1.0f;
 
+    private Vector3 shootLocation;
+
     private float range = 50f; // Raycast range
     private float aoeRadius = 5f; // AoE radius for damage
-    private float damageAmount = 50f; // Amount of damage for the AoE attack
+    private float damageAmount = 10f; // Amount of damage for the AoE attack
     
 
     public MissileAttackState(GameObject go)
     {
-        
+        shootLocation = GameObject.FindWithTag("MissileShootLocation").transform.position;
     }
     
     public override void Enter(GameObject go)
@@ -32,6 +34,7 @@ public class MissileAttackState : MissileBaseState
     {
         // Find and identify the closest enemy
         closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
+        
 
         if (closestTarget != null)
         {
@@ -50,13 +53,13 @@ public class MissileAttackState : MissileBaseState
             Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green shows forward direction
 
             // Check if there is a clear line of sight (Raycast) to the target
-            Ray ray = new Ray(go.transform.position, go.transform.forward);
+            Ray ray = new Ray(shootLocation, go.transform.forward);
             if (Physics.Raycast(ray, out hit, range, layerMask))
             {
                 Debug.Log("Raycast hit: " + hit.transform.name);
 
                 // Visualize the ray and hit point for debugging
-                Debug.DrawRay(go.transform.position, go.transform.forward * hit.distance, Color.red, 1.0f);
+                Debug.DrawRay(shootLocation, go.transform.forward * hit.distance, Color.red, 1.0f);
                 Debug.DrawRay(hit.point, Vector3.up * 2f, Color.yellow, 2.0f);
                 if (cooldownTime <= 0)
                 {
