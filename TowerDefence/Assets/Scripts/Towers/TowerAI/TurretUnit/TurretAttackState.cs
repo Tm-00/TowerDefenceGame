@@ -25,7 +25,7 @@ public class TurretAttackState : TurretBaseState
     
     public override void Enter(GameObject go)
     {
-        Debug.Log("Turret: Attack State");
+
     }
 
     public override void Update(GameObject go)

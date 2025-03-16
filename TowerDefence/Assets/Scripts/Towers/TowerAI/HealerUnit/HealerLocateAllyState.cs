@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class LaneLocateEnemyState : LaneBaseState
+public class HealerLocateAllyState : HealerBaseState
 {
     private Vector3 closestTarget;
     private float speed = 1.0f;
+    private GameObject closestAlly;
     
-    public LaneLocateEnemyState(GameObject go)
+    public HealerLocateAllyState(GameObject go)
     {
      
     }
@@ -18,11 +19,11 @@ public class LaneLocateEnemyState : LaneBaseState
     }
 
     public override void Update(GameObject go)
-    {
-        var cloestEnemy = UnitTracker.FindClosestEnemy(go);
-        if (cloestEnemy != null)
+    { 
+        closestAlly = UnitTracker.FindClosestAlly(go);
+        if (closestAlly != null)
         {
-            closestTarget = UnitTracker.FindClosestEnemy(go).transform.position;
+            closestTarget = UnitTracker.FindClosestAlly(go).transform.position;
             Vector3 targetDirection = closestTarget - go.transform.position;
             float singlestep = speed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
@@ -35,12 +36,12 @@ public class LaneLocateEnemyState : LaneBaseState
         
     }
 
-    public override LaneBaseState HandleInput(GameObject go)
+    public override HealerBaseState HandleInput(GameObject go)
     {
-        // Move -> Attack
-        if (Vector3.Distance(go.transform.position, closestTarget) <= 10)
+        // Move -> Heal
+        if (closestAlly != null)
         {
-            return new LaneAttackState(go);
+            return new HealerHealState(go);
         }
 
         return null;

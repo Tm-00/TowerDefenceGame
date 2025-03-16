@@ -26,13 +26,6 @@ public class LaneIdleState : LaneBaseState
 
     public override LaneBaseState HandleInput(GameObject go)
     {
-        if (UnitTracker.EnemyTargets != null && TowerPlacement.hasBeenPlaced)
-        {
-            if (UnitTracker.EnemyTargets.Count >= 1)
-            {
-                return new LaneLocateEnemyState(go);
-            }
-        }
         return null;
     }
 }

@@ -30,7 +30,7 @@ public class HealerIdleState : HealerBaseState
         {
             if (UnitTracker.EnemyTargets.Count >= 1)
             {
-                return new HealerLocateEnemyState(go);
+                return new HealerLocateAllyState(go);
             }
         }
         return null;

@@ -4,54 +4,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MissileAttackState : MissileBaseState
+public class HealerHealState : HealerBaseState
 {
     private Transform closestTarget;
-    private readonly LayerMask layerMask = LayerMask.GetMask("Enemies");
+    private LayerMask layerMask = LayerMask.GetMask("Towers");
     private RaycastHit hit;
     private float cooldown = 5f;
     private float cooldownTime;
     private float speed = 1.0f;
-
     private Vector3 shootLocation;
-
+    
     private float range = 50f; // Raycast range
     private float aoeRadius = 5f; // AoE radius for damage
-    private float damageAmount = 10f; // Amount of damage for the AoE attack
-    
+    private int healAmount = 10; // Amount of damage for the AoE attack
 
-    public MissileAttackState(GameObject go)
+    public HealerHealState(GameObject go)
     {
-        shootLocation = GameObject.FindWithTag("MissileShootLocation").transform.position;
+        shootLocation = GameObject.FindWithTag("HealShootLocation").transform.position;
     }
     
     public override void Enter(GameObject go)
     {
-        Debug.Log("Turret: Attack State");
+        
     }
 
     public override void Update(GameObject go)
     {
-        // Find and identify the closest enemy
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
-        
+        closestTarget = UnitTracker.FindClosestAlly(go)?.transform;
 
         if (closestTarget != null)
         {
-            // Rotate towards the target
-            Vector3 targetDirection = new Vector3(
-                closestTarget.position.x - go.transform.position.x, 
-                0, 
+            // rotate towards target
+            Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
                 closestTarget.position.z - go.transform.position.z).normalized;
-
             float singlestep = speed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
             go.transform.localRotation = Quaternion.LookRotation(newDirection);
-
-            // Visualize the directions with debug rays
-            Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red points towards the target
-            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green shows forward direction
-
+            
+            // Debug lines to visualize the directions
+            Debug.DrawRay(shootLocation, targetDirection * 10f, Color.red);  // Red line pointing towards target
+            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+            
             // Check if there is a clear line of sight (Raycast) to the target
             Ray ray = new Ray(shootLocation, go.transform.forward);
             if (Physics.Raycast(ray, out hit, range, layerMask))
@@ -64,7 +57,7 @@ public class MissileAttackState : MissileBaseState
                 if (cooldownTime <= 0)
                 {
                     cooldownTime = cooldown;
-                    ApplyAOEDamage(hit.point);
+                    ApplyAOEHeal(hit.point);
                 }
                 else
                 {
@@ -73,8 +66,8 @@ public class MissileAttackState : MissileBaseState
             }
         }
     }
-
-    void ApplyAOEDamage(Vector3 aoeCenter)
+    
+    void ApplyAOEHeal(Vector3 aoeCenter)
     {
         // Find all colliders within the aoeRadius around the hit point
         Collider[] hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius, layerMask);
@@ -86,17 +79,13 @@ public class MissileAttackState : MissileBaseState
             GameObject target = hitCollider.gameObject;
                 
             // Check if the target has a health or enemy component
-            EnemyHealth enemyHealth = target.GetComponent<EnemyHealth>();
+            TowerHealth towerHealth = target.GetComponent<TowerHealth>();
 
-            if (enemyHealth != null)
+            if (towerHealth != null)
             {
                 // Apply damage to the enemy
-                enemyHealth.EnemyTakeDamage(damageAmount);
+                towerHealth.TakeHeal(healAmount);
                 Debug.Log("Damaged enemy: " + target.name);
-                if (enemyHealth.EnemyDeath())
-                {
-                    ObjectPoolManager.ReturnObjectToPool(target.gameObject);
-                }
             }
         }
         // Optional: Visualize the AoE sphere for debugging
@@ -108,10 +97,14 @@ public class MissileAttackState : MissileBaseState
         
     }
 
-    public override MissileBaseState HandleInput(GameObject go)
+    public override HealerBaseState HandleInput(GameObject go)
     {
+        if (closestTarget == null)
+        {
+            return new HealerIdleState(go);
+        }
+
         return null;
     }
-    
     
 }

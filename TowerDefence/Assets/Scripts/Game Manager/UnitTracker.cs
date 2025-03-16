@@ -83,6 +83,25 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
     
+    public static GameObject FindClosestAlly(GameObject nav)
+    {
+        unitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
+        GameObject closestTarget = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = nav.transform.position;
+        foreach (GameObject go in unitArray)
+        {
+            Vector3 distanceDifference = go.transform.position - position;
+            float currentDistance = distanceDifference.sqrMagnitude;
+            if (currentDistance < distance)
+            {
+                closestTarget = go;
+                distance = currentDistance;
+            }
+        }
+        return closestTarget;
+    }
+    
     public static GameObject FindClosestEnemy(GameObject nav)
     {
         enemyArray = GameObject.FindGameObjectsWithTag("Enemy"); 
