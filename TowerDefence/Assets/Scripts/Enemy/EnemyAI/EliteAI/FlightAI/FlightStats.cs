@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RobotStats : MonoBehaviour
+public class FlightStats : MonoBehaviour
 {
-    
-    [Header("Robot Stats")] 
+    [Header("Flight Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
     private UnitTracker unitTracker; 

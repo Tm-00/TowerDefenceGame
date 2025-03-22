@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeadState : BaseState
+public class RifleDeadState : RifleBaseState
 {
-    public DeadState(GameObject go)
+    public RifleDeadState(GameObject go)
     {
         
     }
@@ -23,7 +23,7 @@ public class DeadState : BaseState
         throw new System.NotImplementedException();
     }
 
-    public override BaseState HandleInput(GameObject go)
+    public override RifleBaseState HandleInput(GameObject go)
     {
         throw new System.NotImplementedException();
     }

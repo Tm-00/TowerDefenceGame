@@ -44,6 +44,8 @@ GameObject:
   - component: {fileID: 6536087029748596197}
   - component: {fileID: 1065418843284029964}
   - component: {fileID: -8943591713217729635}
+  - component: {fileID: -4691134019581742624}
+  - component: {fileID: -3282730832910185157}
   m_Layer: 10
   m_Name: Robot
   m_TagString: Enemy
@@ -135,6 +137,34 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-4691134019581742624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8877446834361509729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015f06ef0aa179f409f43fd1f4983ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3282730832910185157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8877446834361509729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c05f34542cd6ed0449bb992831ad5016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootLocation: {fileID: 1646618248661307421}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &6017122464054163341
 PrefabInstance:
   m_ObjectHideFlags: 0

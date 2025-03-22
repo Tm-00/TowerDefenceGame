@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoutDeadState : BaseState
+public class ScoutDeadState : RifleBaseState
 {
     public ScoutDeadState(GameObject go)
     {
@@ -23,7 +23,7 @@ public class ScoutDeadState : BaseState
         throw new System.NotImplementedException();
     }
 
-    public override BaseState HandleInput(GameObject go)
+    public override RifleBaseState HandleInput(GameObject go)
     {
         throw new System.NotImplementedException();
     }

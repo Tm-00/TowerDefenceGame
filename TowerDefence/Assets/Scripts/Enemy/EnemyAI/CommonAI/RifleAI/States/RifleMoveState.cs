@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AI;
 
-public class MoveState : BaseState
+public class RifleMoveState : RifleBaseState
 {
     
     // will be able to reference itself
@@ -16,7 +16,7 @@ public class MoveState : BaseState
     private Transform coreNodePosition;
     
     // Constructor.
-    public MoveState(GameObject go)
+    public RifleMoveState(GameObject go)
     {
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
@@ -42,16 +42,16 @@ public class MoveState : BaseState
     }
     
     // Input
-    public override BaseState HandleInput(GameObject go)
+    public override RifleBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
         if (Vector3.Distance(agent.transform.position, closestTarget) <= 6 && allunitsdead != true)
         {
-            return new AttackState(go);
+            return new RifleAttackState(go);
         }
         if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
         {
-            return new FinishedState(go);
+            return new RifleFinishedState(go);
         }
         //TODO add a death state transition + a health script for this enemy type
         // TODO add a game over script for finished state

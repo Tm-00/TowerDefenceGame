@@ -3,7 +3,7 @@ using UnityEngine;
 public class FSM_CON : MonoBehaviour
 {
     // The Current State
-    private BaseState state;
+    private RifleBaseState state;
     
     //[SerializeField] public static GameObject coreNode;
     
@@ -11,7 +11,7 @@ public class FSM_CON : MonoBehaviour
     void Start()
     {
         // Create a new instance of the inital state
-        BaseState _IdleState  = new IdleState(this.gameObject);
+        RifleBaseState _IdleState  = new RifleIdleState(this.gameObject);
         
         // set the default / start state
         state = _IdleState ;
@@ -25,7 +25,7 @@ public class FSM_CON : MonoBehaviour
         state.Update(this.gameObject);
         
         // handle input. including game events etc.
-        BaseState newState = state.HandleInput(this.gameObject);
+        RifleBaseState newState = state.HandleInput(this.gameObject);
 
         if (newState != null)
         {

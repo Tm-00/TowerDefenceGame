@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class IdleState : BaseState
+public class RifleIdleState : RifleBaseState
 {
     private NavMeshAgent agent;
     private Transform coreNodePosition;
     //TODO add a cooldown timer on spawn of 5 seconds
     // Constructor.
-    public IdleState(GameObject go)
+    public RifleIdleState(GameObject go)
     {
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = UnitTracker.UnitTargets[0].transform;
@@ -34,7 +34,7 @@ public class IdleState : BaseState
     }
     
     // Input
-    public override BaseState HandleInput(GameObject go)
+    public override RifleBaseState HandleInput(GameObject go)
     {
         // Idle -> Move
         if ( UnitTracker.UnitTargets != null)
@@ -43,12 +43,12 @@ public class IdleState : BaseState
             if (UnitTracker.UnitTargets.Count == 1) 
             {
                 // Change the state -> MoveState.
-                return new MoveState(go);
+                return new RifleMoveState(go);
             }
             // idle if at the core node
             if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
             {
-                return new IdleState(go);
+                return new RifleIdleState(go);
             }
         }
         return null;

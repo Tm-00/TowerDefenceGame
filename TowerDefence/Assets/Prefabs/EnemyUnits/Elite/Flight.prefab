@@ -44,6 +44,8 @@ GameObject:
   - component: {fileID: 6715805378216577814}
   - component: {fileID: 7997523475989959480}
   - component: {fileID: 945632646902070459}
+  - component: {fileID: 9004989909754581502}
+  - component: {fileID: 4221659638244902538}
   m_Layer: 10
   m_Name: Flight
   m_TagString: Enemy
@@ -135,6 +137,34 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &9004989909754581502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514447930200123060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74e0f12d2aa91246b4022397208a456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootLocation: {fileID: 5777294455380007757}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &4221659638244902538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514447930200123060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc7bd362a5e6b64ca02f23b9c75a1a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &309713831164388551
 PrefabInstance:
   m_ObjectHideFlags: 0

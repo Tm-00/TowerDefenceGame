@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public abstract class BaseState
+public abstract class RifleBaseState
 {
     
     // base class constructor
-    public BaseState()
+    public RifleBaseState()
     {
     
     }
@@ -19,7 +19,7 @@ public abstract class BaseState
     public abstract void Exit(GameObject go);
     
     // Process any input 
-    public abstract BaseState HandleInput(GameObject go);
+    public abstract RifleBaseState HandleInput(GameObject go);
     
     public virtual void OnCollisionEnter(Collision col)
     {

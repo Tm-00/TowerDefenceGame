@@ -1,16 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class RobotAttackHandler : MonoBehaviour
+public class RifleAttackHandler : MonoBehaviour
 {
-    
-    // TODO take cloest target as a parameter 
-    //private Transform closestTarget;
-
-    [Header("Robot Values")] 
+    [Header("Rifle Values")] 
     private NavMeshAgent agent;
     public Transform shootLocation;
     
@@ -29,22 +24,21 @@ public class RobotAttackHandler : MonoBehaviour
     [Header("Cooldowns")]
     private readonly float cooldown = 5f;
     private float cooldownTime;
-
-
-    private void Awake()
+    
+    // Start is called before the first frame update
+    void Start()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Towers");
     }
-    
 
     // Update is called once per frame
     void Update()
     {
         
     }
-
-    public void RobotAttackUnit(GameObject targethit)
+    
+    public void RifleAttackUnit(GameObject targethit)
     {
         if (targethit != null)
         {
@@ -57,10 +51,7 @@ public class RobotAttackHandler : MonoBehaviour
             else
             {
                 cooldownTime -= Time.deltaTime;
-                //Debug.Log("active cd time " + cooldownTime);
             }
-            //Debug.DrawRay(agent.transform.position, agent.transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
         }
     }
-    
 }

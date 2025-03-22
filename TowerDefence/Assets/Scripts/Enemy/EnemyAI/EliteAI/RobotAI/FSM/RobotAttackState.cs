@@ -10,19 +10,20 @@ public class RobotAttackState : RobotBaseState
     
     [Header("Robot Values")] 
     private readonly float rotationSpeed = 1.0f;
+    
     [Header("Target Values")] 
+    private Transform coreNodePosition;
+    private Transform closestTarget;
+    
     [Header("Attack Foundations")]
-    
-    
-    private bool enemyKilled;
     private readonly Transform shootLocation;
+    private bool enemyKilled;
+    
     
     [Header("Attack Values")]
     private float range;
     
     // reference to the core node 
-    private Transform coreNodePosition;
-    private Transform closestTarget;
     private LayerMask layerMask;
     private RaycastHit hit;
     
@@ -33,8 +34,10 @@ public class RobotAttackState : RobotBaseState
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = UnitTracker.UnitTargets[0].transform;
-       
+        
         RobotAttackHandler robotAttackHandler = go.AddComponent<RobotAttackHandler>();
+        
+        layerMask = robotAttackHandler.layerMask;
         shootLocation = robotAttackHandler.shootLocation;
         range = robotAttackHandler.range;
     }
@@ -53,23 +56,14 @@ public class RobotAttackState : RobotBaseState
         
         if (closestTarget != null)
         {
-            Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
-                closestTarget.position.z - go.transform.position.z).normalized;
-            float singlestep = rotationSpeed * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-            go.transform.localRotation = Quaternion.LookRotation(newDirection);
-            
-            // Debug lines to visualize the directions
-            Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+            RotateUnitToTarget(go);
             
             if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
-                //  maybe add a check to see if target hit == cloest target to fix bug
-                if (targethit != null)
+                if (targethit != null && targethit == closestTarget.gameObject)
                 {
-                    robotAttackHandler.AttackUnit(targethit);
+                    robotAttackHandler.RobotAttackUnit(targethit);
                 }
                 TowerHealth targetHealth = targethit.GetComponent<TowerHealth>();
                 if (targetHealth.Death())
@@ -92,11 +86,28 @@ public class RobotAttackState : RobotBaseState
     {
         if (enemyKilled)
         {
+            // if the target died find new target
             return new RobotMoveState(go);
         }
         return null;
     }
-    
+
+    private void RotateUnitToTarget(GameObject go)
+    {
+        Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
+            closestTarget.position.z - go.transform.position.z).normalized;
+        float singlestep = rotationSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
+        go.transform.localRotation = Quaternion.LookRotation(newDirection);
+        DrawRay(targetDirection, go);
+    }
+
+    private void DrawRay(Vector3 targetDirection, GameObject go)
+    {
+        // Debug lines to visualize the directions
+        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
+        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+    }
     
 }
     

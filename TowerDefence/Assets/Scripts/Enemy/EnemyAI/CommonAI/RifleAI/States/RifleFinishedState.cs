@@ -2,12 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AI;
 
-public class FinishedState : BaseState
+public class RifleFinishedState : RifleBaseState
 {
     private NavMeshAgent agent;
     private Transform coreNodePosition;
 
-    public FinishedState(GameObject go)
+    public RifleFinishedState(GameObject go)
     {
         
     }
@@ -27,7 +27,7 @@ public class FinishedState : BaseState
         
     }
 
-    public override BaseState HandleInput(GameObject go)
+    public override RifleBaseState HandleInput(GameObject go)
     {
         return null;
     }
