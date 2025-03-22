@@ -15,6 +15,9 @@ TagManager:
   - LaserShootLocation
   - TurretShootLocation
   - HealShootLocation
+  - FlightShootLocation
+  - RobotShootLocation
+  - RifleShootLocation
   layers:
   - Default
   - TransparentFX

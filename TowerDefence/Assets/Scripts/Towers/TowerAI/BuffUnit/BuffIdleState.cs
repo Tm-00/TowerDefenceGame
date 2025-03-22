@@ -26,11 +26,11 @@ public class BuffIdleState : BuffBaseState
 
     public override BuffBaseState HandleInput(GameObject go)
     {
-        if (UnitTracker.EnemyTargets != null && TowerPlacement.hasBeenPlaced)
+        if (UnitTracker.UnitTargets != null && TowerPlacement.hasBeenPlaced)
         {
-            if (UnitTracker.EnemyTargets.Count >= 1)
+            if (UnitTracker.UnitTargets.Count >= 1)
             {
-                return new BuffLocateEnemyState(go);
+                return new BuffLocateAllyState(go);
             }
         }
         return null;

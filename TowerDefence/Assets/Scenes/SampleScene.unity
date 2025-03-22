@@ -525,6 +525,7 @@ Transform:
   m_Children:
   - {fileID: 705507995}
   - {fileID: 140268629}
+  - {fileID: 1768794017}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &140268628
@@ -2385,14 +2386,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef03b70a972161245887ddc1b26b9878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  common1: {fileID: 504179947941742379, guid: e6a2012a26176034b83cbd3e5507c65d, type: 3}
-  common2: {fileID: 8947359854200915791, guid: 078d90fd824b5bf4d8e2f139004fccb6, type: 3}
-  elite1: {fileID: 6760130981953972440, guid: cbd649f58121fd14d83afeaa721c601e, type: 3}
-  elite2: {fileID: 0}
+  common1: {fileID: 2160744301129238931, guid: f39dfbb1035c2454a930c2aeeb30a043, type: 3}
+  common2: {fileID: 1785821350392903418, guid: 66b5938e7d5d10041905270fc541e679, type: 3}
+  elite1: {fileID: 5514447930200123060, guid: e4273f5a876829d4ca17d692fa4c70d1, type: 3}
+  elite2: {fileID: 8877446834361509729, guid: 614b3f11fd467b44284d0c8e6d7c1aaf, type: 3}
   boss: {fileID: 0}
-  amount1: 2
+  amount1: 0
   amount2: 0
-  amount3: 0
+  amount3: 1
   amount4: 0
   amount5: 0
 --- !u!4 &1086233708
@@ -3885,12 +3886,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768794013}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -50, y: 7.9, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -47.789246, y: 1.578248, z: 5.0253773}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 103646100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1768794018
 MonoBehaviour:
@@ -4936,4 +4937,3 @@ SceneRoots:
   - {fileID: 103646100}
   - {fileID: 2108937677}
   - {fileID: 1930501807}
-  - {fileID: 1768794017}

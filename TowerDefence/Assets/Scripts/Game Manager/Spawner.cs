@@ -58,6 +58,7 @@ public class spawner : MonoBehaviour
         wave.Add(common1);
         wave.Add(common2);
         wave.Add(elite1);
+        wave.Add(elite2);
         
         amountToSpawn.Add(amount1);
         amountToSpawn.Add(amount2);

@@ -7,15 +7,25 @@ public class RobotAttackState : RobotBaseState
     // will be able to reference itself
     private NavMeshAgent agent;
     
+    
+    [Header("Robot Values")] 
+    private readonly float rotationSpeed = 1.0f;
+    [Header("Target Values")] 
+    [Header("Attack Foundations")]
+    
+    
+    private bool enemyKilled;
+    private readonly Transform shootLocation;
+    
+    [Header("Attack Values")]
+    private float range;
+    
     // reference to the core node 
     private Transform coreNodePosition;
     private Transform closestTarget;
-    private LayerMask layerMask = LayerMask.GetMask("Towers");
+    private LayerMask layerMask;
     private RaycastHit hit;
-    private float cooldown = 5f;
-    private float cooldownTime;
-    public int amount = 25;
-    private bool enemyKilled;
+    
 
     
     public RobotAttackState(GameObject go)
@@ -23,41 +33,54 @@ public class RobotAttackState : RobotBaseState
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = UnitTracker.UnitTargets[0].transform;
+       
+        RobotAttackHandler robotAttackHandler = go.AddComponent<RobotAttackHandler>();
+        shootLocation = robotAttackHandler.shootLocation;
+        range = robotAttackHandler.range;
     }
     
     // Enter
     public override void Enter(GameObject go)
     {
-        Debug.Log("Rifle Drone: Attack State");
+        Debug.Log("Robot Drone: Attack State");
     }
 
-    // Update
-    public override void Update(GameObject go)
+  public override void Update(GameObject go)
     {
+        RobotAttackHandler robotAttackHandler = go.AddComponent<RobotAttackHandler>();
+        
         closestTarget = UnitTracker.FindClosestWallUnit(agent)?.transform;
         
         if (closestTarget != null)
         {
-            if (Physics.Raycast(agent.transform.position, agent.transform.TransformDirection(Vector3.forward), out hit,
-                    5f, layerMask))
+            Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
+                closestTarget.position.z - go.transform.position.z).normalized;
+            float singlestep = rotationSpeed * Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
+            go.transform.localRotation = Quaternion.LookRotation(newDirection);
+            
+            // Debug lines to visualize the directions
+            Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
+            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+            
+            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
             {
                 GameObject targethit = hit.collider.gameObject;
                 //  maybe add a check to see if target hit == cloest target to fix bug
                 if (targethit != null)
                 {
-                    AttackUnit(targethit);
+                    robotAttackHandler.AttackUnit(targethit);
                 }
                 TowerHealth targetHealth = targethit.GetComponent<TowerHealth>();
                 if (targetHealth.Death())
                 {
+                    ObjectPoolManager.ReturnObjectToPool(targethit);
                     enemyKilled = true;
                 }
             }
         }
     }
-
-
-
+  
     // Exit
     public override void Exit(GameObject go)
     {
@@ -74,29 +97,7 @@ public class RobotAttackState : RobotBaseState
         return null;
     }
     
-    // TODO change into a public method in a different class that all units can use
-    private void AttackUnit(GameObject targethit)
-    {
-        if (targethit != null)
-        {
-            TowerHealth targetHealth = targethit.GetComponent<TowerHealth>();
-            if (cooldownTime <= 0)
-            {
-                cooldownTime = cooldown;
-                targetHealth.TakeDamage(amount);
-            }
-            else
-            {
-                cooldownTime -= Time.deltaTime;
-                //Debug.Log("active cd time " + cooldownTime);
-            }
-            if (targetHealth.Death())
-            {
-                ObjectPoolManager.ReturnObjectToPool(targethit);
-            }
-            //Debug.DrawRay(agent.transform.position, agent.transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
-        }
-    }
+    
 }
     
 

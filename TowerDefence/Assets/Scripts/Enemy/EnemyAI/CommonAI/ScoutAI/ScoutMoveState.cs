@@ -27,12 +27,13 @@ public class ScoutMoveState : ScoutBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Rifle Drone: Move State");
+        agent.SetDestination(coreNodePosition.position);
     }
     
     // Update
     public override void Update(GameObject go)
     {
-        FilterTargets();
+      
     }
     
     // Exit
@@ -44,33 +45,12 @@ public class ScoutMoveState : ScoutBaseState
     // Input
     public override ScoutBaseState HandleInput(GameObject go)
     {
-        // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 6 && allunitsdead != true)
-        {
-            return new ScoutAttackState(go);
-        }
         if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
         {
             return new ScoutFinishedState(go);
         }
-        //TODO add a death state transition + a health script for this enemy type
-        // TODO add a game over script for finished state
         return null;
     }
 
-    private void FilterTargets()
-    {
-        var cloestEnemy = UnitTracker.FindClosestWallUnit(agent);
-        if (cloestEnemy != null && UnitTracker.UnitTargets.Count > 1)
-        {
-            closestTarget = UnitTracker.FindClosestWallUnit(agent).transform.position;
-            agent.destination = closestTarget;
-            allunitsdead = false;
-        }
-        else
-        {
-            agent.destination = coreNodePosition.transform.position;
-            allunitsdead = true;
-        }
-    }
+  
 }

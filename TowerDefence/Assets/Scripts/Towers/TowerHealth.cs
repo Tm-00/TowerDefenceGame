@@ -8,6 +8,7 @@ public class TowerHealth : MonoBehaviour
 {
     public float maxHealth = 50f;
     public float currentHealth;
+    public float damage;
     private UnitTracker unitTracker; 
     
     // Start is called before the first frame update
@@ -34,6 +35,13 @@ public class TowerHealth : MonoBehaviour
         currentHealth += amount;
         Debug.Log(gameObject + "current hp " + currentHealth);
     }
+    
+    public void TakeBuff(float amount)
+    {
+        damage += amount;
+        Debug.Log(gameObject + "current hp " + currentHealth);
+    }
+    
 
     public bool Death()
     {

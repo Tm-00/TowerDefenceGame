@@ -12,7 +12,7 @@ public class FlightIdleState : FlightBaseState
     {
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = UnitTracker.UnitTargets[0].transform;
-        Debug.Log("Rifle Drone: Idle State");
+        Debug.Log("Flight Drone: Idle State");
     }
     
     // Enter
