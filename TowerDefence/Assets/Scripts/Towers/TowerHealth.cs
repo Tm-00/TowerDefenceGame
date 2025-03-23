@@ -21,7 +21,6 @@ public class TowerHealth : MonoBehaviour
     void Update()
     {
         Death();
-        
     }
 
     public void TakeDamage(float amount)

@@ -60,12 +60,7 @@ public class FlightAttackState : FlightBaseState
                 {
                     flightAttackHandler.FlightAttackUnit(targethit);
                 }
-                TowerHealth targetHealth = targethit.GetComponent<TowerHealth>();
-                if (targetHealth.Death())
-                {
-                    ObjectPoolManager.ReturnObjectToPool(targethit);
-                    enemyKilled = true;
-                }
+                
             }
         }
     }

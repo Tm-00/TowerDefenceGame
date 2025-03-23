@@ -6,61 +6,82 @@ using UnityEngine.AI;
 
 public class TurretAttackState : TurretBaseState
 {
+    [Header("Flight Values")] 
+    private readonly float rotationSpeed = 1.0f;
+    
+    [Header("Target Values")] 
     private Transform closestTarget;
-    private LayerMask layerMask = LayerMask.GetMask("Enemies");
+    
+    [Header("Attack Foundations")]
+    private readonly Transform shootLocation;
+    private bool enemyKilled;
+    
+    [Header("Attack Values")]
+    private float range;
+    
+    // reference to the core node 
+    private LayerMask layerMask;
     private RaycastHit hit;
-    private float cooldown = 5f;
-    private float cooldownTime;
-    private int damageAmount = 25;
-    private float speed = 1.0f;
-    private float range = 50f;
-
-    private Vector3 shootLocation;
+    private TurretAttackHandler turretAttackHandler;
     
 
     public TurretAttackState(GameObject go)
     {
-        shootLocation = GameObject.FindWithTag("TurretShootLocation").transform.position;
+        turretAttackHandler = go.GetComponent<TurretAttackHandler>();
+        if (turretAttackHandler == null)
+        {
+            turretAttackHandler = go.AddComponent<TurretAttackHandler>();
+        }
+
+        
+        layerMask = turretAttackHandler.layerMask;
+        shootLocation = turretAttackHandler.shootLocation;
+        range = turretAttackHandler.range;
     }
     
     public override void Enter(GameObject go)
     {
-
+        Debug.Log("Turret Unit: Attack State");
     }
 
     public override void Update(GameObject go)
     {
-        //TODO change logic so that it finds and identifies the enemy first then shoots raycast
-
         closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
 
-        if (closestTarget!= null)
+        if (closestTarget != null)
         {
-            // rotate towards target
-            Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
-                closestTarget.position.z - go.transform.position.z).normalized;
-            float singlestep = speed * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-            go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        
-            // Debug lines to visualize the directions
-            Debug.DrawRay(shootLocation, targetDirection * 10f, Color.red);  // Red line pointing towards target
-            Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
-        
-            if (Physics.Raycast(shootLocation, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            RotateUnitToTarget(go);
+
+            if (shootLocation != null)
             {
-                GameObject targethit = hit.collider.gameObject;
-                if (targethit != null)
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
                 {
-                    AttackEnemy(targethit);
-                }
-                EnemyHealth enemyHealth = targethit.GetComponent<EnemyHealth>();
-                if (enemyHealth.EnemyDeath())
-                {
-                    Debug.Log( "  enemy died and array length " + UnitTracker.enemyArray.Length);
+                    GameObject targethit = hit.collider.gameObject;
+                    if (targethit != null && targethit == closestTarget.gameObject)
+                    {
+                        turretAttackHandler.UnitAttack(targethit);
+                    }
+
+                    FlightStats flightStats = targethit.GetComponent<FlightStats>();
+                    if (flightStats.EnemyDeath())
+                    {
+                        ObjectPoolManager.ReturnObjectToPool(targethit);
+                        enemyKilled = true;
+                    }
                 }
             }
+            else
+            {
+                Debug.LogWarning("shootLocation is null. Please check initialization.");
+            }
+
         }
+        else
+        {
+            Debug.LogWarning("No target found.");
+        }
+        
+        
     }
 
     public override void Exit(GameObject go)
@@ -72,29 +93,53 @@ public class TurretAttackState : TurretBaseState
     {
         return null;
     }
-    
-    // TODO change into a public method in a different class that all units can use
-    private void AttackEnemy(GameObject targethit)
+
+    private void DeathHandler(GameObject targethit)
     {
-        if (targethit != null)
+        RifleStats rifleStats = targethit.GetComponent<RifleStats>();
+        ScoutStats scoutStats = targethit.GetComponent<ScoutStats>();
+        FlightStats flightStats = targethit.GetComponent<FlightStats>();
+        RobotStats robotStats = targethit.GetComponent<RobotStats>();
+                
+        if (rifleStats.EnemyDeath())
         {
-            EnemyHealth enemyHealth = targethit.GetComponent<EnemyHealth>();
-            if (cooldownTime <= 0)
-            {
-                cooldownTime = cooldown;
-                enemyHealth.EnemyTakeDamage(damageAmount);
-            }
-            else
-            {
-                cooldownTime -= Time.deltaTime;
-                //Debug.Log("active cd time " + cooldownTime);
-            }
-            if (enemyHealth.EnemyDeath())
-            {
-                ObjectPoolManager.ReturnObjectToPool(targethit);
-            }
-            //Debug.DrawRay(go.transform.position, go.transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;
         }
-        //Debug.Log("Did Hit");
+        
+        if (scoutStats.EnemyDeath())
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;
+        }
+        
+        if (flightStats.EnemyDeath())
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;
+        }
+        
+        if (robotStats.EnemyDeath())
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;
+        }
+    }
+    
+    private void RotateUnitToTarget(GameObject go)
+    {
+        Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
+            closestTarget.position.z - go.transform.position.z).normalized;
+        float singlestep = rotationSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
+        go.transform.localRotation = Quaternion.LookRotation(newDirection);
+        //DrawRay(targetDirection, go);
+    }
+
+    private void DrawRay(Vector3 targetDirection, GameObject go)
+    {
+        // Debug lines to visualize the directions
+        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
+        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
 }

@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 4444317239790492235}
   - component: {fileID: 5870101182299371756}
   - component: {fileID: 4639246911884818745}
+  - component: {fileID: 6467150557234023287}
   m_Layer: 6
   m_Name: Turret
   m_TagString: WallUnit
@@ -251,6 +252,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ddf5686e3349edaf584ea1675daccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6467150557234023287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335256779646875134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d47dd6c9ea2093c42ad6e99e3596ecaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootLocation: {fileID: 6130511829373709396}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  cooldown: 5
 --- !u!1 &2693047005744771558
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +630,7 @@ Transform:
   m_GameObject: {fileID: 8545980999163584022}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.08, z: 6.19}
+  m_LocalPosition: {x: 0, y: 7.08, z: 6.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
