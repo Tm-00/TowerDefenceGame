@@ -2,30 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretAttackHandler : MonoBehaviour
+public class MissileAttackHandler : MonoBehaviour
 {
     [Header("Unit Values")] 
     public Transform shootLocation;
     
     [Header("Target Values")] 
-   // private Transform closestTarget;
+    // private Transform closestTarget;
 
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
     
     [Header("Attack Values")]
-    private readonly int damageAmount = 50;
-    public readonly float range = 10f;
+    private readonly int damageAmount = 1;
+    public readonly float range = 20f;
+    private readonly float aoeRadius = 10f;
     public bool enemyKilled;
     
     [Header("Cooldowns")]
-    public float cooldown = 5f;
+    private float cooldown = 3;
     private float cooldownTime;
     
-    
     // Start is called before the first frame update
-    private void Awake()
+    void Start()
     {
         layerMask = LayerMask.GetMask("Enemies");
     }
@@ -35,7 +35,6 @@ public class TurretAttackHandler : MonoBehaviour
     {
         
     }
-    
     
     public void DeathCheck(GameObject targethit)
     {
@@ -68,29 +67,20 @@ public class TurretAttackHandler : MonoBehaviour
         }
     }
     
-
-    public void UnitAttack(GameObject targetHit)
+    public void UnitAoeAttack(GameObject targethit)
     {
-        if (targetHit != null)
+        if (targethit != null)
         {
-            FlightStats flightStats = targetHit.GetComponent<FlightStats>();
-            RobotStats robotStats = targetHit.GetComponent<RobotStats>();
-            ScoutStats scoutStats = targetHit.GetComponent<ScoutStats>();
-            RifleStats rifleStats = targetHit.GetComponent<RifleStats>();
-         
-            if (cooldownTime <= 0)
-            {
-                cooldownTime = cooldown;
-                flightStats?.EnemyTakeDamage(damageAmount);
-                robotStats?.EnemyTakeDamage(damageAmount);
-                scoutStats?.EnemyTakeDamage(damageAmount);
-                rifleStats?.EnemyTakeDamage(damageAmount);
-            }
-            else
-            {
-                cooldownTime -= Time.deltaTime;
-            }
-            DeathCheck(targetHit);
+            FlightStats flightStats = targethit.GetComponent<FlightStats>();
+            RobotStats robotStats = targethit.GetComponent<RobotStats>();
+            ScoutStats scoutStats = targethit.GetComponent<ScoutStats>();
+            RifleStats rifleStats = targethit.GetComponent<RifleStats>();
+            
+            cooldownTime = cooldown;
+            flightStats?.EnemyTakeDamage(damageAmount);
+            robotStats?.EnemyTakeDamage(damageAmount);
+            scoutStats?.EnemyTakeDamage(damageAmount);
+            rifleStats?.EnemyTakeDamage(damageAmount);
         }
     }
     
@@ -106,8 +96,39 @@ public class TurretAttackHandler : MonoBehaviour
 
     private void DrawRay(Vector3 targetDirection, GameObject go)
     {
+        //rays for seeing the direction the object is facing and shooting towards
         Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
         Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
     
+    public void ApplyAoeDamage(Vector3 aoeCenter)
+    {
+        // Find all colliders within the aoeRadius around the hit point
+        Collider[] hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius, layerMask);
+        
+        HashSet<GameObject> uniqueEnemies = new HashSet<GameObject>();
+        // Loop through each object in the radius
+        foreach (var hitCollider in hitColliders)
+        {
+            uniqueEnemies.Add(hitCollider.gameObject);
+        }
+
+        if (cooldownTime <= 0)
+        {
+            cooldownTime = cooldown;
+            // Loop through each unique enemy and apply damage
+            foreach (GameObject targetHit in uniqueEnemies)
+            {
+                UnitAoeAttack(targetHit);
+                DeathCheck(targetHit);
+            }
+        }
+        else
+        {
+            cooldownTime -= Time.deltaTime;
+        }
+        //rays for visualising and debugging 
+        Debug.DrawRay(aoeCenter, Vector3.up * 2f, Color.blue, 2.0f); // Draw the AoE center
+        Debug.DrawLine(aoeCenter, aoeCenter + Vector3.up * 2f, Color.yellow, 2.0f);
+    }
 }

@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7228733110127627387}
   - component: {fileID: 3228395786147732039}
-  - component: {fileID: 3746587426392604601}
   - component: {fileID: 4510456006953998433}
   - component: {fileID: 6148871322533954731}
-  - component: {fileID: 58526183951590541}
+  - component: {fileID: 505108312115460242}
   m_Layer: 10
   m_Name: Scout
   m_TagString: Enemy
@@ -47,18 +46,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 497e8f1feda81ac4ca1dcea11d707bd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3746587426392604601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2160744301129238931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21e07425e56a474c88875cb4bdde52cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!65 &4510456006953998433
@@ -104,7 +91,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &58526183951590541
+--- !u!114 &505108312115460242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,7 +100,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2160744301129238931}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cbd5a6ccddb0b04baf33dff210bdfb4, type: 3}
+  m_Script: {fileID: 11500000, guid: bb7a8e6cc795b534498aba9f574f0cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7568075303663719047

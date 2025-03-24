@@ -6,23 +6,22 @@ using UnityEngine.AI;
 
 public class TurretAttackState : TurretBaseState
 {
-    [Header("Flight Values")] 
+    [Header("Turret Values")] 
     private readonly float rotationSpeed = 1.0f;
     
     [Header("Target Values")] 
     private Transform closestTarget;
+    private readonly LayerMask layerMask;
+    private RaycastHit hit;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
-    private bool enemyKilled;
     
     [Header("Attack Values")]
-    private float range;
+    private readonly float range;
     
-    // reference to the core node 
-    private LayerMask layerMask;
-    private RaycastHit hit;
-    private TurretAttackHandler turretAttackHandler;
+    [Header("Class")]
+    private readonly TurretAttackHandler turretAttackHandler;
     
 
     public TurretAttackState(GameObject go)
@@ -32,8 +31,6 @@ public class TurretAttackState : TurretBaseState
         {
             turretAttackHandler = go.AddComponent<TurretAttackHandler>();
         }
-
-        
         layerMask = turretAttackHandler.layerMask;
         shootLocation = turretAttackHandler.shootLocation;
         range = turretAttackHandler.range;
@@ -50,96 +47,36 @@ public class TurretAttackState : TurretBaseState
 
         if (closestTarget != null)
         {
-            RotateUnitToTarget(go);
-
+            // rotate unit towards target
+            turretAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
+            
+            // check if the shootlocation is assigned 
             if (shootLocation != null)
             {
+                // shoot a raycast at a max distance of the range relating to the unit
                 if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
                 {
-                    GameObject targethit = hit.collider.gameObject;
-                    if (targethit != null && targethit == closestTarget.gameObject)
+                    // confirm a target was hit then store it as a gameobject 
+                    var targetHit = hit.collider.gameObject;
+                    
+                    // check that the target hit was the cloest target then perform attack methods
+                    if (targetHit != null && targetHit == closestTarget.gameObject)
                     {
-                        turretAttackHandler.UnitAttack(targethit);
-                    }
-
-                    FlightStats flightStats = targethit.GetComponent<FlightStats>();
-                    if (flightStats.EnemyDeath())
-                    {
-                        ObjectPoolManager.ReturnObjectToPool(targethit);
-                        enemyKilled = true;
+                        turretAttackHandler.UnitAttack(targetHit);
                     }
                 }
             }
-            else
-            {
-                Debug.LogWarning("shootLocation is null. Please check initialization.");
-            }
-
         }
-        else
-        {
-            Debug.LogWarning("No target found.");
-        }
-        
-        
     }
 
     public override void Exit(GameObject go)
     {
-        
+        turretAttackHandler.enemyKilled = false;
     }
 
     public override TurretBaseState HandleInput(GameObject go)
     {
-        return null;
-    }
-
-    private void DeathHandler(GameObject targethit)
-    {
-        RifleStats rifleStats = targethit.GetComponent<RifleStats>();
-        ScoutStats scoutStats = targethit.GetComponent<ScoutStats>();
-        FlightStats flightStats = targethit.GetComponent<FlightStats>();
-        RobotStats robotStats = targethit.GetComponent<RobotStats>();
-                
-        if (rifleStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-        
-        if (scoutStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-        
-        if (flightStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-        
-        if (robotStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-    }
-    
-    private void RotateUnitToTarget(GameObject go)
-    {
-        Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
-            closestTarget.position.z - go.transform.position.z).normalized;
-        float singlestep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-        go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        //DrawRay(targetDirection, go);
-    }
-
-    private void DrawRay(Vector3 targetDirection, GameObject go)
-    {
-        // Debug lines to visualize the directions
-        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+        // if the unit kills an enemy or their target dies go to the locate state to find a new target 
+        return turretAttackHandler.enemyKilled ? new TurretLocateEnemyState(go) : null;
     }
 }
