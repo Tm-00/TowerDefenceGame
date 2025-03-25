@@ -23,7 +23,6 @@ public class TurretAttackState : TurretBaseState
     [Header("Class")]
     private readonly TurretAttackHandler turretAttackHandler;
     
-
     public TurretAttackState(GameObject go)
     {
         turretAttackHandler = go.GetComponent<TurretAttackHandler>();

@@ -95,7 +95,8 @@ GameObject:
   - component: {fileID: 107594407430397655}
   - component: {fileID: 461718552565646738}
   - component: {fileID: 1198547001550760125}
-  - component: {fileID: 3777670036000443923}
+  - component: {fileID: 3743819513239904545}
+  - component: {fileID: 4633227961853540978}
   m_Layer: 6
   m_Name: Laser
   m_TagString: WallUnit
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096219570182b04590afc45ff90d288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3777670036000443923
+--- !u!114 &3743819513239904545
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,12 +163,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 2841878202449249352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1889016c58c13469cba48b8957d501, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b57a4a0649d7434db3018e255f3e365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 75
-  currentHealth: 0
-  damage: 0
+  shootLocation: {fileID: 2847046973426891820}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyKilled: 0
+  cooldown: 7.5
+--- !u!114 &4633227961853540978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2841878202449249352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b59f2cb08fcabb40bfa7fd31bf27003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3813282235145161745
 GameObject:
   m_ObjectHideFlags: 0
