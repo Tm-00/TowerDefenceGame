@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileAttackHandler : MonoBehaviour
+public class BuffHandler : MonoBehaviour
 {
     [Header("Unit Values")] 
     public Transform shootLocation;
@@ -15,9 +15,9 @@ public class MissileAttackHandler : MonoBehaviour
     private RaycastHit hit;
     
     [Header("Attack Values")]
-    private readonly int damageAmount = 1;
-    public readonly float range = 20f;
-    private readonly float aoeRadius = 10f;
+    private readonly int buffAmount = 15;
+    public readonly float range = 50f;
+    private readonly float aoeRadius = 5f;
     public bool enemyKilled;
     
     [Header("Cooldowns")]
@@ -34,54 +34,6 @@ public class MissileAttackHandler : MonoBehaviour
     void Update()
     {
         
-    }
-    
-    public void DeathCheck(GameObject targethit)
-    {
-        FlightStats flightStats = targethit?.GetComponent<FlightStats>();
-        if (flightStats != null && flightStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-                    
-        RobotStats robotStats = targethit?.GetComponent<RobotStats>();
-        if (robotStats != null && robotStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }       
-                    
-        RifleStats rifleStats = targethit?.GetComponent<RifleStats>();
-        if (rifleStats != null && rifleStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        } 
-                    
-        ScoutStats scoutStats = targethit?.GetComponent<ScoutStats>();
-        if (scoutStats != null && scoutStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-    }
-    
-    public void UnitAoeAttack(GameObject targethit)
-    {
-        if (targethit != null)
-        {
-            FlightStats flightStats = targethit.GetComponent<FlightStats>();
-            RobotStats robotStats = targethit.GetComponent<RobotStats>();
-            ScoutStats scoutStats = targethit.GetComponent<ScoutStats>();
-            RifleStats rifleStats = targethit.GetComponent<RifleStats>();
-            
-            cooldownTime = cooldown;
-            flightStats?.EnemyTakeDamage(damageAmount);
-            robotStats?.EnemyTakeDamage(damageAmount);
-            scoutStats?.EnemyTakeDamage(damageAmount);
-            rifleStats?.EnemyTakeDamage(damageAmount);
-        }
     }
     
     public void RotateUnitToTarget(GameObject go, Transform ct,float rotationSpeed)
@@ -101,26 +53,49 @@ public class MissileAttackHandler : MonoBehaviour
         Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
     
-    public void ApplyAoeDamage(Vector3 aoeCenter)
+    public void UnitAoeBuff(GameObject targethit)
+    {
+        if (targethit != null)
+        {
+            TurretStats turretStats = targethit.GetComponent<TurretStats>();
+            MeleeStats meleeStats = targethit.GetComponent<MeleeStats>();
+            MissileStats missileStats = targethit.GetComponent<MissileStats>();
+            LaserStats laserStats = targethit.GetComponent<LaserStats>();
+            HealerStats healerStats = targethit.GetComponent<HealerStats>();
+            //LaneStats laneStats = targethit.GetComponent<LaneStats>();
+            BuffStats buffStats = targethit.GetComponent<BuffStats>();
+            
+            cooldownTime = cooldown;
+            turretStats?.UnitTakeHeal(buffAmount);
+            meleeStats?.UnitTakeHeal(buffAmount);
+            missileStats?.UnitTakeHeal(buffAmount);
+            laserStats?.UnitTakeHeal(buffAmount);
+            healerStats?.UnitTakeHeal(buffAmount);
+            //laneStats?.UnitTakeHeal(buffAmount);
+            buffStats?.UnitTakeHeal(buffAmount);
+        }
+    }
+    
+    public void ApplyAoeBuff(Vector3 aoeCenter)
     {
         // Find all colliders within the aoeRadius around the hit point
         Collider[] hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius, layerMask);
         
-        HashSet<GameObject> uniqueEnemies = new HashSet<GameObject>();
+        HashSet<GameObject> uniqueAllies = new HashSet<GameObject>();
         // Loop through each object in the radius
         foreach (var hitCollider in hitColliders)
         {
-            uniqueEnemies.Add(hitCollider.gameObject);
+            uniqueAllies.Add(hitCollider.gameObject);
         }
 
         if (cooldownTime <= 0)
         {
             cooldownTime = cooldown;
             // Loop through each unique enemy and apply damage
-            foreach (GameObject targetHit in uniqueEnemies)
+            foreach (GameObject targetHit in uniqueAllies)
             {
-                UnitAoeAttack(targetHit);
-                DeathCheck(targetHit);
+                UnitAoeBuff(targetHit);
+                //DeathCheck(targetHit);
             }
         }
         else

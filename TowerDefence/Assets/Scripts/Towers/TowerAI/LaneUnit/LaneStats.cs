@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserStats : MonoBehaviour
+public class LaneStats : MonoBehaviour
 {
-    [Header("Laser Stats")] 
+    [Header("Lane Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
     private UnitTracker unitTracker; 
@@ -26,13 +26,13 @@ public class LaserStats : MonoBehaviour
         currentHealth -= amount;
         Debug.Log(" drone current hp " + currentHealth);
     }
-    
+
     public void UnitTakeHeal(float amount)
     {
         currentHealth += amount;
         Debug.Log(" drone current hp " + currentHealth);
     }
-
+    
     public bool UnitDeath()
     {
         if (currentHealth <= 0)

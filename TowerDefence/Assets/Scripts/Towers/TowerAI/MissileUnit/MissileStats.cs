@@ -27,6 +27,12 @@ public class MissileStats : MonoBehaviour
         Debug.Log(" drone current hp " + currentHealth);
     }
 
+    public void UnitTakeHeal(float amount)
+    {
+        currentHealth += amount;
+        Debug.Log(" drone current hp " + currentHealth);
+    }
+    
     public bool UnitDeath()
     {
         if (currentHealth <= 0)

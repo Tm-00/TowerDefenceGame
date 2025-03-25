@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HealerHealState : HealerBaseState
+public class BuffAllyState : BuffBaseState
 {
-    [Header("Turret Values")] 
+    [Header("Buff Values")] 
     private readonly float rotationSpeed = 1.0f;
     
     [Header("Target Values")] 
@@ -22,18 +22,18 @@ public class HealerHealState : HealerBaseState
     private readonly float aoeRadius; 
     
     [Header("Class")]
-    private readonly HealerHealHandler healerHealHandler;
+    private readonly BuffHandler buffHandler;
 
-    public HealerHealState(GameObject go)
+    public BuffAllyState(GameObject go)
     {
-        healerHealHandler = go.GetComponent<HealerHealHandler>();
-        if (healerHealHandler == null)
+        buffHandler = go.GetComponent<BuffHandler>();
+        if (buffHandler == null)
         {
-            healerHealHandler = go.AddComponent<HealerHealHandler>();
+            buffHandler = go.AddComponent<BuffHandler>();
         }
-        layerMask = healerHealHandler.layerMask;
-        shootLocation = healerHealHandler.shootLocation;
-        range = healerHealHandler.range;
+        layerMask = buffHandler.layerMask;
+        shootLocation = buffHandler.shootLocation;
+        range = buffHandler.range;
     }
     
     public override void Enter(GameObject go)
@@ -45,33 +45,32 @@ public class HealerHealState : HealerBaseState
     {
         // Find and identify the closest enemy
         closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
-        
         if (closestAlly != null)
         {
             // rotate unit towards target
-            healerHealHandler.RotateUnitToTarget(go, closestAlly, rotationSpeed);
+            buffHandler.RotateUnitToTarget(go, closestAlly, rotationSpeed);
             // check if the shootlocation is assigned 
             if (shootLocation != null)
             {
                 // shoot a raycast at a max distance of the range relating to the unit of origin
                 if (Physics.Raycast(shootLocation.position, go.transform.forward, out hit, range, layerMask))
                 {
-                    healerHealHandler.ApplyAoeHeal(hit.point);
+                    buffHandler.ApplyAoeBuff(hit.point);
                 }
             }
         }
     }
-    
+
     public override void Exit(GameObject go)
     {
         
     }
 
-    public override HealerBaseState HandleInput(GameObject go)
+    public override BuffBaseState HandleInput(GameObject go)
     {
         if (closestAlly == null)
         {
-            return new HealerIdleState(go);
+            return new BuffIdleState(go);
         }
         return null;
     }
