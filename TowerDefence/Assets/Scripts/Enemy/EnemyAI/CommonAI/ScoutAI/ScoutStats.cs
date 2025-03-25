@@ -26,6 +26,12 @@ public class ScoutStats : MonoBehaviour
         currentHealth -= amount;
         Debug.Log(" drone current hp " + currentHealth);
     }
+    
+    public void EnemyTakeHeal(float amount)
+    {
+        currentHealth += amount;
+        Debug.Log(" drone current hp " + currentHealth);
+    }
 
     public bool EnemyDeath()
     {
@@ -35,5 +41,10 @@ public class ScoutStats : MonoBehaviour
             return true;
         }
         return false;
+    }
+    
+    public void EnemyBuffed(int amount)
+    {
+        currentHealth += amount;
     }
 }

@@ -7,7 +7,10 @@ public class FlightStats : MonoBehaviour
     [Header("Flight Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    
+    [Header("Class")]
     private UnitTracker unitTracker; 
+    private readonly FlightAttackHandler flightAttackHandler;
     
     // Start is called before the first frame update
     void Start()
@@ -26,6 +29,11 @@ public class FlightStats : MonoBehaviour
         currentHealth -= amount;
         Debug.Log(" drone current hp " + currentHealth);
     }
+    public void EnemyTakeHeal(float amount)
+    {
+        currentHealth += amount;
+        Debug.Log(" drone current hp " + currentHealth);
+    }
 
     public bool EnemyDeath()
     {
@@ -35,5 +43,11 @@ public class FlightStats : MonoBehaviour
             return true;
         }
         return false;
+    }
+    
+    public void EnemyBuffed(int amount)
+    {
+        currentHealth += amount;
+        flightAttackHandler.damageAmount += amount;
     }
 }

@@ -7,7 +7,10 @@ public class RifleStats : MonoBehaviour
     [Header("Rifle Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    
+    [Header("Class")] 
     private UnitTracker unitTracker; 
+    private readonly RifleAttackHandler rifleAttackHandler;
     
     // Start is called before the first frame update
     void Start()
@@ -26,6 +29,12 @@ public class RifleStats : MonoBehaviour
         currentHealth -= amount;
         Debug.Log(" drone current hp " + currentHealth);
     }
+    
+    public void EnemyTakeHeal(float amount)
+    {
+        currentHealth += amount;
+        Debug.Log(" drone current hp " + currentHealth);
+    }
 
     public bool EnemyDeath()
     {
@@ -35,5 +44,11 @@ public class RifleStats : MonoBehaviour
             return true;
         }
         return false;
+    }
+    
+    public void EnemyBuffed(int amount)
+    {
+        currentHealth += amount;
+        rifleAttackHandler.damageAmount += amount;
     }
 }
