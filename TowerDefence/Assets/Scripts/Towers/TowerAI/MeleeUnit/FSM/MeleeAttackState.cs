@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MissileAttackState : MissileBaseState
+public class MeleeAttackState : MeleeBaseState
 {
     [Header("Turret Values")] 
     private readonly float rotationSpeed = 1.0f;
@@ -22,24 +22,24 @@ public class MissileAttackState : MissileBaseState
     private readonly float aoeRadius; // AoE radius for damage
     
     [Header("Class")]
-    private readonly MissileAttackHandler missileAttackHandler;
+    private readonly MeleeAttackHandler meleeAttackHandler;
     
 
-    public MissileAttackState(GameObject go)
+    public MeleeAttackState(GameObject go)
     {
-        missileAttackHandler = go.GetComponent<MissileAttackHandler>();
-        if (missileAttackHandler == null)
+        meleeAttackHandler = go.GetComponent<MeleeAttackHandler>();
+        if (meleeAttackHandler == null)
         {
-            missileAttackHandler = go.AddComponent<MissileAttackHandler>();
+            meleeAttackHandler = go.AddComponent<MeleeAttackHandler>();
         }
-        layerMask = missileAttackHandler.layerMask;
-        shootLocation = missileAttackHandler.shootLocation;
-        range = missileAttackHandler.range;
+        layerMask = meleeAttackHandler.layerMask;
+        shootLocation = meleeAttackHandler.shootLocation;
+        range = meleeAttackHandler.range;
     }
     
     public override void Enter(GameObject go)
     {
-        Debug.Log("Missile: Attack State");
+        Debug.Log("Melee: Attack State");
     }
 
     public override void Update(GameObject go)
@@ -49,14 +49,14 @@ public class MissileAttackState : MissileBaseState
         if (closestTarget != null)
         {
             // rotate unit towards target
-            missileAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
+            meleeAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
             // check if the shootlocation is assigned 
             if (shootLocation != null)
             {
                 // shoot a raycast at a max distance of the range relating to the unit
                 if (Physics.Raycast(shootLocation.position, go.transform.forward, out hit, range, layerMask))
                 {
-                    missileAttackHandler.ApplyAoeDamage(hit.point);
+                    meleeAttackHandler.ApplyAoeDamage(hit.point);
                 }
             }
         }
@@ -67,10 +67,8 @@ public class MissileAttackState : MissileBaseState
         
     }
 
-    public override MissileBaseState HandleInput(GameObject go)
+    public override MeleeBaseState HandleInput(GameObject go)
     {
         return null;
     }
-    
-    
 }

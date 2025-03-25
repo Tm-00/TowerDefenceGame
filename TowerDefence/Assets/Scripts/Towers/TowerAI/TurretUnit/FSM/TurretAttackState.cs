@@ -44,12 +44,10 @@ public class TurretAttackState : TurretBaseState
     public override void Update(GameObject go)
     {
         closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
-
         if (closestTarget != null)
         {
             // rotate unit towards target
             turretAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
-            
             // check if the shootlocation is assigned 
             if (shootLocation != null)
             {
