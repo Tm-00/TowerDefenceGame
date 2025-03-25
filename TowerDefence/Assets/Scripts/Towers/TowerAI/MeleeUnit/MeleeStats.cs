@@ -7,8 +7,11 @@ public class MeleeStats : MonoBehaviour
     [Header("Melee Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
-    private UnitTracker unitTracker; 
     
+    [Header("Class")] 
+    private UnitTracker unitTracker;
+    private readonly MeleeAttackHandler meleeAttackHandler;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +29,7 @@ public class MeleeStats : MonoBehaviour
         currentHealth -= amount;
         Debug.Log(" drone current hp " + currentHealth);
     }
-    
+
     public void UnitTakeHeal(float amount)
     {
         currentHealth += amount;
@@ -40,6 +43,14 @@ public class MeleeStats : MonoBehaviour
             UnitTracker.UnitTargets.Remove(gameObject);
             return true;
         }
+
         return false;
     }
-}
+
+    public void UnitBuffed(int amount)
+    {
+        currentHealth += amount;
+        meleeAttackHandler.damageAmount += amount;
+    }
+}   
+

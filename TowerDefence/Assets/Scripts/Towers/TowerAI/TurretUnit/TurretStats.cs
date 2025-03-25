@@ -7,7 +7,11 @@ public class TurretStats : MonoBehaviour
     [Header("Turret Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    
+    
+    [Header("Class")] 
     private UnitTracker unitTracker; 
+    private readonly TurretAttackHandler turretAttackHandler;
     
     // Start is called before the first frame update
     void Start()
@@ -41,5 +45,11 @@ public class TurretStats : MonoBehaviour
             return true;
         }
         return false;
+    }
+    
+    public void UnitBuffed(int amount)
+    {
+        currentHealth += amount;
+        turretAttackHandler.damageAmount += amount;
     }
 }

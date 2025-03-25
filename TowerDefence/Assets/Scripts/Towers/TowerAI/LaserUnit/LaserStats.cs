@@ -7,7 +7,10 @@ public class LaserStats : MonoBehaviour
     [Header("Laser Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    
+    [Header("Class")] 
     private UnitTracker unitTracker; 
+    private readonly LaserAttackHandler laserAttackHandler;
     
     // Start is called before the first frame update
     void Start()
@@ -41,5 +44,11 @@ public class LaserStats : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void UnitBuffed(int amount)
+    {
+        currentHealth += amount;
+        laserAttackHandler.damageAmount += amount;
     }
 }

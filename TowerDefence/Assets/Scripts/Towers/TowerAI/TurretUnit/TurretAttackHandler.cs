@@ -14,8 +14,7 @@ public class TurretAttackHandler : MonoBehaviour
     public LayerMask layerMask;
     private RaycastHit hit;
     
-    [Header("Attack Values")]
-    private readonly int damageAmount = 50;
+    [Header("Attack Values")] public int damageAmount = 50;
     public readonly float range = 10f;
     public bool enemyKilled;
     
@@ -109,5 +108,4 @@ public class TurretAttackHandler : MonoBehaviour
         Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
         Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
-    
 }

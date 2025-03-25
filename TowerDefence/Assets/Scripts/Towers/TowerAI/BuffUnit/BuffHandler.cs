@@ -62,17 +62,17 @@ public class BuffHandler : MonoBehaviour
             MissileStats missileStats = targethit.GetComponent<MissileStats>();
             LaserStats laserStats = targethit.GetComponent<LaserStats>();
             HealerStats healerStats = targethit.GetComponent<HealerStats>();
-            //LaneStats laneStats = targethit.GetComponent<LaneStats>();
-            BuffStats buffStats = targethit.GetComponent<BuffStats>();
+            LaneStats laneStats = targethit.GetComponent<LaneStats>();
+            //BuffStats buffStats = targethit.GetComponent<BuffStats>();
             
             cooldownTime = cooldown;
-            turretStats?.UnitTakeHeal(buffAmount);
-            meleeStats?.UnitTakeHeal(buffAmount);
-            missileStats?.UnitTakeHeal(buffAmount);
-            laserStats?.UnitTakeHeal(buffAmount);
-            healerStats?.UnitTakeHeal(buffAmount);
-            //laneStats?.UnitTakeHeal(buffAmount);
-            buffStats?.UnitTakeHeal(buffAmount);
+            turretStats?.UnitBuffed(buffAmount);
+            meleeStats?.UnitBuffed(buffAmount);
+            missileStats?.UnitBuffed(buffAmount);
+            laserStats?.UnitBuffed(buffAmount);
+            healerStats?.UnitBuffed(buffAmount);
+            laneStats?.UnitBuffed(buffAmount);
+            //buffStats?.UnitBuffed(buffAmount);
         }
     }
     

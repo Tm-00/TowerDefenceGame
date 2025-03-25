@@ -14,8 +14,7 @@ public class LaserAttackHandler : MonoBehaviour
     public LayerMask layerMask;
     private RaycastHit hit;
     
-    [Header("Attack Values")]
-    private readonly int damageAmount = 50;
+    [Header("Attack Values")] public int damageAmount = 50;
     public readonly float range = 100f;
     public bool enemyKilled;
     

@@ -14,8 +14,7 @@ public class MeleeAttackHandler : MonoBehaviour
     public LayerMask layerMask;
     private RaycastHit hit;
     
-    [Header("Attack Values")]
-    private readonly int damageAmount = 35;
+    [Header("Attack Values")] public int damageAmount = 35;
     public readonly float range = 10f;
     private readonly float aoeRadius = 5f;
     public bool enemyKilled;

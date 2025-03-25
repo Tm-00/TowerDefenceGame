@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9059033556974494135}
   - component: {fileID: 262100348478503372}
   - component: {fileID: 7650960545724115903}
-  - component: {fileID: 8396109075213250749}
+  - component: {fileID: 2180459953396606267}
   m_Layer: 6
   m_Name: Lane
   m_TagString: WallUnit
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9296e9fc8ba291d44a42b2923d91b700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8396109075213250749
+--- !u!114 &2180459953396606267
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 242763812648948908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1889016c58c13469cba48b8957d501, type: 3}
+  m_Script: {fileID: 11500000, guid: f49ee8647b178fc419a6e1c9259e7c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7499984687213256248

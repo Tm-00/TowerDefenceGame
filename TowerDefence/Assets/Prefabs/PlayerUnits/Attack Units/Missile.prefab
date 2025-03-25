@@ -209,8 +209,8 @@ GameObject:
   - component: {fileID: 3552694356084921979}
   - component: {fileID: 3310251749585438696}
   - component: {fileID: 2096307137531746545}
-  - component: {fileID: -8107605710565429772}
   - component: {fileID: -2411892573446455916}
+  - component: {fileID: -8107605710565429772}
   m_Layer: 6
   m_Name: Missile
   m_TagString: WallUnit
@@ -268,6 +268,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d953e70a16484e041824bd507883347d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2411892573446455916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8372289869474499832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ef8ac40129e204388ddf712f56b0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-8107605710565429772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,16 +297,3 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   enemyKilled: 0
-  cooldown: 5
---- !u!114 &-2411892573446455916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8372289869474499832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86ef8ac40129e204388ddf712f56b0f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

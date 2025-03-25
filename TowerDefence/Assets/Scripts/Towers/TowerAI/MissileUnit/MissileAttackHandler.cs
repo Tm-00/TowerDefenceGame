@@ -14,8 +14,7 @@ public class MissileAttackHandler : MonoBehaviour
     public LayerMask layerMask;
     private RaycastHit hit;
     
-    [Header("Attack Values")]
-    private readonly int damageAmount = 1;
+    [Header("Attack Values")] public int damageAmount = 1;
     public readonly float range = 20f;
     private readonly float aoeRadius = 10f;
     public bool enemyKilled;

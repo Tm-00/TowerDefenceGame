@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7132814813477980024}
   - component: {fileID: 8884892509676156658}
   - component: {fileID: 6265636809432881882}
-  - component: {fileID: 3266086073801188740}
+  - component: {fileID: -1287577086222453869}
+  - component: {fileID: -3405589754656694609}
   m_Layer: 6
   m_Name: Buff
   m_TagString: WallUnit
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d158c3a2eb1084b4eb02a76ee96957e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3266086073801188740
+--- !u!114 &-1287577086222453869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,9 +78,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 5657659185751161299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1889016c58c13469cba48b8957d501, type: 3}
+  m_Script: {fileID: 11500000, guid: b61321b7dcf487c4b99583590cb61a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3405589754656694609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5657659185751161299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20df9eb9586da1041aa64b7d4be89ff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootLocation: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyKilled: 0
 --- !u!1001 &351227452904833775
 PrefabInstance:
   m_ObjectHideFlags: 0

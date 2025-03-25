@@ -42,8 +42,8 @@ GameObject:
   - component: {fileID: 1711349099586288290}
   - component: {fileID: 1360901837158690408}
   - component: {fileID: 6531801342155602986}
-  - component: {fileID: 1453951754381356300}
   - component: {fileID: 4214139538631114850}
+  - component: {fileID: 1453951754381356300}
   m_Layer: 6
   m_Name: Melee
   m_TagString: WallUnit
@@ -101,6 +101,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e79a35cca663ca4c95fe0844474032d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4214139538631114850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8901036928270487224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a7d5078970df141bd5b1c633de65e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1453951754381356300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,18 +130,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   enemyKilled: 0
---- !u!114 &4214139538631114850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8901036928270487224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5a7d5078970df141bd5b1c633de65e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &609463605670881939
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -42,4 +42,9 @@ public class HealerStats : MonoBehaviour
         }
         return false;
     }
+
+    public void UnitBuffed(int amount)
+    {
+        currentHealth += amount;
+    }
 }

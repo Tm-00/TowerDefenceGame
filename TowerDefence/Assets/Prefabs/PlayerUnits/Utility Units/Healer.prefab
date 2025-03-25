@@ -40,9 +40,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005947589330695791}
-  - component: {fileID: 5130856582706994806}
-  - component: {fileID: 3942360156729431835}
   - component: {fileID: 3090941991014783577}
+  - component: {fileID: 3942360156729431835}
+  - component: {fileID: -3385605194069409703}
+  - component: {fileID: -559197547395881237}
   m_Layer: 6
   m_Name: Healer
   m_TagString: WallUnit
@@ -67,32 +68,6 @@ Transform:
   - {fileID: 1553333686606973815}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5130856582706994806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5165760642615900159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1889016c58c13469cba48b8957d501, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 50
-  currentHealth: 0
---- !u!114 &3942360156729431835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5165760642615900159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bd1e111496005e41adb10e99c953b98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &3090941991014783577
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,6 +89,47 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1.1, z: 0}
+--- !u!114 &3942360156729431835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5165760642615900159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd1e111496005e41adb10e99c953b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3385605194069409703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5165760642615900159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a51f34120356faf48a40f08fd0e22945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-559197547395881237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5165760642615900159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e47da68e176a094fafc4bbc7d9f5002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootLocation: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyKilled: 0
 --- !u!1001 &596180781212131225
 PrefabInstance:
   m_ObjectHideFlags: 0
