@@ -14,7 +14,8 @@ public class UnitTracker : MonoBehaviour
     private int knownEnemySpawns;
     public static int currentUnitsSpawned;
     public static int currentEnemiesSpawned;
-    public static GameObject[] unitArray;
+    public static GameObject[] wallUnitArray;
+    public static GameObject[] floorUnitArray;
     public static GameObject[] enemyArray;
     
    
@@ -63,14 +64,13 @@ public class UnitTracker : MonoBehaviour
         return false;
     }
     
-    //TODO add another parameter that checks for the type of object accessing the method then create the array based on that e.g. rifle drone asks for lane units others ask for wall units 
     public static GameObject FindClosestWallUnit(NavMeshAgent nav)
     {
-        unitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
+        wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
         GameObject closestTarget = null;
         float distance = Mathf.Infinity;
         Vector3 position = nav.transform.position;
-        foreach (GameObject go in unitArray)
+        foreach (GameObject go in wallUnitArray)
         {
             Vector3 distanceDifference = go.transform.position - position;
             float currentDistance = distanceDifference.sqrMagnitude;
@@ -83,13 +83,56 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
     
-    public static GameObject FindClosestAlly(GameObject nav)
+    public static GameObject FindClosestFloorUnit(NavMeshAgent nav)
     {
-        unitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
+        floorUnitArray = GameObject.FindGameObjectsWithTag("FloorUnit"); 
         GameObject closestTarget = null;
         float distance = Mathf.Infinity;
         Vector3 position = nav.transform.position;
-        foreach (GameObject go in unitArray)
+        foreach (GameObject go in floorUnitArray)
+        {
+            Vector3 distanceDifference = go.transform.position - position;
+            float currentDistance = distanceDifference.sqrMagnitude;
+            if (currentDistance < distance)
+            {
+                closestTarget = go;
+                distance = currentDistance;
+            }
+        }
+        return closestTarget;
+    }
+
+    public static Transform FindClosestUnit(NavMeshAgent nav)
+    {
+        var object1 = FindClosestWallUnit(nav)?.transform;
+        var object2 = FindClosestFloorUnit(nav)?.transform;
+        Vector3 position = nav.transform.position;
+        
+        if (object1 != null)
+        {
+            Vector3 obj1distanceDifference = object1.position - position;
+            if (object2 != null)
+            {
+                Vector3 obj2distanceDifference = object2.position - position;
+
+                if (obj1distanceDifference.sqrMagnitude < obj2distanceDifference.sqrMagnitude)
+                {
+                    return object1;
+                }
+                return object2;
+            }
+            return object1;
+        }
+        return object2;
+    }
+    
+    public static GameObject FindClosestAlly(GameObject nav)
+    {
+        wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
+        GameObject closestTarget = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = nav.transform.position;
+        foreach (GameObject go in wallUnitArray)
         {
             Vector3 distanceDifference = go.transform.position - position;
             float currentDistance = distanceDifference.sqrMagnitude;

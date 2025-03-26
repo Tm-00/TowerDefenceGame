@@ -117,10 +117,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08f0720b2f7ea64a8b25f0ec54c80b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootLocation: {fileID: 0}
+  shootLocation: {fileID: 5811492853174641618}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
+  damageAmount: 1
 --- !u!1 &9209979116039903909
 GameObject:
   m_ObjectHideFlags: 0

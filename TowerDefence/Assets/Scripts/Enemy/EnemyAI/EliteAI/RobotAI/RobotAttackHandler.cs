@@ -112,7 +112,7 @@ public void UnitDeathCheck(GameObject targethit)
             {
                 cooldownTime = cooldown;
                 laserStats?.UnitTakeDamage(damageAmount);
-                turretStats?.UnitTakeDamage(damageAmount);
+                turretStats?.ApplyDamage(damageAmount);
                 missileStats?.UnitTakeDamage(damageAmount);
                 meleeStats?.UnitTakeDamage(damageAmount);
                 buffStats?.UnitTakeDamage(damageAmount);

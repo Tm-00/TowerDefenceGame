@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RifleStats : MonoBehaviour
+public class RifleStats : MonoBehaviour, IStats
 {
     [Header("Rifle Stats")] 
-    private float maxHealth = 50f;
+    private readonly float maxHealth = 50f;
     private float currentHealth;
     
     [Header("Class")] 
@@ -18,35 +18,40 @@ public class RifleStats : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    // Implement TakeDamage from IUnitStats
+    public void ApplyDamage(float amount)
     {
-        EnemyDeath();
-    }
+        currentHealth -= amount; 
+        Debug.Log("Rifle unit current HP: " + currentHealth);
 
-    public void EnemyTakeDamage(float amount)
-    {
-        currentHealth -= amount;
-        Debug.Log(" drone current hp " + currentHealth);
-    }
-    
-    public void EnemyTakeHeal(float amount)
-    {
-        currentHealth += amount;
-        Debug.Log(" drone current hp " + currentHealth);
-    }
-
-    public bool EnemyDeath()
-    {
         if (currentHealth <= 0)
         {
-            UnitTracker.EnemyTargets.Remove(gameObject);
-            return true;
+            Die(); 
         }
-        return false;
     }
     
-    public void EnemyBuffed(int amount)
+    // Implement Heal from IUnitStats
+    public void ApplyHeal(float amount)
+    {
+        currentHealth += amount;  
+        currentHealth = Mathf.Min(currentHealth, maxHealth);  
+        Debug.Log("Rifle unit healed, current HP: " + currentHealth);
+    }
+
+    // Implement IsDead from IUnitStats
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
+    
+    public void Die()
+    {
+        Debug.Log("Rifle unit has died.");
+        UnitTracker.EnemyTargets.Remove(gameObject);
+    }
+
+    // Implement ApplyBuff from IUnitStats
+    public void ApplyBuff(int amount)
     {
         currentHealth += amount;
         rifleAttackHandler.damageAmount += amount;

@@ -27,37 +27,75 @@ public class TowerPlacement : MonoBehaviour
             {
                 unit.transform.position = hitInfo.point;
             }
-
             if (Input.GetMouseButtonDown(0) && hitInfo.collider.gameObject != null)
             {
-                if (hitInfo.collider.gameObject.CompareTag("CanPlace"))
+                if (unit.CompareTag("WallUnit"))
                 {
-                    BoxCollider unitCollider = unit.gameObject.GetComponent<BoxCollider>();
-                    unitCollider.isTrigger = true;
-                    
-                    Vector3 BoxCenter = unit.gameObject.transform.position + unitCollider.center;
-                    Vector3 HalfExtents = unitCollider.size / 2;
-                    
-                    
-                    if (Physics.CheckBox(BoxCenter, HalfExtents, Quaternion.identity, placementCheckMask, QueryTriggerInteraction.Ignore))
-                    {
-                        Debug.Log("can't place here");
-                        unitCollider.isTrigger = true;
-                    }
-                    else
-                    {
-                        totalUnits++;
-                        UnitTracker.currentUnitsSpawned = totalUnits;
-                        Debug.Log("placed");
-                        unitCollider.isTrigger = false;
-                        hasBeenPlaced = true;
-                        unit = null;
-                    }
+                    WallUnitPlacement(hitInfo);
+                }
+                else if (unit.CompareTag("FloorUnit"))
+                {
+                    FloorUnitPlacement(hitInfo);
                 }
             }
         }
     }
 
+    private void WallUnitPlacement(RaycastHit hitInfo)
+    {
+        if (hitInfo.collider.gameObject.CompareTag("CanPlaceWallUnit"))
+        {
+            BoxCollider unitCollider = unit.gameObject.GetComponent<BoxCollider>();
+            unitCollider.isTrigger = true;
+                    
+            Vector3 BoxCenter = unit.gameObject.transform.position + unitCollider.center;
+            Vector3 HalfExtents = unitCollider.size / 2;
+            
+            if (Physics.CheckBox(BoxCenter, HalfExtents, Quaternion.identity, placementCheckMask, QueryTriggerInteraction.Ignore))
+            {
+                Debug.Log("can't place here");
+                unitCollider.isTrigger = true;
+            }
+            else
+            {
+                totalUnits++;
+                UnitTracker.currentUnitsSpawned = totalUnits;
+                Debug.Log("placed");
+                unitCollider.isTrigger = false;
+                hasBeenPlaced = true;
+                unit = null;
+            }
+        }
+    }
+    
+    private void FloorUnitPlacement(RaycastHit hitInfo)
+    {
+        if (hitInfo.collider.gameObject.CompareTag("CanPlaceFloorUnit"))
+        {
+            BoxCollider unitCollider = unit.gameObject.GetComponent<BoxCollider>();
+            unitCollider.isTrigger = true;
+                    
+            Vector3 BoxCenter = unit.gameObject.transform.position + unitCollider.center;
+            Vector3 HalfExtents = unitCollider.size / 2;
+                    
+                    
+            if (Physics.CheckBox(BoxCenter, HalfExtents, Quaternion.identity, placementCheckMask, QueryTriggerInteraction.Ignore))
+            {
+                Debug.Log("can't place here");
+                unitCollider.isTrigger = true;
+            }
+            else
+            {
+                totalUnits++;
+                UnitTracker.currentUnitsSpawned = totalUnits;
+                Debug.Log("placed");
+                unitCollider.isTrigger = false;
+                hasBeenPlaced = true;
+                unit = null;
+            }
+        }
+    }
+    
     public void UnitToPlace(GameObject unit1)
     {
         unit = ObjectPoolManager.SpawnObject(unit1, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.playerUnits);

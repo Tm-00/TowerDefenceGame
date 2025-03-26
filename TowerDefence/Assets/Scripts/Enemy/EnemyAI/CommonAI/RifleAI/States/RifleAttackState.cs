@@ -44,7 +44,8 @@ public class RifleAttackState : RifleBaseState
     // Update
     public override void Update(GameObject go)
     {
-        closestTarget = UnitTracker.FindClosestWallUnit(agent)?.transform;
+        closestTarget = UnitTracker.FindClosestUnit(agent);
+        //Debug.Log(closestTarget);
         if (closestTarget != null)
         {
             rifleAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);

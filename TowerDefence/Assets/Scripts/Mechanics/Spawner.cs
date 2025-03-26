@@ -43,7 +43,6 @@ public class spawner : MonoBehaviour
             for (int j = 0; j < enemySpawnAmount; j++)
             {
                 ObjectPoolManager.SpawnObject(wave[i], transform.position, Quaternion.identity, ObjectPoolManager.PoolType.enemyUnits);
-                // add here
                 Enemy = wave[i];
                 totalEnemies++;
                 UnitTracker.currentEnemiesSpawned = totalEnemies;

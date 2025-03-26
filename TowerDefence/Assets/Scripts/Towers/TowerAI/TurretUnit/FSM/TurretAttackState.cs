@@ -11,8 +11,13 @@ public class TurretAttackState : TurretBaseState
     
     [Header("Target Values")] 
     private Transform closestTarget;
-    private readonly LayerMask layerMask;
+    private readonly LayerMask turretLayerMask;
     private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private TurretAttackHandler turretAttackHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -20,17 +25,27 @@ public class TurretAttackState : TurretBaseState
     [Header("Attack Values")]
     private readonly float range;
     
-    [Header("Class")]
-    private readonly TurretAttackHandler turretAttackHandler;
-    
     public TurretAttackState(GameObject go)
     {
-        turretAttackHandler = go.GetComponent<TurretAttackHandler>();
-        if (turretAttackHandler == null)
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
         {
-            turretAttackHandler = go.AddComponent<TurretAttackHandler>();
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
         }
-        layerMask = turretAttackHandler.layerMask;
+        
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+
+        turretAttackHandler = go.GetComponent<TurretAttackHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an TurretAttackHandler component!");
+        }
+        
+        turretLayerMask = turretAttackHandler.layerMask;  
         shootLocation = turretAttackHandler.shootLocation;
         range = turretAttackHandler.range;
     }
@@ -38,20 +53,21 @@ public class TurretAttackState : TurretBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Turret Unit: Attack State");
+        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
         if (closestTarget != null)
         {
             // rotate unit towards target
-            turretAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
+            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+            
             // check if the shootlocation is assigned 
             if (shootLocation != null)
             {
                 // shoot a raycast at a max distance of the range relating to the unit
-                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, turretLayerMask))
                 {
                     // confirm a target was hit then store it as a gameobject 
                     var targetHit = hit.collider.gameObject;
@@ -59,7 +75,7 @@ public class TurretAttackState : TurretBaseState
                     // check that the target hit was the cloest target then perform attack methods
                     if (targetHit != null && targetHit == closestTarget.gameObject)
                     {
-                        turretAttackHandler.UnitAttack(targetHit);
+                        turretAttackHandler.Attack(targetHit);
                     }
                 }
             }
@@ -68,12 +84,12 @@ public class TurretAttackState : TurretBaseState
 
     public override void Exit(GameObject go)
     {
-        turretAttackHandler.enemyKilled = false;
+        turretAttackHandler.ResetEnemyKilledStatus(); 
     }
 
     public override TurretBaseState HandleInput(GameObject go)
     {
         // if the unit kills an enemy or their target dies go to the locate state to find a new target 
-        return turretAttackHandler.enemyKilled ? new TurretLocateEnemyState(go) : null;
+        return turretAttackHandler.IsEnemyKilled() ? new TurretLocateEnemyState(go) : null;
     }
 }

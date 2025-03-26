@@ -105,7 +105,7 @@ public class RifleAttackHandler : MonoBehaviour
             {
                 cooldownTime = cooldown;
                 laserStats?.UnitTakeDamage(damageAmount);
-                turretStats?.UnitTakeDamage(damageAmount);
+                turretStats?.ApplyDamage(damageAmount);
                 missileStats?.UnitTakeDamage(damageAmount);
                 meleeStats?.UnitTakeDamage(damageAmount);
                 buffStats?.UnitTakeDamage(damageAmount);
@@ -122,8 +122,8 @@ public class RifleAttackHandler : MonoBehaviour
     
     public void RotateUnitToTarget(GameObject go, Transform ct,float rotationSpeed)
     {
-        Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
-            closestTarget.position.z - go.transform.position.z).normalized;
+        Vector3 targetDirection = new Vector3(ct.position.x - go.transform.position.x, 0,
+            ct.position.z - go.transform.position.z).normalized;
         float singlestep = rotationSpeed * Time.deltaTime;
         Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
         go.transform.localRotation = Quaternion.LookRotation(newDirection);

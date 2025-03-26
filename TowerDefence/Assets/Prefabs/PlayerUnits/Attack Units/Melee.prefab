@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1453951754381356300}
   m_Layer: 6
   m_Name: Melee
-  m_TagString: WallUnit
+  m_TagString: FloorUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
+  damageAmount: 35
   enemyKilled: 0
 --- !u!1001 &609463605670881939
 PrefabInstance:

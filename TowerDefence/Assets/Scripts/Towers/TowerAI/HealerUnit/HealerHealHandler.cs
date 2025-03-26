@@ -67,7 +67,7 @@ public class HealerHealHandler : MonoBehaviour
             
             
             cooldownTime = cooldown;
-            turretStats?.UnitTakeHeal(healAmount);
+            turretStats?.ApplyHeal(healAmount);
             meleeStats?.UnitTakeHeal(healAmount);
             missileStats?.UnitTakeHeal(healAmount);
             laserStats?.UnitTakeHeal(healAmount);

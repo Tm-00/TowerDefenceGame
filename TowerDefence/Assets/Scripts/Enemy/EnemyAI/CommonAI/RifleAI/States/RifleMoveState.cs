@@ -45,7 +45,7 @@ public class RifleMoveState : RifleBaseState
     public override RifleBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 6 && allunitsdead != true)
+        if (Vector3.Distance(agent.transform.position, closestTarget) <= 10 && allunitsdead != true)
         {
             return new RifleAttackState(go);
         }
@@ -60,10 +60,10 @@ public class RifleMoveState : RifleBaseState
 
     private void FilterTargets()
     {
-        var cloestEnemy = UnitTracker.FindClosestWallUnit(agent);
-        if (cloestEnemy != null && UnitTracker.UnitTargets.Count > 1)
+        var closestUnit = UnitTracker.FindClosestUnit(agent);
+        if (closestUnit != null && UnitTracker.UnitTargets.Count > 1)
         {
-            closestTarget = UnitTracker.FindClosestWallUnit(agent).transform.position;
+            closestTarget = UnitTracker.FindClosestUnit(agent).position;
             agent.destination = closestTarget;
             allunitsdead = false;
         }
