@@ -21,6 +21,11 @@ public class MissileStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Missile current hp " + currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            Die(); 
+        }
     }
     
     public void ApplyHeal(float amount)

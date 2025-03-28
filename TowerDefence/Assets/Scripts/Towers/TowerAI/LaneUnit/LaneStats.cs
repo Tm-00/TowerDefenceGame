@@ -21,6 +21,11 @@ public class LaneStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Buff current hp " + currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            Die(); 
+        }
     }
     
     public void ApplyHeal(float amount)

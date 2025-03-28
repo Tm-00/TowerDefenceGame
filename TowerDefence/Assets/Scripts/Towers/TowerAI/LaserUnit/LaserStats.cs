@@ -21,6 +21,11 @@ public class LaserStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Turret current hp " + currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            Die(); 
+        }
     }
     
     public void ApplyHeal(float amount)

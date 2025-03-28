@@ -21,6 +21,11 @@ public class MeleeStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Melee current hp " + currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            Die(); 
+        }
     }
     
     public void ApplyHeal(float amount)
