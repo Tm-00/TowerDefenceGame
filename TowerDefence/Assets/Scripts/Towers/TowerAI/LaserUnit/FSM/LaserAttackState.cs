@@ -11,8 +11,13 @@ public class LaserAttackState : LaserBaseState
     
     [Header("Target Values")] 
     private Transform closestTarget;
-    private readonly LayerMask layerMask;
+    private readonly LayerMask laserLayerMask;
     private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private LaserAttackHandler laserAttackHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -20,17 +25,27 @@ public class LaserAttackState : LaserBaseState
     [Header("Attack Values")]
     private readonly float range;
     
-    [Header("Class")]
-    private readonly LaserAttackHandler laserAttackHandler;
-    
     public LaserAttackState(GameObject go)
     {
-        laserAttackHandler = go.GetComponent<LaserAttackHandler>();
-        if (laserAttackHandler == null)
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
         {
-            laserAttackHandler = go.AddComponent<LaserAttackHandler>();
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
         }
-        layerMask = laserAttackHandler.layerMask;
+        
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+
+        laserAttackHandler = go.GetComponent<LaserAttackHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an LaserAttackHandler component!");
+        }
+        
+        laserLayerMask = laserAttackHandler.layerMask;  
         shootLocation = laserAttackHandler.shootLocation;
         range = laserAttackHandler.range;
     }
@@ -38,20 +53,21 @@ public class LaserAttackState : LaserBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Laser Unit: Attack State");
+        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
         if (closestTarget != null)
         {
             // rotate unit towards target
-            laserAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
+            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+            
             // check if the shootlocation is assigned 
             if (shootLocation != null)
             {
                 // shoot a raycast at a max distance of the range relating to the unit
-                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, laserLayerMask))
                 {
                     // confirm a target was hit then store it as a gameobject 
                     var targetHit = hit.collider.gameObject;
@@ -59,7 +75,7 @@ public class LaserAttackState : LaserBaseState
                     // check that the target hit was the cloest target then perform attack methods
                     if (targetHit != null && targetHit == closestTarget.gameObject)
                     {
-                        laserAttackHandler.UnitAttack(targetHit);
+                        laserAttackHandler.Attack(targetHit);
                     }
                 }
             }
@@ -67,11 +83,12 @@ public class LaserAttackState : LaserBaseState
     }
     public override void Exit(GameObject go)
     {
-        
+        laserAttackHandler.ResetEnemyKilledStatus();
     }
 
     public override LaserBaseState HandleInput(GameObject go)
     {
-        return null;
+        // if the unit kills an enemy or their target dies go to the locate state to find a new target 
+        return laserAttackHandler.IsEnemyKilled() ? new LaserLocateEnemyState(go) : null;
     }
 }

@@ -48,22 +48,22 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     // Perform a death check and set enemyKilled to true if an enemy is killed
     public void DeathCheck(GameObject targethit)
     {
-        IStats targetHealth = targethit?.GetComponent<IStats>();  // Use IHealth interface to check death
+        IStats targetHealth = targethit?.GetComponent<IStats>();  
         
-        if (targetHealth != null && targetHealth.IsDead())  // Assuming IsDead() is defined in IHealth
+        if (targetHealth != null && targetHealth.IsDead())  
         {
             ObjectPoolManager.ReturnObjectToPool(targethit);
             enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
         }
     }
     
-    // Method to check if the enemy has been killed
+    // check if the enemy has been killed
     public bool IsEnemyKilled()
     {
         return enemyKilled;
     }
 
-    // Method to reset the enemyKilled status
+    // reset the enemyKilled status
     public void ResetEnemyKilledStatus()
     {
         enemyKilled = false;

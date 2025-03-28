@@ -2,86 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserAttackHandler : MonoBehaviour
+public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
-    [Header("Unit Values")] 
-    public Transform shootLocation;
-    
-    [Header("Target Values")] 
-    // private Transform closestTarget;
+    [Header("Unit Values")] public Transform shootLocation;
 
-    [Header("Attack Foundations")] 
-    public LayerMask layerMask;
+    [Header("Attack Foundations")] public LayerMask layerMask;
     private RaycastHit hit;
-    
-    [Header("Attack Values")] public int damageAmount = 50;
+
+    [Header("Attack Values")] internal int damageAmount = 50;
     public readonly float range = 100f;
     public bool enemyKilled;
-    
-    [Header("Cooldowns")]
-    public float cooldown = 7.5f;
+
+    [Header("Cooldowns")] public float cooldown = 7.5f;
     private float cooldownTime;
-    
-    
+
+
     // Start is called before the first frame update
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
-    public void DeathCheck(GameObject targethit)
-    {
-        FlightStats flightStats = targethit?.GetComponent<FlightStats>();
-        if (flightStats != null && flightStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-                    
-        RobotStats robotStats = targethit?.GetComponent<RobotStats>();
-        if (robotStats != null && robotStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }       
-                    
-        RifleStats rifleStats = targethit?.GetComponent<RifleStats>();
-        if (rifleStats != null && rifleStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        } 
-                    
-        ScoutStats scoutStats = targethit?.GetComponent<ScoutStats>();
-        if (scoutStats != null && scoutStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-    }
-    
-    public void UnitAttack(GameObject targetHit)
+    // Implement Attack from IAttackHandler
+    public void Attack(GameObject targetHit)
     {
         if (targetHit != null)
         {
-            FlightStats flightStats = targetHit.GetComponent<FlightStats>();
-            RobotStats robotStats = targetHit.GetComponent<RobotStats>();
-            ScoutStats scoutStats = targetHit.GetComponent<ScoutStats>();
-            RifleStats rifleStats = targetHit.GetComponent<RifleStats>();
-         
+            IStats targetStats = targetHit.GetComponent<IStats>();
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
-                flightStats?.EnemyTakeDamage(damageAmount);
-                robotStats?.EnemyTakeDamage(damageAmount);
-                scoutStats?.EnemyTakeDamage(damageAmount);
-                rifleStats?.EnemyTakeDamage(damageAmount);
+                targetStats?.ApplyDamage(damageAmount);
             }
             else
             {
@@ -91,19 +42,28 @@ public class LaserAttackHandler : MonoBehaviour
         }
     }
     
-    public void RotateUnitToTarget(GameObject go, Transform ct,float rotationSpeed)
+    // Perform a death check and set enemyKilled to true if an enemy is killed
+    public void DeathCheck(GameObject targethit)
     {
-        Vector3 targetDirection = new Vector3(ct.position.x - go.transform.position.x, 0,
-            ct.position.z - go.transform.position.z).normalized;
-        float singlestep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-        go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        DrawRay(targetDirection, go);
+        IStats targetHealth = targethit?.GetComponent<IStats>();  
+        
+        if (targetHealth != null && targetHealth.IsDead())  
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
+        }
+    }
+    
+    // check if the enemy has been killed
+    public bool IsEnemyKilled()
+    {
+        return enemyKilled;
     }
 
-    private void DrawRay(Vector3 targetDirection, GameObject go)
+    // reset the enemyKilled status
+    public void ResetEnemyKilledStatus()
     {
-        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+        enemyKilled = false;
     }
 }
+    
