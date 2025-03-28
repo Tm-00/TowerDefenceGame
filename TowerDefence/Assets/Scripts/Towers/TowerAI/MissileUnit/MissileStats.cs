@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileStats : MonoBehaviour, IStats
+public class MissileStats : MonoBehaviour, IUnitStats
 {
     [Header("Missile Stats")] 
     private float maxHealth = 50f;

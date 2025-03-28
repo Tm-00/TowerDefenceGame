@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeAttackHandler : MonoBehaviour
+public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
     [Header("Unit Values")] 
     public Transform shootLocation;
     
-    [Header("Target Values")] 
-    // private Transform closestTarget;
-
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
     
-    [Header("Attack Values")] public int damageAmount = 35;
+    [Header("Attack Values")] 
+    internal int damageAmount = 35;
     public readonly float range = 10f;
     private readonly float aoeRadius = 5f;
     public bool enemyKilled;
@@ -24,80 +22,18 @@ public class MeleeAttackHandler : MonoBehaviour
     private float cooldownTime;
     
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
-    public void DeathCheck(GameObject targethit)
+    // Implement Attack from IAttackHandler
+    public void Attack(GameObject targetHit)
     {
-        FlightStats flightStats = targethit?.GetComponent<FlightStats>();
-        if (flightStats != null && flightStats.EnemyDeath())
+        if (targetHit != null)
         {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
+            ApplyAoeDamage(targetHit.transform.position);
         }
-                    
-        RobotStats robotStats = targethit?.GetComponent<RobotStats>();
-        if (robotStats != null && robotStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }       
-                    
-        RifleStats rifleStats = targethit?.GetComponent<RifleStats>();
-        if (rifleStats != null && rifleStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        } 
-                    
-        ScoutStats scoutStats = targethit?.GetComponent<ScoutStats>();
-        if (scoutStats != null && scoutStats.EnemyDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-    }
-    
-    public void UnitAoeAttack(GameObject targethit)
-    {
-        if (targethit != null)
-        {
-            FlightStats flightStats = targethit.GetComponent<FlightStats>();
-            RobotStats robotStats = targethit.GetComponent<RobotStats>();
-            ScoutStats scoutStats = targethit.GetComponent<ScoutStats>();
-            RifleStats rifleStats = targethit.GetComponent<RifleStats>();
-            
-            cooldownTime = cooldown;
-            flightStats?.EnemyTakeDamage(damageAmount);
-            robotStats?.EnemyTakeDamage(damageAmount);
-            scoutStats?.EnemyTakeDamage(damageAmount);
-            rifleStats?.EnemyTakeDamage(damageAmount);
-        }
-    }
-    
-    public void RotateUnitToTarget(GameObject go, Transform ct,float rotationSpeed)
-    {
-        Vector3 targetDirection = new Vector3(ct.position.x - go.transform.position.x, 0,
-            ct.position.z - go.transform.position.z).normalized;
-        float singlestep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-        go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        DrawRay(targetDirection, go);
-    }
-
-    private void DrawRay(Vector3 targetDirection, GameObject go)
-    {
-        //rays for seeing the direction the object is facing and shooting towards
-        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
     
     public void ApplyAoeDamage(Vector3 aoeCenter)
@@ -129,5 +65,39 @@ public class MeleeAttackHandler : MonoBehaviour
         //rays for visualising and debugging 
         Debug.DrawRay(aoeCenter, Vector3.up * 2f, Color.blue, 2.0f); // Draw the AoE center
         Debug.DrawLine(aoeCenter, aoeCenter + Vector3.up * 2f, Color.yellow, 2.0f);
+    }
+    
+    public void UnitAoeAttack(GameObject targetHit)
+    {
+        if (targetHit != null)
+        {
+            IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
+            cooldownTime = cooldown;
+            targetStats.ApplyDamage(damageAmount);
+        }
+    }
+    
+    // Perform a death check and set enemyKilled to true if an enemy is killed
+    public void DeathCheck(GameObject targethit)
+    {
+        IEnemyStats targetHealth = targethit?.GetComponent<IEnemyStats>();  
+        
+        if (targetHealth != null && targetHealth.IsDead())  
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
+        }
+    }
+    
+    // check if the enemy has been killed
+    public bool IsEnemyKilled()
+    {
+        return enemyKilled;
+    }
+
+    // reset the enemyKilled status
+    public void ResetEnemyKilledStatus()
+    {
+        enemyKilled = false;
     }
 }

@@ -11,26 +11,42 @@ public class FlightAttackState : FlightBaseState
     [Header("Target Values")] 
     private Transform coreNodePosition;
     private Transform closestTarget;
+    private LayerMask flightLayerMask;
+    private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private readonly FlightAttackHandler flightAttackHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
     private bool enemyKilled;
-    private LayerMask layerMask;
-    private RaycastHit hit;
     
     [Header("Attack Values")]
-    private float range;
-    
-    [Header("Class")]
-    private readonly FlightAttackHandler flightAttackHandler;
+    private readonly float range;
     
     public FlightAttackState(GameObject go)
     {
-        flightAttackHandler = go.GetComponent<FlightAttackHandler>();
-        agent = go.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
+        {
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
+        }
         
-        layerMask = flightAttackHandler.layerMask;
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+        
+        flightAttackHandler = go.GetComponent<FlightAttackHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an FlightAttackHandler component!");
+        }
+        
+        flightLayerMask = flightAttackHandler.layerMask;
         shootLocation = flightAttackHandler.shootLocation;
         range = flightAttackHandler.range;
     }
@@ -39,23 +55,30 @@ public class FlightAttackState : FlightBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Flight Drone: Attack State");
+        agent = go.GetComponent<NavMeshAgent>();
+        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        closestTarget = UnitTracker.FindClosestUnit(agent)?.transform;
     }
 
  public override void Update(GameObject go)
     {
-        closestTarget = UnitTracker.FindClosestWallUnit(agent)?.transform;
         if (closestTarget != null)
         {
-            flightAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
-            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            // rotate unit towards target
+            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+
+            if (shootLocation != null)
             {
-                // confirm a target was hit then store it as a gameobject 
-                var targetHit = hit.collider.gameObject;
-                    
-                // check that the target hit was the cloest target then perform attack methods
-                if (targetHit != null && targetHit == closestTarget.gameObject)
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, flightLayerMask))
                 {
-                    flightAttackHandler.EnemyAttack(targetHit);
+                    // confirm a target was hit then store it as a gameobject 
+                    var targetHit = hit.collider.gameObject;
+                    
+                    // check that the target hit was the cloest target then perform attack methods
+                    if (targetHit != null && targetHit == closestTarget.gameObject)
+                    {
+                        flightAttackHandler.Attack(targetHit);
+                    }
                 }
             }
         }
@@ -64,18 +87,14 @@ public class FlightAttackState : FlightBaseState
     // Exit
     public override void Exit(GameObject go)
     {
-    
+        flightAttackHandler.ResetEnemyKilledStatus(); 
     }
     
     // input
     public override FlightBaseState HandleInput(GameObject go)
     {
-        if (enemyKilled)
-        {
-            // if the target died find new target
-            return new FlightMoveState(go);
-        }
-        return null;
+        // if the unit kills an enemy or their target dies go to the move state to find a new target 
+        return flightAttackHandler.IsEnemyKilled() ? new FlightMoveState(go) : null;
     }
 }
     

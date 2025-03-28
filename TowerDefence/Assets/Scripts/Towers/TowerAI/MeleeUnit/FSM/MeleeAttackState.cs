@@ -11,8 +11,13 @@ public class MeleeAttackState : MeleeBaseState
     
     [Header("Target Values")] 
     private Transform closestTarget;
-    private readonly LayerMask layerMask;
+    private readonly LayerMask meleeLayerMask;
     private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private readonly MeleeAttackHandler meleeAttackHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -21,42 +26,55 @@ public class MeleeAttackState : MeleeBaseState
     private readonly float range;
     private readonly float aoeRadius; // AoE radius for damage
     
-    [Header("Class")]
-    private readonly MeleeAttackHandler meleeAttackHandler;
-    
-
     public MeleeAttackState(GameObject go)
     {
-        meleeAttackHandler = go.GetComponent<MeleeAttackHandler>();
-        if (meleeAttackHandler == null)
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
         {
-            meleeAttackHandler = go.AddComponent<MeleeAttackHandler>();
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
         }
-        layerMask = meleeAttackHandler.layerMask;
+        
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+
+        meleeAttackHandler = go.GetComponent<MeleeAttackHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an TurretAttackHandler component!");
+        }
+        
+        meleeLayerMask = meleeAttackHandler.layerMask;
         shootLocation = meleeAttackHandler.shootLocation;
         range = meleeAttackHandler.range;
     }
     
     public override void Enter(GameObject go)
     {
-        Debug.Log("Melee: Attack State");
+        Debug.Log("Melee Unit: Attack State");
+        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
-        // Find and identify the closest enemy
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
-        if (closestTarget != null)
+        // rotate unit towards target
+        rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+            
+        // check if the shootlocation is assigned 
+        if (shootLocation != null)
         {
-            // rotate unit towards target
-            meleeAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
-            // check if the shootlocation is assigned 
-            if (shootLocation != null)
+            // shoot a raycast at a max distance of the range relating to the unit
+            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, meleeLayerMask))
             {
-                // shoot a raycast at a max distance of the range relating to the unit
-                if (Physics.Raycast(shootLocation.position, go.transform.forward, out hit, range, layerMask))
+                // confirm a target was hit then store it as a gameobject 
+                var targetHit = hit.collider.gameObject;
+                    
+                // check that the target hit was the cloest target then perform attack methods
+                if (targetHit != null && targetHit == closestTarget.gameObject)
                 {
-                    meleeAttackHandler.ApplyAoeDamage(hit.point);
+                    meleeAttackHandler.Attack(targetHit);
                 }
             }
         }
@@ -64,11 +82,12 @@ public class MeleeAttackState : MeleeBaseState
     
     public override void Exit(GameObject go)
     {
-        
+        meleeAttackHandler.ResetEnemyKilledStatus(); 
     }
 
     public override MeleeBaseState HandleInput(GameObject go)
     {
-        return null;
+        // if the unit kills an enemy or their target dies go to the locate state to find a new target 
+        return meleeAttackHandler.IsEnemyKilled() ? new MeleeLocateEnemyState(go) : null;
     }
 }

@@ -44,7 +44,7 @@ public class MissileAttackState : MissileBaseState
         missileAttackHandler = go.GetComponent<MissileAttackHandler>();
         if (rotatable == null)
         {
-            Debug.LogError("GameObject is missing an TurretAttackHandler component!");
+            Debug.LogError("GameObject is missing an MissileAttackHandler component!");
         }
         
         missileLayerMask = missileAttackHandler.layerMask;
@@ -91,6 +91,4 @@ public class MissileAttackState : MissileBaseState
         // if the unit kills an enemy or their target dies go to the locate state to find a new target 
         return missileAttackHandler.IsEnemyKilled() ? new MissileLocateEnemyState(go) : null;
     }
-    
-    
 }

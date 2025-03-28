@@ -12,26 +12,42 @@ public class RobotAttackState : RobotBaseState
     [Header("Target Values")] 
     private Transform coreNodePosition;
     private Transform closestTarget;
+    private LayerMask robotLayerMask;
+    private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private readonly RobotAttackHandler robotAttackHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
     private bool enemyKilled;
-    private LayerMask layerMask;
-    private RaycastHit hit;
     
     [Header("Attack Values")]
-    private float range;
-    
-    [Header("Class")]
-    private readonly RobotAttackHandler robotAttackHandler;
+    private readonly float range;
     
     public RobotAttackState(GameObject go)
     {
-        robotAttackHandler = go.GetComponent<RobotAttackHandler>();
-        agent = go.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
+        {
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
+        }
         
-        layerMask = robotAttackHandler.layerMask;
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+        
+        robotAttackHandler = go.GetComponent<RobotAttackHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an RobotAttackHandler component!");
+        }
+        
+        robotLayerMask = robotAttackHandler.layerMask;
         shootLocation = robotAttackHandler.shootLocation;
         range = robotAttackHandler.range;
     }
@@ -40,23 +56,30 @@ public class RobotAttackState : RobotBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Robot Drone: Attack State");
+        agent = go.GetComponent<NavMeshAgent>();
+        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        closestTarget = UnitTracker.FindClosestUnit(agent)?.transform;
     }
 
   public override void Update(GameObject go)
     {
-        closestTarget = UnitTracker.FindClosestWallUnit(agent)?.transform;
         if (closestTarget != null)
         {
-            robotAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
-            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            // rotate unit towards target
+            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+
+            if (shootLocation != null)
             {
-                // confirm a target was hit then store it as a gameobject 
-                var targetHit = hit.collider.gameObject;
-                    
-                // check that the target hit was the cloest target then perform attack methods
-                if (targetHit != null && targetHit == closestTarget.gameObject)
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, robotLayerMask))
                 {
-                    robotAttackHandler.EnemyAttack(targetHit);
+                    // confirm a target was hit then store it as a gameobject 
+                    var targetHit = hit.collider.gameObject;
+                    
+                    // check that the target hit was the cloest target then perform attack methods
+                    if (targetHit != null && targetHit == closestTarget.gameObject)
+                    {
+                        robotAttackHandler.Attack(targetHit);
+                    }
                 }
             }
         }
@@ -65,18 +88,14 @@ public class RobotAttackState : RobotBaseState
     // Exit
     public override void Exit(GameObject go)
     {
-    
+        robotAttackHandler.ResetEnemyKilledStatus(); 
     }
     
     // input
     public override RobotBaseState HandleInput(GameObject go)
     {
-        if (enemyKilled)
-        {
-            // if the target died find new target
-            return new RobotMoveState(go);
-        }
-        return null;
+        // if the unit kills an enemy or their target dies go to the move state to find a new target 
+        return robotAttackHandler.IsEnemyKilled() ? new RobotMoveState(go) : null;
     }
 }
     

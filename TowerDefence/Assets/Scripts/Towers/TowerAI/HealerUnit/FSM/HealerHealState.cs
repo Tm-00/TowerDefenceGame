@@ -11,27 +11,42 @@ public class HealerHealState : HealerBaseState
     
     [Header("Target Values")] 
     private Transform closestAlly;
-    private readonly LayerMask layerMask;
+    private readonly LayerMask healLayerMask;
     private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private readonly HealerHealHandler healerHealHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
     
     [Header("Attack Values")]
     private readonly float range;
-    private readonly float aoeRadius; 
-    
-    [Header("Class")]
-    private readonly HealerHealHandler healerHealHandler;
+    private readonly float aoeRadius; // AoE radius for heal
 
     public HealerHealState(GameObject go)
     {
-        healerHealHandler = go.GetComponent<HealerHealHandler>();
-        if (healerHealHandler == null)
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
         {
-            healerHealHandler = go.AddComponent<HealerHealHandler>();
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
         }
-        layerMask = healerHealHandler.layerMask;
+        
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+
+        healerHealHandler = go.GetComponent<HealerHealHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an HealHandler component!");
+        }
+        
+        healLayerMask = healerHealHandler.layerMask;
         shootLocation = healerHealHandler.shootLocation;
         range = healerHealHandler.range;
     }
@@ -39,24 +54,27 @@ public class HealerHealState : HealerBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Healer: Heal State");
+        closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
-        // Find and identify the closest enemy
-        closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
-        
-        if (closestAlly != null)
+        // rotate unit towards target
+        rotatable.RotateToTarget(go, closestAlly, rotationSpeed);
+            
+        // check if the shootlocation is assigned 
+        if (shootLocation != null)
         {
-            // rotate unit towards target
-            healerHealHandler.RotateUnitToTarget(go, closestAlly, rotationSpeed);
-            // check if the shootlocation is assigned 
-            if (shootLocation != null)
+            // shoot a raycast at a max distance of the range relating to the unit
+            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, healLayerMask))
             {
-                // shoot a raycast at a max distance of the range relating to the unit of origin
-                if (Physics.Raycast(shootLocation.position, go.transform.forward, out hit, range, layerMask))
+                // confirm a target was hit then store it as a gameobject 
+                var targetHit = hit.collider.gameObject;
+                    
+                // check that the target hit was the cloest target then perform attack methods
+                if (targetHit != null && targetHit == closestAlly.gameObject)
                 {
-                    healerHealHandler.ApplyAoeHeal(hit.point);
+                    healerHealHandler.Attack(targetHit);
                 }
             }
         }
@@ -64,16 +82,12 @@ public class HealerHealState : HealerBaseState
     
     public override void Exit(GameObject go)
     {
-        
+        healerHealHandler.ResetEnemyKilledStatus(); 
     }
 
     public override HealerBaseState HandleInput(GameObject go)
     {
-        if (closestAlly == null)
-        {
-            return new HealerIdleState(go);
-        }
-        return null;
+        // if the unit kills an enemy or their target dies go to the locate state to find a new target 
+        return healerHealHandler.IsEnemyKilled() ? new HealerLocateAllyState(go) : null;
     }
-    
 }

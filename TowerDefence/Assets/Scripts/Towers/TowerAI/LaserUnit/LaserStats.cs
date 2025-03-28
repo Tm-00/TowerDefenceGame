@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserStats : MonoBehaviour, IStats
+public class LaserStats : MonoBehaviour, IUnitStats
 {
     [Header("Laser Stats")] 
     private float maxHealth = 50f;

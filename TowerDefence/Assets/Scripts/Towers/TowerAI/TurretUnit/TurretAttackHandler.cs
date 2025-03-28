@@ -31,7 +31,7 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     {
         if (targetHit != null)
         {
-            IStats targetStats = targetHit.GetComponent<IStats>();
+            IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
@@ -48,7 +48,7 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     // Perform a death check and set enemyKilled to true if an enemy is killed
     public void DeathCheck(GameObject targethit)
     {
-        IStats targetHealth = targethit?.GetComponent<IStats>();  
+        IEnemyStats targetHealth = targethit?.GetComponent<IEnemyStats>();  
         
         if (targetHealth != null && targetHealth.IsDead())  
         {

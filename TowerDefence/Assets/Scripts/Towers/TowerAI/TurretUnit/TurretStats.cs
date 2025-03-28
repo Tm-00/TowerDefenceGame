@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretStats : MonoBehaviour, IStats
+public class TurretStats : MonoBehaviour, IUnitStats
 {
     [Header("Turret Stats")] 
     private float maxHealth = 50f;
@@ -21,6 +21,11 @@ public class TurretStats : MonoBehaviour, IStats
     {
         currentHealth -= amount;
         Debug.Log(" Turret current hp " + currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            Die(); 
+        }
     }
     
     public void ApplyHeal(float amount)

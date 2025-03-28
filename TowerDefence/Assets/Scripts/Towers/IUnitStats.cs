@@ -2,7 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IStats
+public interface IEnemyStats
+{
+    void ApplyDamage(float amount);
+    void ApplyHeal(float amount);
+    bool IsDead();
+    void ApplyBuff(int amount);
+    void Die();
+}
+
+public interface IUnitStats
 {
     void ApplyDamage(float amount);
     void ApplyHeal(float amount);

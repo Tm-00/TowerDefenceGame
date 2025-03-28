@@ -2,20 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealerHealHandler : MonoBehaviour
+public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
     [Header("Unit Values")] 
     public Transform shootLocation;
-    
-    [Header("Target Values")] 
-    // private Transform closestTarget;
 
-    [Header("Attack Foundations")] 
+    [Header("Heal Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
     
-    [Header("Attack Values")]
-    private readonly int healAmount = 1;
+    [Header("Heal Values")]
+    internal int healAmount = 1;
     public readonly float range = 20f;
     private readonly float aoeRadius = 10f;
     public bool enemyKilled;
@@ -24,56 +21,17 @@ public class HealerHealHandler : MonoBehaviour
     private float cooldown = 3;
     private float cooldownTime;
     
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
-    public void RotateUnitToTarget(GameObject go, Transform ct,float rotationSpeed)
+    // Implement Attack from IAttackHandler
+    public void Attack(GameObject targetHit)
     {
-        Vector3 targetDirection = new Vector3(ct.position.x - go.transform.position.x, 0,
-            ct.position.z - go.transform.position.z).normalized;
-        float singlestep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-        go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        DrawRay(targetDirection, go);
-    }
-
-    private void DrawRay(Vector3 targetDirection, GameObject go)
-    {
-        //rays for seeing the direction the object is facing and shooting towards
-        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
-    }
-    
-    public void UnitAoeHeal(GameObject targethit)
-    {
-        if (targethit != null)
+        if (targetHit != null)
         {
-            TurretStats turretStats = targethit.GetComponent<TurretStats>();
-            MeleeStats meleeStats = targethit.GetComponent<MeleeStats>();
-            MissileStats missileStats = targethit.GetComponent<MissileStats>();
-            LaserStats laserStats = targethit.GetComponent<LaserStats>();
-            HealerStats healerStats = targethit.GetComponent<HealerStats>();
-            //LaneStats laneStats = targethit.GetComponent<LaneStats>();
-            //BuffStats buffStats = targethit.GetComponent<BuffStats>();
-            
-            
-            cooldownTime = cooldown;
-            turretStats?.ApplyHeal(healAmount);
-            meleeStats?.UnitTakeHeal(healAmount);
-            missileStats?.UnitTakeHeal(healAmount);
-            laserStats?.UnitTakeHeal(healAmount);
-            healerStats?.UnitTakeHeal(healAmount);
-            //laneStats?.UnitTakeHeal(healAmount);
-            //buffStats?.UnitTakeHeal(healAmount);
+            ApplyAoeHeal(targetHit.transform.position);
         }
     }
     
@@ -96,7 +54,7 @@ public class HealerHealHandler : MonoBehaviour
             foreach (GameObject targetHit in uniqueAllies)
             {
                 UnitAoeHeal(targetHit);
-                //DeathCheck(targetHit);
+                DeathCheck(targetHit);
             }
         }
         else
@@ -106,5 +64,40 @@ public class HealerHealHandler : MonoBehaviour
         //rays for visualising and debugging 
         Debug.DrawRay(aoeCenter, Vector3.up * 2f, Color.blue, 2.0f); // Draw the AoE center
         Debug.DrawLine(aoeCenter, aoeCenter + Vector3.up * 2f, Color.yellow, 2.0f);
+    }
+    
+        
+    private void UnitAoeHeal(GameObject targetHit)
+    {
+        if (targetHit != null)
+        {
+            IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
+            cooldownTime = cooldown;
+            targetStats.ApplyHeal(healAmount);
+        }
+    }
+    
+    // Perform a death check and set enemyKilled to true if an enemy is killed
+    public void DeathCheck(GameObject targethit)
+    {
+        IEnemyStats targetHealth = targethit?.GetComponent<IEnemyStats>();  
+        
+        if (targetHealth != null && targetHealth.IsDead())  
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
+        }
+    }
+    
+    // check if the enemy has been killed
+    public bool IsEnemyKilled()
+    {
+        return enemyKilled;
+    }
+
+    // reset the enemyKilled status
+    public void ResetEnemyKilledStatus()
+    {
+        enemyKilled = false;
     }
 }

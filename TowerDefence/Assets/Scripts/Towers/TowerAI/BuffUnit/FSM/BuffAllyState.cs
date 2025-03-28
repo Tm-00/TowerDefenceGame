@@ -11,27 +11,43 @@ public class BuffAllyState : BuffBaseState
     
     [Header("Target Values")] 
     private Transform closestAlly;
-    private readonly LayerMask layerMask;
+    private readonly LayerMask buffLayerMask;
     private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private readonly BuffHandler buffHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
     
     [Header("Attack Values")]
     private readonly float range;
-    private readonly float aoeRadius; 
+    private readonly float aoeRadius; // AoE radius for buffs
     
-    [Header("Class")]
-    private readonly BuffHandler buffHandler;
 
     public BuffAllyState(GameObject go)
     {
-        buffHandler = go.GetComponent<BuffHandler>();
-        if (buffHandler == null)
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
         {
-            buffHandler = go.AddComponent<BuffHandler>();
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
         }
-        layerMask = buffHandler.layerMask;
+        
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+
+        buffHandler = go.GetComponent<BuffHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an BuffHandler component!");
+        }
+        
+        buffLayerMask = buffHandler.layerMask;
         shootLocation = buffHandler.shootLocation;
         range = buffHandler.range;
     }
@@ -39,23 +55,27 @@ public class BuffAllyState : BuffBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Healer: Heal State");
+        closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
-        // Find and identify the closest enemy
-        closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
-        if (closestAlly != null)
+        // rotate unit towards target
+        rotatable.RotateToTarget(go, closestAlly, rotationSpeed);
+            
+        // check if the shootlocation is assigned 
+        if (shootLocation != null)
         {
-            // rotate unit towards target
-            buffHandler.RotateUnitToTarget(go, closestAlly, rotationSpeed);
-            // check if the shootlocation is assigned 
-            if (shootLocation != null)
+            // shoot a raycast at a max distance of the range relating to the unit
+            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, buffLayerMask))
             {
-                // shoot a raycast at a max distance of the range relating to the unit of origin
-                if (Physics.Raycast(shootLocation.position, go.transform.forward, out hit, range, layerMask))
+                // confirm a target was hit then store it as a gameobject 
+                var targetHit = hit.collider.gameObject;
+                    
+                // check that the target hit was the cloest target then perform attack methods
+                if (targetHit != null && targetHit == closestAlly.gameObject)
                 {
-                    buffHandler.ApplyAoeBuff(hit.point);
+                    buffHandler.Attack(targetHit);
                 }
             }
         }
@@ -63,16 +83,12 @@ public class BuffAllyState : BuffBaseState
 
     public override void Exit(GameObject go)
     {
-        
+        buffHandler.ResetEnemyKilledStatus(); 
     }
 
     public override BuffBaseState HandleInput(GameObject go)
     {
-        if (closestAlly == null)
-        {
-            return new BuffIdleState(go);
-        }
-        return null;
+        // if the unit kills an enemy or their target dies go to the locate state to find a new target 
+        return buffHandler.IsEnemyKilled() ? new BuffLocateAllyState(go) : null;
     }
-    
 }

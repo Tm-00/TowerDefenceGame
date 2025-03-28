@@ -66,11 +66,11 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         Debug.DrawLine(aoeCenter, aoeCenter + Vector3.up * 2f, Color.yellow, 2.0f);
     }
     
-    public void UnitAoeAttack(GameObject targetHit)
+    private void UnitAoeAttack(GameObject targetHit)
     {
         if (targetHit != null)
         {
-            IStats targetStats = targetHit.GetComponent<IStats>();
+            IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             cooldownTime = cooldown;
             targetStats.ApplyDamage(damageAmount);
         }
@@ -79,7 +79,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     // Perform a death check and set enemyKilled to true if an enemy is killed
     public void DeathCheck(GameObject targethit)
     {
-        IStats targetHealth = targethit?.GetComponent<IStats>();  
+        IEnemyStats targetHealth = targethit?.GetComponent<IEnemyStats>();  
         
         if (targetHealth != null && targetHealth.IsDead())  
         {

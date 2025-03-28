@@ -2,48 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaneStats : MonoBehaviour
+public class LaneStats : MonoBehaviour, IUnitStats
 {
     [Header("Lane Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    
+    [Header("Class")] 
     private UnitTracker unitTracker; 
     
-    // Start is called before the first frame update
+    
     void Start()
     {
         currentHealth = maxHealth;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        UnitDeath();
-    }
-
-    public void UnitTakeDamage(float amount)
+    
+    public void ApplyDamage(float amount)
     {
         currentHealth -= amount;
-        Debug.Log(" drone current hp " + currentHealth);
-    }
-
-    public void UnitTakeHeal(float amount)
-    {
-        currentHealth += amount;
-        Debug.Log(" drone current hp " + currentHealth);
+        Debug.Log(" Buff current hp " + currentHealth);
     }
     
-    public bool UnitDeath()
+    public void ApplyHeal(float amount)
     {
-        if (currentHealth <= 0)
-        {
-            UnitTracker.UnitTargets.Remove(gameObject);
-            return true;
-        }
-        return false;
+        currentHealth += amount;
+        Debug.Log(" Buff current hp " + currentHealth);
     }
-
-    public void UnitBuffed(int amount)
+    
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
+    
+    public void Die()
+    {
+        Debug.Log("Buff unit has died.");
+        UnitTracker.EnemyTargets.Remove(gameObject);
+    }
+    
+    public void ApplyBuff(int amount)
     {
         currentHealth += amount;
     }

@@ -4,25 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class RobotAttackHandler : MonoBehaviour
+public class RobotAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
-    
-    // TODO take cloest target as a parameter 
-    //private Transform closestTarget;
-
     [Header("Robot Values")] 
-    private NavMeshAgent agent;
     public Transform shootLocation;
     
-    [Header("Target Values")] 
-    private Transform closestTarget;
-
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
     
     [Header("Attack Values")]
-    private readonly int damageAmount = 50;
+    internal int damageAmount = 50;
     public readonly float range = 100f;
     private bool enemyKilled;
     
@@ -33,7 +25,6 @@ public class RobotAttackHandler : MonoBehaviour
 
     private void Awake()
     {
-        agent = gameObject.GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Towers");
     }
     
@@ -44,102 +35,46 @@ public class RobotAttackHandler : MonoBehaviour
         
     }
 
-public void UnitDeathCheck(GameObject targethit)
-    {
-        LaserStats laserStats = targethit?.GetComponent<LaserStats>();
-        if (laserStats != null && laserStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }   
-        
-        TurretStats turretStats  = targethit?.GetComponent<TurretStats>();
-        if (turretStats != null && turretStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }  
-        
-        MissileStats missileStats = targethit?.GetComponent<MissileStats>();
-        if (missileStats != null && missileStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }   
-        
-        MeleeStats meleeStats = targethit?.GetComponent<MeleeStats>();
-        if (meleeStats != null && meleeStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        } 
-        
-        BuffStats buffStats = targethit?.GetComponent<BuffStats>();
-        if (buffStats != null && buffStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-        
-        HealerStats healerStats = targethit?.GetComponent<HealerStats>();
-        if (healerStats != null && healerStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-        
-        LaneStats laneStats = targethit?.GetComponent<LaneStats>();
-        if (laneStats != null && laneStats.UnitDeath())
-        {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;
-        }
-    }
-    
-    public void EnemyAttack(GameObject targetHit)
+    // Implement Attack from IAttackHandler
+    public void Attack(GameObject targetHit)
     {
         if (targetHit != null)
         {
-            LaserStats laserStats = targetHit?.GetComponent<LaserStats>();
-            TurretStats turretStats  = targetHit?.GetComponent<TurretStats>();
-            MissileStats missileStats = targetHit?.GetComponent<MissileStats>();
-            MeleeStats meleeStats = targetHit?.GetComponent<MeleeStats>();
-            BuffStats buffStats = targetHit?.GetComponent<BuffStats>();
-            HealerStats healerStats = targetHit?.GetComponent<HealerStats>();
-            LaneStats laneStats = targetHit?.GetComponent<LaneStats>();
-
+            IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
-                laserStats?.UnitTakeDamage(damageAmount);
-                turretStats?.ApplyDamage(damageAmount);
-                missileStats?.UnitTakeDamage(damageAmount);
-                meleeStats?.UnitTakeDamage(damageAmount);
-                buffStats?.UnitTakeDamage(damageAmount);
-                healerStats?.UnitTakeDamage(damageAmount);
-                laneStats?.UnitTakeDamage(damageAmount);
+                targetStats?.ApplyDamage(damageAmount);
             }
             else
             {
                 cooldownTime -= Time.deltaTime;
             }
-            UnitDeathCheck(targetHit);
+            DeathCheck(targetHit);
         }
     }
     
-    public void RotateUnitToTarget(GameObject go, Transform ct,float rotationSpeed)
+    // Perform a death check and set enemyKilled to true if an enemy is killed
+    public void DeathCheck(GameObject targethit)
     {
-        Vector3 targetDirection = new Vector3(closestTarget.position.x - go.transform.position.x, 0,
-            closestTarget.position.z - go.transform.position.z).normalized;
-        float singlestep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-        go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        DrawRay(targetDirection, go);
+        IUnitStats targetHealth = targethit?.GetComponent<IUnitStats>();  
+        
+        if (targetHealth != null && targetHealth.IsDead())  
+        {
+            ObjectPoolManager.ReturnObjectToPool(targethit);
+            enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
+        }
     }
     
-    private void DrawRay(Vector3 targetDirection, GameObject go)
+    // check if the enemy has been killed
+    public bool IsEnemyKilled()
     {
-        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+        return enemyKilled;
+    }
+
+    // reset the enemyKilled status
+    public void ResetEnemyKilledStatus()
+    {
+        enemyKilled = false;
     }
 }

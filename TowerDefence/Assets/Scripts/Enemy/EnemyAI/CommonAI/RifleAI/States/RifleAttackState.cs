@@ -11,26 +11,42 @@ public class RifleAttackState : RifleBaseState
     [Header("Target Values")] 
     private Transform coreNodePosition;
     private Transform closestTarget;
+    private LayerMask rifleLayerMask;
+    private RaycastHit hit;
+    
+    [Header("Class References")]
+    private IAttackHandler attackHandler; 
+    private IRotatable rotatable;
+    private readonly RifleAttackHandler rifleAttackHandler;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
     private bool enemyKilled;
-    private LayerMask layerMask;
-    private RaycastHit hit;
     
     [Header("Attack Values")]
-    private float range;
-    
-    [Header("Class")]
-    private readonly RifleAttackHandler rifleAttackHandler;
+    private readonly float range;
     
     public RifleAttackState(GameObject go)
     {
-        rifleAttackHandler = go.GetComponent<RifleAttackHandler>();
-        agent = go.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        attackHandler = go.GetComponent<IAttackHandler>();
+        if (attackHandler == null)
+        {
+            Debug.LogError("GameObject is missing an IAttackHandler component!");
+        }
         
-        layerMask = rifleAttackHandler.layerMask;
+        rotatable = go.GetComponent<IRotatable>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an IRotatable component!");
+        }
+        
+        rifleAttackHandler = go.GetComponent<RifleAttackHandler>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an RifleAttackHandler component!");
+        }
+        
+        rifleLayerMask = rifleAttackHandler.layerMask;
         shootLocation = rifleAttackHandler.shootLocation;
         range = rifleAttackHandler.range;
     }
@@ -39,25 +55,31 @@ public class RifleAttackState : RifleBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Rifle Drone: Attack State");
+        agent = go.GetComponent<NavMeshAgent>();
+        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        closestTarget = UnitTracker.FindClosestUnit(agent);
     }
 
     // Update
     public override void Update(GameObject go)
     {
-        closestTarget = UnitTracker.FindClosestUnit(agent);
-        //Debug.Log(closestTarget);
         if (closestTarget != null)
         {
-            rifleAttackHandler.RotateUnitToTarget(go, closestTarget, rotationSpeed);
-            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, layerMask))
+            // rotate unit towards target
+            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+
+            if (shootLocation != null)
             {
-                // confirm a target was hit then store it as a gameobject 
-                var targetHit = hit.collider.gameObject;
-                    
-                // check that the target hit was the cloest target then perform attack methods
-                if (targetHit != null && targetHit == closestTarget.gameObject)
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, rifleLayerMask))
                 {
-                    rifleAttackHandler.EnemyAttack(targetHit);
+                    // confirm a target was hit then store it as a gameobject 
+                    var targetHit = hit.collider.gameObject;
+                    
+                    // check that the target hit was the cloest target then perform attack methods
+                    if (targetHit != null && targetHit == closestTarget.gameObject)
+                    {
+                        rifleAttackHandler.Attack(targetHit);
+                    }
                 }
             }
         }
@@ -66,17 +88,14 @@ public class RifleAttackState : RifleBaseState
     // Exit
     public override void Exit(GameObject go)
     {
-    
+        rifleAttackHandler.ResetEnemyKilledStatus(); 
     }
     
     // input
     public override RifleBaseState HandleInput(GameObject go)
     {
-        if (enemyKilled)
-        {
-            return new RifleMoveState(go);
-        }
-        return null;
+        // if the unit kills an enemy or their target dies go to the move state to find a new target 
+        return rifleAttackHandler.IsEnemyKilled() ? new RifleMoveState(go) : null;
     }
 }
     

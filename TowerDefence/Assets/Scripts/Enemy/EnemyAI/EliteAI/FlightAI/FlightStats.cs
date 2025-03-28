@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlightStats : MonoBehaviour
+public class FlightStats : MonoBehaviour, IEnemyStats
 {
     [Header("Flight Stats")] 
     private float maxHealth = 50f;
@@ -17,37 +17,39 @@ public class FlightStats : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
+    
+    public void ApplyDamage(float amount)
+    {
+        currentHealth -= amount; 
+        Debug.Log("Flight unit current HP: " + currentHealth);
 
-    // Update is called once per frame
-    void Update()
-    {
-        EnemyDeath();
-    }
-
-    public void EnemyTakeDamage(float amount)
-    {
-        currentHealth -= amount;
-        Debug.Log(" drone current hp " + currentHealth);
-    }
-    public void EnemyTakeHeal(float amount)
-    {
-        currentHealth += amount;
-        Debug.Log(" drone current hp " + currentHealth);
-    }
-
-    public bool EnemyDeath()
-    {
         if (currentHealth <= 0)
         {
-            UnitTracker.EnemyTargets.Remove(gameObject);
-            return true;
+            Die(); 
         }
-        return false;
     }
     
-    public void EnemyBuffed(int amount)
+    public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        flightAttackHandler.damageAmount += amount;
+        currentHealth += amount;  
+        currentHealth = Mathf.Min(currentHealth, maxHealth);  
+        Debug.Log("Flight unit healed, current HP: " + currentHealth);
+    }
+    
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
+    
+    public void Die()
+    {
+        Debug.Log("Flight unit has died.");
+        UnitTracker.EnemyTargets.Remove(gameObject);
+    }
+    
+    public void ApplyBuff(int amount)
+    {
+        // currentHealth += amount;
+        // rifleAttackHandler.damageAmount += amount;
     }
 }
