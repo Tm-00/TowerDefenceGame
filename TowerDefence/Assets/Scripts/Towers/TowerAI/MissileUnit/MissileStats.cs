@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MissileStats : MonoBehaviour, IUnitStats
 {
@@ -12,6 +11,9 @@ public class MissileStats : MonoBehaviour, IUnitStats
     private UnitTracker unitTracker; 
     private MissileAttackHandler missileAttackHandler;
     
+    [Header("Health Bar")]
+    public Image healthBar;
+    
     void Start()
     {
         currentHealth = maxHealth;
@@ -21,6 +23,7 @@ public class MissileStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Missile current hp " + currentHealth);
+        healthBar.fillAmount = currentHealth / maxHealth;
         
         if (currentHealth <= 0)
         {
@@ -31,6 +34,8 @@ public class MissileStats : MonoBehaviour, IUnitStats
     public void ApplyHeal(float amount)
     {
         currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Missile current hp " + currentHealth);
     }
     

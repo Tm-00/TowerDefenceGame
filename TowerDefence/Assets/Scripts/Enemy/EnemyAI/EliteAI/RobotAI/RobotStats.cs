@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RobotStats : MonoBehaviour, IEnemyStats
 {
@@ -12,6 +11,9 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     private UnitTracker unitTracker; 
     private readonly RobotAttackHandler robotAttackHandler;
     
+    [Header("Health Bar")]
+    public Image healthBar;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,8 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     public void ApplyDamage(float amount)
     {
         currentHealth -= amount; 
-        Debug.Log("Flight unit current HP: " + currentHealth);
+        Debug.Log("Robot unit current HP: " + currentHealth);
+        healthBar.fillAmount = currentHealth / maxHealth;
 
         if (currentHealth <= 0)
         {
@@ -31,9 +34,10 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;  
-        currentHealth = Mathf.Min(currentHealth, maxHealth);  
-        Debug.Log("Flight unit healed, current HP: " + currentHealth);
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
+        Debug.Log("Robot unit healed, current HP: " + currentHealth);
     }
     
     public bool IsDead()
@@ -43,7 +47,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     
     public void Die()
     {
-        Debug.Log("Flight unit has died.");
+        Debug.Log("Robot unit has died.");
         UnitTracker.EnemyTargets.Remove(gameObject);
     }
     

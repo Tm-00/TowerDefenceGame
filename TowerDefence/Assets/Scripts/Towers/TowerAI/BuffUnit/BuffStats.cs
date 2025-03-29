@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuffStats : MonoBehaviour, IUnitStats
 {
@@ -12,6 +11,9 @@ public class BuffStats : MonoBehaviour, IUnitStats
     private UnitTracker unitTracker; 
     private BuffHandler buffHandler;
     
+    [Header("Health Bar")]
+    public Image healthBar;
+    
     void Start()
     {
         currentHealth = maxHealth;
@@ -21,6 +23,7 @@ public class BuffStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Buff current hp " + currentHealth);
+        healthBar.fillAmount = currentHealth / maxHealth;
         
         if (currentHealth <= 0)
         {
@@ -31,6 +34,8 @@ public class BuffStats : MonoBehaviour, IUnitStats
     public void ApplyHeal(float amount)
     {
         currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Buff current hp " + currentHealth);
     }
     

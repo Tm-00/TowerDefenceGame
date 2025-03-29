@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RifleStats : MonoBehaviour, IEnemyStats
 {
@@ -12,7 +11,9 @@ public class RifleStats : MonoBehaviour, IEnemyStats
     private UnitTracker unitTracker; 
     private readonly RifleAttackHandler rifleAttackHandler;
     
-
+    [Header("Health Bar")]
+    public Image healthBar;
+    
     void Start()
     {
         currentHealth = maxHealth;
@@ -22,7 +23,8 @@ public class RifleStats : MonoBehaviour, IEnemyStats
     {
         currentHealth -= amount; 
         Debug.Log("Rifle unit current HP: " + currentHealth);
-
+        healthBar.fillAmount = currentHealth / maxHealth;
+        
         if (currentHealth <= 0)
         {
             Die(); 
@@ -31,8 +33,9 @@ public class RifleStats : MonoBehaviour, IEnemyStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;  
-        currentHealth = Mathf.Min(currentHealth, maxHealth);  
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Rifle unit healed, current HP: " + currentHealth);
     }
     

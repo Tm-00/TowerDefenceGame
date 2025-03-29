@@ -5,11 +5,11 @@ using UnityEngine.Serialization;
 
 public class TowerPlacement : MonoBehaviour
 {
-
-    
     [SerializeField] private Camera playerCamera;
     [SerializeField] private LayerMask placementCollideMask;
     [SerializeField] private LayerMask placementCheckMask;
+    public GameObject healthBarPrefab;
+    public RectTransform healthPanelRect;
     public static GameObject unit;
     public static bool hasBeenPlaced;
     private int totalUnits = 0;

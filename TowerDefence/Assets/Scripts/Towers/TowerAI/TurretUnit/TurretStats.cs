@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurretStats : MonoBehaviour, IUnitStats
 {
@@ -11,6 +10,9 @@ public class TurretStats : MonoBehaviour, IUnitStats
     [Header("Class")] 
     private UnitTracker unitTracker; 
     private TurretAttackHandler turretAttackHandler;
+
+    [Header("Health Bar")]
+    public Image healthBar;
     
     void Start()
     {
@@ -21,6 +23,7 @@ public class TurretStats : MonoBehaviour, IUnitStats
     {
         currentHealth -= amount;
         Debug.Log(" Turret current hp " + currentHealth);
+        healthBar.fillAmount = currentHealth / maxHealth;
         
         if (currentHealth <= 0)
         {
@@ -31,6 +34,8 @@ public class TurretStats : MonoBehaviour, IUnitStats
     public void ApplyHeal(float amount)
     {
         currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Turret current hp " + currentHealth);
     }
     

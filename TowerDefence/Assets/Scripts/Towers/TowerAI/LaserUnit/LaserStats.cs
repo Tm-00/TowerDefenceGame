@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LaserStats : MonoBehaviour, IUnitStats
 {
@@ -12,6 +11,9 @@ public class LaserStats : MonoBehaviour, IUnitStats
     private UnitTracker unitTracker; 
     private LaserAttackHandler laserAttackHandler;
     
+    [Header("Health Bar")]
+    public Image healthBar;
+    
     void Start()
     {
         currentHealth = maxHealth;
@@ -20,7 +22,8 @@ public class LaserStats : MonoBehaviour, IUnitStats
     public void ApplyDamage(float amount)
     {
         currentHealth -= amount;
-        Debug.Log(" Turret current hp " + currentHealth);
+        Debug.Log(" Laser current hp " + currentHealth);
+        healthBar.fillAmount = currentHealth / maxHealth;
         
         if (currentHealth <= 0)
         {
@@ -31,7 +34,9 @@ public class LaserStats : MonoBehaviour, IUnitStats
     public void ApplyHeal(float amount)
     {
         currentHealth += amount;
-        Debug.Log(" Turret current hp " + currentHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
+        Debug.Log(" Laser current hp " + currentHealth);
     }
     
     public bool IsDead()
@@ -41,7 +46,7 @@ public class LaserStats : MonoBehaviour, IUnitStats
     
     public void Die()
     {
-        Debug.Log("Turret unit has died.");
+        Debug.Log("Laser unit has died.");
         UnitTracker.EnemyTargets.Remove(gameObject);
     }
     

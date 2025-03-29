@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoutStats : MonoBehaviour, IEnemyStats
 {
@@ -10,6 +9,9 @@ public class ScoutStats : MonoBehaviour, IEnemyStats
     
     [Header("Class")]
     private UnitTracker unitTracker; 
+    
+    [Header("Health Bar")]
+    public Image healthBar;
     
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats
     {
         currentHealth -= amount; 
         Debug.Log("Flight unit current HP: " + currentHealth);
+        healthBar.fillAmount = currentHealth / maxHealth;
 
         if (currentHealth <= 0)
         {
@@ -30,8 +33,9 @@ public class ScoutStats : MonoBehaviour, IEnemyStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;  
-        currentHealth = Mathf.Min(currentHealth, maxHealth);  
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Flight unit healed, current HP: " + currentHealth);
     }
     
