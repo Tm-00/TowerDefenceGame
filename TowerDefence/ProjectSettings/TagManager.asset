@@ -12,6 +12,14 @@ TagManager:
   - FloorUnit
   - CanPlaceWallUnit
   - CanPlaceFloorUnit
+  - MeleeShootLocation
+  - HealShootLocation
+  - RifleShootLocation
+  - FlightShootLocation
+  - RobotShootLocation
+  - LaserShootLocation
+  - MissileShootLocation
+  - TurretShootLocation
   layers:
   - Default
   - TransparentFX
@@ -24,7 +32,7 @@ TagManager:
   - Lane
   - Wall
   - Enemies
-  - 
+  - Temporary
   - 
   - 
   - 

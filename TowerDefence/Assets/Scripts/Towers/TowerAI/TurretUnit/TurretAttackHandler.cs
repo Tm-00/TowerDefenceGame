@@ -12,7 +12,7 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 5;
+    internal int damageAmount = 25;
     public readonly float range = 10f;
     private bool enemyKilled;
     

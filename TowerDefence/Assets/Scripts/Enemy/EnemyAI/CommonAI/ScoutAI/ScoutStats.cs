@@ -1,14 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoutStats : MonoBehaviour, IEnemyStats
+public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Scout Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    private float scoreValue = 1;
     
     [Header("Class")]
     private UnitTracker unitTracker; 
+    private ScoreManager scoreManager;
     
     [Header("Health Bar")]
     public Image healthBar;
@@ -16,13 +18,14 @@ public class ScoutStats : MonoBehaviour, IEnemyStats
     // Start is called before the first frame update
     void Start()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
     }
 
     public void ApplyDamage(float amount)
     {
         currentHealth -= amount; 
-        Debug.Log("Flight unit current HP: " + currentHealth);
+        Debug.Log("Scout unit current HP: " + currentHealth);
         healthBar.fillAmount = currentHealth / maxHealth;
 
         if (currentHealth <= 0)
@@ -36,7 +39,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
-        Debug.Log("Flight unit healed, current HP: " + currentHealth);
+        Debug.Log("Scout unit healed, current HP: " + currentHealth);
     }
     
     public bool IsDead()
@@ -46,13 +49,25 @@ public class ScoutStats : MonoBehaviour, IEnemyStats
     
     public void Die()
     {
-        Debug.Log("Flight unit has died.");
+        Debug.Log("Scout unit has died.");
         UnitTracker.EnemyTargets.Remove(gameObject);
+        scoreManager.AddScore(scoreValue);
     }
     
     public void ApplyBuff(int amount)
     {
         // currentHealth += amount;
         // rifleAttackHandler.damageAmount += amount;
+    }
+    
+    public void OnSpawn()
+    {
+        currentHealth = maxHealth;
+        healthBar.fillAmount = currentHealth;
+    }
+    
+    public bool CanSpawn()
+    {
+        return true;
     }
 }

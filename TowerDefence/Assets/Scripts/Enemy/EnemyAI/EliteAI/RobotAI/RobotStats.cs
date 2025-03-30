@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RobotStats : MonoBehaviour, IEnemyStats
+public class RobotStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Robot Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    private float scoreValue = 10;
+
     
     [Header("Class")]
     private UnitTracker unitTracker; 
     private readonly RobotAttackHandler robotAttackHandler;
+    private ScoreManager scoreManager;
     
     [Header("Health Bar")]
     public Image healthBar;
@@ -17,6 +20,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     // Start is called before the first frame update
     void Start()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
     }
     
@@ -47,6 +51,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     
     public void Die()
     {
+        scoreManager.AddScore(scoreValue);
         Debug.Log("Robot unit has died.");
         UnitTracker.EnemyTargets.Remove(gameObject);
     }
@@ -55,5 +60,16 @@ public class RobotStats : MonoBehaviour, IEnemyStats
     {
         // currentHealth += amount;
         // rifleAttackHandler.damageAmount += amount;
+    }
+    
+    public void OnSpawn()
+    {
+        currentHealth = maxHealth;
+        healthBar.fillAmount = currentHealth;
+    }
+    
+    public bool CanSpawn()
+    {
+        return true;
     }
 }

@@ -1,20 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+
 
 public class ScoreManager : MonoBehaviour
 {
-    private float score;
-    private float maxScore;
-    // Start is called before the first frame update
-    void Start()
+    [Header("Scores")] 
+    private static float score;
+    private float highScore;
+    
+    [Header("UI")] 
+    public TextMeshProUGUI scoreDisplay;
+    public TextMeshProUGUI highScoreDisplay;
+    
+    void Awake()
     {
-        
+        score = 0;
+        highScore = PlayerPrefs.GetFloat("HighScore", 0);
+        highScoreDisplay.text = "High-Score: " + highScore;
+        scoreDisplay.text = "Score: " + score;
+    }
+    
+    public void AddScore(float amount)
+    {
+        score += amount;
+        scoreDisplay.text = "Score: " + score;
+
+        if (score > PlayerPrefs.GetFloat("HighScore"))
+        {
+            PlayerPrefs.SetFloat("HighScore", score);
+        }
+    }
+    
+    public void RemoveScore(float amount)
+    {
+        score -= amount;
+        scoreDisplay.text = "Score: " + score;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnApplicationQuit()
     {
-        
+        PlayerPrefs.SetFloat("HighScore", score);
     }
 }

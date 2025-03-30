@@ -43,7 +43,6 @@ public class ObjectPoolManager : MonoBehaviour
     {
         PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == objectToSpawn.name);
         
-        
         // if the pool doesn't exist create it
         if (pool == null)
         {
@@ -53,7 +52,7 @@ public class ObjectPoolManager : MonoBehaviour
 
         // check for inactive objects in pool
         GameObject SpawnableObj = pool.InactiveObjects.FirstOrDefault();
-
+        
         if (SpawnableObj == null)
         {
             // Find the parent of the empty object
@@ -62,6 +61,7 @@ public class ObjectPoolManager : MonoBehaviour
             // if there are no inactive objects create a new one
             SpawnableObj = Instantiate(objectToSpawn, spawnPosition, spawnRotation);
 
+
             if (parentObject != null)
             {
                 SpawnableObj.transform.SetParent(parentObject.transform);
@@ -69,10 +69,12 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else
         {
-            // if there is and inactive object reactivate it
+            IStats unit = SpawnableObj.GetComponent<IStats>();
+            // if there is an inactive object reactivate it
             SpawnableObj.transform.position = spawnPosition;
             SpawnableObj.transform.rotation = spawnRotation;
             pool.InactiveObjects.Remove(SpawnableObj);
+            unit?.OnSpawn();
             SpawnableObj.SetActive(true);
         }
         return SpawnableObj;
@@ -103,6 +105,8 @@ public class ObjectPoolManager : MonoBehaviour
         {
             // if there is and inactive object reactivate it
             pool.InactiveObjects.Remove(SpawnableObj);
+            IStats spawnedUnit = SpawnableObj.GetComponent<IStats>();
+            spawnedUnit?.OnSpawn();
             SpawnableObj.SetActive(true);
         }
         return SpawnableObj;

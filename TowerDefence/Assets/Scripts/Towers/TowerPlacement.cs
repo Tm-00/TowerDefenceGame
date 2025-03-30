@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,6 @@ public class TowerPlacement : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private LayerMask placementCollideMask;
     [SerializeField] private LayerMask placementCheckMask;
-    public GameObject healthBarPrefab;
-    public RectTransform healthPanelRect;
     public static GameObject unit;
     public static bool hasBeenPlaced;
     private int totalUnits = 0;
@@ -20,26 +19,45 @@ public class TowerPlacement : MonoBehaviour
     {
         if (unit != null)
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ObjectPoolManager.ReturnObjectToPool(unit);
+                Debug.Log("Placement cancelled.");
+                unit = null;
+                return; 
+            }
+            
+            IStats unitToSpawn = unit.GetComponent<IStats>();
             hasBeenPlaced = false;
             Ray r = playerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
-            if (Physics.Raycast(r, out  hitInfo, 100f, placementCollideMask))
+            
+            if (Physics.Raycast(r, out  hitInfo, Mathf.Infinity , placementCollideMask))
             {
                 unit.transform.position = hitInfo.point;
             }
+            
             if (Input.GetMouseButtonDown(0) && hitInfo.collider.gameObject != null)
             {
-                if (unit.CompareTag("WallUnit"))
+                if (unitToSpawn.CanSpawn())
                 {
-                    WallUnitPlacement(hitInfo);
+                    if (unit.CompareTag("WallUnit"))
+                    {
+                        WallUnitPlacement(hitInfo);
+                    }
+                    else if (unit.CompareTag("FloorUnit"))
+                    {
+                        FloorUnitPlacement(hitInfo);
+                    }
                 }
-                else if (unit.CompareTag("FloorUnit"))
+                else
                 {
-                    FloorUnitPlacement(hitInfo);
+                    Debug.Log("not enough resources");
                 }
             }
         }
     }
+    
 
     private void WallUnitPlacement(RaycastHit hitInfo)
     {
@@ -47,6 +65,7 @@ public class TowerPlacement : MonoBehaviour
         {
             BoxCollider unitCollider = unit.gameObject.GetComponent<BoxCollider>();
             unitCollider.isTrigger = true;
+            IUnitStats unitPlacementCheck = unit.GetComponent<IUnitStats>();
                     
             Vector3 BoxCenter = unit.gameObject.transform.position + unitCollider.center;
             Vector3 HalfExtents = unitCollider.size / 2;
@@ -58,12 +77,17 @@ public class TowerPlacement : MonoBehaviour
             }
             else
             {
-                totalUnits++;
-                UnitTracker.currentUnitsSpawned = totalUnits;
-                Debug.Log("placed");
-                unitCollider.isTrigger = false;
                 hasBeenPlaced = true;
-                unit = null;
+                if (hasBeenPlaced)
+                {
+                    unit.layer = LayerMask.NameToLayer("Towers");
+                    Debug.Log("placed");
+                    totalUnits++;
+                    UnitTracker.currentUnitsSpawned = totalUnits;
+                    unitCollider.isTrigger = false;
+                    unitPlacementCheck.OnPlacement();
+                    unit = null;
+                }
             }
         }
     }
@@ -74,6 +98,7 @@ public class TowerPlacement : MonoBehaviour
         {
             BoxCollider unitCollider = unit.gameObject.GetComponent<BoxCollider>();
             unitCollider.isTrigger = true;
+            IUnitStats unitPlacementCheck = unit.GetComponent<IUnitStats>();
                     
             Vector3 BoxCenter = unit.gameObject.transform.position + unitCollider.center;
             Vector3 HalfExtents = unitCollider.size / 2;
@@ -86,18 +111,24 @@ public class TowerPlacement : MonoBehaviour
             }
             else
             {
-                totalUnits++;
-                UnitTracker.currentUnitsSpawned = totalUnits;
-                Debug.Log("placed");
-                unitCollider.isTrigger = false;
                 hasBeenPlaced = true;
-                unit = null;
+                if (hasBeenPlaced)
+                {
+                    unit.layer = LayerMask.NameToLayer("Towers");
+                    Debug.Log("placed");
+                    totalUnits++;
+                    UnitTracker.currentUnitsSpawned = totalUnits;
+                    unitCollider.isTrigger = false;
+                    unitPlacementCheck.OnPlacement();
+                    unit = null;
+                }
             }
         }
     }
     
-    public void UnitToPlace(GameObject unit1)
+    public void UnitToPlace(GameObject selectedUnit)
     {
-        unit = ObjectPoolManager.SpawnObject(unit1, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.playerUnits);
+        unit = ObjectPoolManager.SpawnObject(selectedUnit, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.playerUnits);
+        unit.layer = LayerMask.NameToLayer("Temporary");
     }
 }

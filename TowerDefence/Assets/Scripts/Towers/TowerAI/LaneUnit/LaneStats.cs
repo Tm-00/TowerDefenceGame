@@ -1,23 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LaneStats : MonoBehaviour, IUnitStats
+public class LaneStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Lane Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    private float scoreValue = 5;
+    private float resourceValue = 10;
     
     [Header("Class")] 
     private UnitTracker unitTracker; 
+    private ScoreManager scoreManager;
+    private ResourceManager resourceManager;
     
     [Header("Health Bar")]
     public Image healthBar;
     
+    public bool hasBeenPlaced { get; set; }
+    
     void Start()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
+        resourceManager = FindObjectOfType<ResourceManager>();
         currentHealth = maxHealth;
+        hasBeenPlaced = false;
     }
-    
+
     public void ApplyDamage(float amount)
     {
         currentHealth -= amount;
@@ -42,15 +51,38 @@ public class LaneStats : MonoBehaviour, IUnitStats
     {
         return currentHealth <= 0;
     }
-    
+
+    public void OnPlacement()
+    {
+        resourceManager.SubtractResource(resourceValue);
+        hasBeenPlaced = true; 
+    }
+
     public void Die()
     {
         Debug.Log("Lane unit has died.");
+        scoreManager.RemoveScore(scoreValue);
         UnitTracker.EnemyTargets.Remove(gameObject);
+        hasBeenPlaced = false;
     }
     
     public void ApplyBuff(int amount)
     {
         currentHealth += amount;
+    }
+    
+    public void OnSpawn()
+    {
+        currentHealth = maxHealth;
+        healthBar.fillAmount = currentHealth;
+    }
+    
+    public bool CanSpawn()
+    {
+        if (resourceManager.currentResource - resourceValue >= 0)
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -72,12 +72,16 @@ public class UnitTracker : MonoBehaviour
         Vector3 position = nav.transform.position;
         foreach (GameObject go in wallUnitArray)
         {
-            Vector3 distanceDifference = go.transform.position - position;
-            float currentDistance = distanceDifference.sqrMagnitude;
-            if (currentDistance < distance)
+            IUnitStats targetIfPlaced = go.GetComponent<IUnitStats>();
+            if (targetIfPlaced.hasBeenPlaced)
             {
-                closestTarget = go;
-                distance = currentDistance;
+                Vector3 distanceDifference = go.transform.position - position;
+                float currentDistance = distanceDifference.sqrMagnitude;
+                if (currentDistance < distance)
+                {
+                    closestTarget = go;
+                    distance = currentDistance;
+                }
             }
         }
         return closestTarget;

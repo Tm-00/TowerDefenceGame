@@ -1,14 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
-public class FlightStats : MonoBehaviour, IEnemyStats
+public class FlightStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Flight Stats")] 
     private float maxHealth = 50f;
     private float currentHealth;
+    private float scoreValue = 10;
     
     [Header("Class")]
     private UnitTracker unitTracker; 
     private readonly FlightAttackHandler flightAttackHandler;
+    private ScoreManager scoreManager;
     
     [Header("Health Bar")]
     public Image healthBar;
@@ -16,6 +18,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats
     // Start is called before the first frame update
     void Start()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
     }
     
@@ -46,6 +49,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats
     
     public void Die()
     {
+        scoreManager.AddScore(scoreValue);
         Debug.Log("Flight unit has died.");
         UnitTracker.EnemyTargets.Remove(gameObject);
     }
@@ -54,5 +58,16 @@ public class FlightStats : MonoBehaviour, IEnemyStats
     {
         // currentHealth += amount;
         // rifleAttackHandler.damageAmount += amount;
+    }
+    
+    public void OnSpawn()
+    {
+        currentHealth = maxHealth;
+        healthBar.fillAmount = currentHealth;
+    }
+    
+    public bool CanSpawn()
+    {
+        return true;
     }
 }

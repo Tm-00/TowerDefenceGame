@@ -13,11 +13,19 @@ public interface IEnemyStats
 
 public interface IUnitStats
 {
+    bool hasBeenPlaced { set; get; }
     void ApplyDamage(float amount);
     void ApplyHeal(float amount);
     bool IsDead();
     void ApplyBuff(int amount);
+    void OnPlacement();
     void Die();
+}
+
+public interface IStats
+{
+    bool CanSpawn();
+    void OnSpawn();
 }
 
 
