@@ -18,6 +18,7 @@ public class MissileAttackState : MissileBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private readonly MissileAttackHandler missileAttackHandler;
+    private readonly UnitTracker unitTracker;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -47,6 +48,9 @@ public class MissileAttackState : MissileBaseState
             Debug.LogError("GameObject is missing an MissileAttackHandler component!");
         }
         
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        
         missileLayerMask = missileAttackHandler.layerMask;
         shootLocation = missileAttackHandler.shootLocation;
         range = missileAttackHandler.range;
@@ -55,7 +59,7 @@ public class MissileAttackState : MissileBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Missile Unit: Attack State");
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
+        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)

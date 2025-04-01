@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
 		private Animator CameraObject;
-
+		
 		// campaign button sub menu
         [Header("MENUS")]
         [Tooltip("The Menu for when the MAIN menu buttons")]
@@ -82,6 +82,7 @@ namespace SlimUI.ModernMenu{
 
 		void Start(){
 			CameraObject = transform.GetComponent<Animator>();
+			CameraObject.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 			playMenu.SetActive(false);
 			exitMenu.SetActive(false);

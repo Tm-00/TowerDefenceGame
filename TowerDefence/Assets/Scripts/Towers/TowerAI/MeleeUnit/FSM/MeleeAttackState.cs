@@ -18,6 +18,7 @@ public class MeleeAttackState : MeleeBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private readonly MeleeAttackHandler meleeAttackHandler;
+    private readonly UnitTracker unitTracker;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -46,6 +47,9 @@ public class MeleeAttackState : MeleeBaseState
             Debug.LogError("GameObject is missing an TurretAttackHandler component!");
         }
         
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        
         meleeLayerMask = meleeAttackHandler.layerMask;
         shootLocation = meleeAttackHandler.shootLocation;
         range = meleeAttackHandler.range;
@@ -54,7 +58,7 @@ public class MeleeAttackState : MeleeBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Melee Unit: Attack State");
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
+        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)

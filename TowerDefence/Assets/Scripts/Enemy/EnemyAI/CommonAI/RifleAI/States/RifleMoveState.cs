@@ -11,16 +11,21 @@ public class RifleMoveState : RifleBaseState
     private Vector3 closestTarget;
 
     private bool allunitsdead;
-        
+    
+    private readonly UnitTracker unitTracker;
+    
     // reference to the core node 
     private Transform coreNodePosition;
     
     // Constructor.
     public RifleMoveState(GameObject go)
     {
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
     }
     
     // Enter
@@ -45,7 +50,7 @@ public class RifleMoveState : RifleBaseState
     public override RifleBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 10 && allunitsdead != true)
+        if (Vector3.Distance(agent.transform.position, closestTarget) <= 10)
         {
             return new RifleAttackState(go);
         }
@@ -60,10 +65,10 @@ public class RifleMoveState : RifleBaseState
 
     private void FilterTargets()
     {
-        var closestUnit = UnitTracker.FindClosestUnit(agent);
-        if (closestUnit != null && UnitTracker.UnitTargets.Count > 1)
+        var closestUnit = unitTracker.FindClosestUnit(agent);
+        if (closestUnit != null && unitTracker.UnitTargets.Count > 1)
         {
-            closestTarget = UnitTracker.FindClosestUnit(agent).position;
+            closestTarget = closestUnit.transform.position;
             agent.destination = closestTarget;
             allunitsdead = false;
         }

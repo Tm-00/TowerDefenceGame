@@ -8,6 +8,8 @@ public class HealerLocateAllyState : HealerBaseState
     private Vector3 closestTarget;
     private float speed = 1.0f;
     private GameObject closestAlly;
+    private readonly UnitTracker unitTracker;
+
     
     public HealerLocateAllyState(GameObject go)
     {
@@ -20,10 +22,10 @@ public class HealerLocateAllyState : HealerBaseState
 
     public override void Update(GameObject go)
     { 
-        closestAlly = UnitTracker.FindClosestAlly(go);
+        closestAlly = unitTracker.FindClosestAlly(go);
         if (closestAlly != null)
         {
-            closestTarget = UnitTracker.FindClosestAlly(go).transform.position;
+            closestTarget = unitTracker.FindClosestAlly(go).transform.position;
             Vector3 targetDirection = closestTarget - go.transform.position;
             float singlestep = speed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
@@ -43,7 +45,6 @@ public class HealerLocateAllyState : HealerBaseState
         {
             return new HealerHealState(go);
         }
-
         return null;
     }
 }

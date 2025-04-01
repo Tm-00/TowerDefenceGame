@@ -18,6 +18,8 @@ public class LaserAttackState : LaserBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private LaserAttackHandler laserAttackHandler;
+    private readonly UnitTracker unitTracker;
+
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -53,7 +55,7 @@ public class LaserAttackState : LaserBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Laser Unit: Attack State");
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
+        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)

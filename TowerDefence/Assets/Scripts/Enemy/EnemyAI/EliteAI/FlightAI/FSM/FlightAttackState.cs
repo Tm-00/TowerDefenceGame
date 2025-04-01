@@ -18,6 +18,7 @@ public class FlightAttackState : FlightBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private readonly FlightAttackHandler flightAttackHandler;
+    private readonly UnitTracker unitTracker;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -56,8 +57,8 @@ public class FlightAttackState : FlightBaseState
     {
         Debug.Log("Flight Drone: Attack State");
         agent = go.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
-        closestTarget = UnitTracker.FindClosestUnit(agent)?.transform;
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
+        closestTarget = unitTracker.FindClosestUnit(agent)?.transform;
     }
 
  public override void Update(GameObject go)

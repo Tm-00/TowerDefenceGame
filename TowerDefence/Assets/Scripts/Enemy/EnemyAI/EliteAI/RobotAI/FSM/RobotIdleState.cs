@@ -6,12 +6,15 @@ public class RobotIdleState : RobotBaseState
 {
     private NavMeshAgent agent;
     private Transform coreNodePosition;
-    //TODO add a cooldown timer on spawn of 5 seconds
+    private readonly UnitTracker unitTracker;
+    
     // Constructor.
     public RobotIdleState(GameObject go)
     {
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
         agent = go.gameObject.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
         Debug.Log("Robot Drone: Idle State");
     }
     
@@ -37,10 +40,10 @@ public class RobotIdleState : RobotBaseState
     public override RobotBaseState HandleInput(GameObject go)
     {
         // Idle -> Move
-        if ( UnitTracker.UnitTargets != null)
+        if ( unitTracker.UnitTargets != null)
         {
             // go to move state that handles target selection and where to go
-            if (UnitTracker.UnitTargets.Count == 1) 
+            if (unitTracker.UnitTargets.Count == 1) 
             {
                 // Change the state -> MoveState.
                 return new RobotMoveState(go);

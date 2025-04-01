@@ -7,6 +7,8 @@ public class BuffLocateAllyState : BuffBaseState
 {
     private Vector3 closestTarget;
     private float speed = 1.0f;
+    private readonly UnitTracker unitTracker;
+
     
     public BuffLocateAllyState(GameObject go)
     {
@@ -19,10 +21,10 @@ public class BuffLocateAllyState : BuffBaseState
 
     public override void Update(GameObject go)
     {
-        var cloestEnemy = UnitTracker.FindClosestEnemy(go);
+        var cloestEnemy = unitTracker.FindClosestEnemy(go);
         if (cloestEnemy != null)
         {
-            closestTarget = UnitTracker.FindClosestEnemy(go).transform.position;
+            closestTarget = unitTracker.FindClosestEnemy(go).transform.position;
             Vector3 targetDirection = closestTarget - go.transform.position;
             float singlestep = speed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
@@ -42,7 +44,6 @@ public class BuffLocateAllyState : BuffBaseState
         {
             return new BuffAllyState(go);
         }
-
         return null;
     }
 }

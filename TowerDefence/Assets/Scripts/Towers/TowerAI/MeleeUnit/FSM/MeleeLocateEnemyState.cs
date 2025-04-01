@@ -7,10 +7,13 @@ public class MeleeLocateEnemyState : MeleeBaseState
 {
     private Vector3 closestTarget;
     private float speed = 1.0f;
+    private readonly UnitTracker unitTracker;
+
     
     public MeleeLocateEnemyState(GameObject go)
     {
-     
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
     }
     public override void Enter(GameObject go)
     {
@@ -19,10 +22,10 @@ public class MeleeLocateEnemyState : MeleeBaseState
 
     public override void Update(GameObject go)
     {
-        var cloestEnemy = UnitTracker.FindClosestEnemy(go);
-        if (cloestEnemy != null)
+        var closestEnemy = unitTracker.FindClosestEnemy(go);
+        if (closestEnemy != null)
         {
-            closestTarget = UnitTracker.FindClosestEnemy(go).transform.position;
+            closestTarget = unitTracker.FindClosestEnemy(go).transform.position;
             Vector3 targetDirection = closestTarget - go.transform.position;
             float singlestep = speed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
@@ -42,7 +45,6 @@ public class MeleeLocateEnemyState : MeleeBaseState
         {
             return new MeleeAttackState(go);
         }
-
         return null;
     }
 }

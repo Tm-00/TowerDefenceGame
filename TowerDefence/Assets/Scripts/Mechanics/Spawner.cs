@@ -19,7 +19,7 @@ public class spawner : MonoBehaviour
     {
         populateList();
         Debug.Log(wave[0]);
-        SpawnEnemies();
+        StartCoroutine(SpawnEnemiesCoroutine());
     }
 
     // Update is called once per frame
@@ -29,26 +29,27 @@ public class spawner : MonoBehaviour
     }
 
     // Spawns enemies based on the amount defined in amountToSpawn
-    void SpawnEnemies()
+    IEnumerator SpawnEnemiesCoroutine()
     {
-        // loops through and by consequence gets the index value of each object in the list
+        // Loop through each enemy type in the wave list
         for (int i = 0; i < wave.Count; i++)
         {
-            //Debug.Log(i);
-            // gets the values of the amount to spawn from i 
+            // Get the spawn amount for the current enemy type
             int enemySpawnAmount = amountToSpawn[i];
-            //Debug.Log(enemySpawnAmount);
 
-            // Spawn the current enemy enemySpawnAmount of times
+            // Spawn the current enemy enemySpawnAmount times
             for (int j = 0; j < enemySpawnAmount; j++)
             {
                 ObjectPoolManager.SpawnObject(wave[i], transform.position, Quaternion.identity, ObjectPoolManager.PoolType.enemyUnits);
                 Enemy = wave[i];
                 totalEnemies++;
                 UnitTracker.currentEnemiesSpawned = totalEnemies;
+                
+                yield return new WaitForSeconds(1f);
             }
         }
     }
+
     
 
     // takes the values from the inspector and assigns it to the local variables

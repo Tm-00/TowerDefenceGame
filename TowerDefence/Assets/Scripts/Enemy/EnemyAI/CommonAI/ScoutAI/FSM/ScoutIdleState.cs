@@ -6,13 +6,17 @@ public class ScoutIdleState : ScoutBaseState
 {
     private NavMeshAgent agent;
     private Transform coreNodePosition;
-    //TODO add a cooldown timer on spawn of 5 seconds
+    private readonly UnitTracker unitTracker;
+    
     // Constructor.
     public ScoutIdleState(GameObject go)
     {
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        
         agent = go.gameObject.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
-        Debug.Log("Rifle Drone: Idle State");
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
+        Debug.Log("Scout Drone: Idle State");
     }
     
     // Enter
@@ -37,10 +41,10 @@ public class ScoutIdleState : ScoutBaseState
     public override ScoutBaseState HandleInput(GameObject go)
     {
         // Idle -> Move
-        if ( UnitTracker.UnitTargets != null)
+        if ( unitTracker.UnitTargets != null)
         {
             // go to move state that handles target selection and where to go
-            if (UnitTracker.UnitTargets.Count == 1) 
+            if (unitTracker.UnitTargets.Count == 1) 
             {
                 // Change the state -> MoveState.
                 return new ScoutMoveState(go);

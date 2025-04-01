@@ -15,18 +15,21 @@ public class ScoutMoveState : ScoutBaseState
     // reference to the core node 
     private Transform coreNodePosition;
     
+    private readonly UnitTracker unitTracker;
+
+    
     // Constructor.
     public ScoutMoveState(GameObject go)
     {
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
     }
     
     // Enter
     public override void Enter(GameObject go)
     {
-        Debug.Log("Rifle Drone: Move State");
+        Debug.Log("Scout Drone: Move State");
         agent.SetDestination(coreNodePosition.position);
     }
     

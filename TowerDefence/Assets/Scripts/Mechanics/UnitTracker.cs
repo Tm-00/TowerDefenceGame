@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitTracker : MonoBehaviour
+public class UnitTracker : MonoBehaviour 
 {
     
-    public static readonly List<GameObject> UnitTargets = new List<GameObject>();
+    public readonly List<GameObject> UnitTargets = new List<GameObject>();
     public static readonly List<GameObject> EnemyTargets = new List<GameObject>();
     [SerializeField] private GameObject coreNode;
 
@@ -30,7 +30,6 @@ public class UnitTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO fix logic where if the player clicks even if the unit isn't deployed count goes up by one
         if (UnitsSpawned())
         {
             UnitTargets.Add(TowerPlacement.unit);
@@ -64,7 +63,7 @@ public class UnitTracker : MonoBehaviour
         return false;
     }
     
-    public static GameObject FindClosestWallUnit(NavMeshAgent nav)
+    public GameObject FindClosestWallUnit(NavMeshAgent nav)
     {
         wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
         GameObject closestTarget = null;
@@ -87,7 +86,7 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
     
-    public static GameObject FindClosestFloorUnit(NavMeshAgent nav)
+    public GameObject FindClosestFloorUnit(NavMeshAgent nav)
     {
         floorUnitArray = GameObject.FindGameObjectsWithTag("FloorUnit"); 
         GameObject closestTarget = null;
@@ -106,31 +105,57 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
 
-    public static Transform FindClosestUnit(NavMeshAgent nav)
+    public Transform FindClosestUnit(NavMeshAgent nav)
     {
         var object1 = FindClosestWallUnit(nav)?.transform;
         var object2 = FindClosestFloorUnit(nav)?.transform;
         Vector3 position = nav.transform.position;
-        
+
+        // Validate that object1 is not dead
         if (object1 != null)
         {
-            Vector3 obj1distanceDifference = object1.position - position;
-            if (object2 != null)
+            IUnitStats stats1 = object1.GetComponent<IUnitStats>();
+            if (stats1 == null || stats1.IsDead())  // Skip if dead or missing IUnitStats
             {
-                Vector3 obj2distanceDifference = object2.position - position;
-
-                if (obj1distanceDifference.sqrMagnitude < obj2distanceDifference.sqrMagnitude)
-                {
-                    return object1;
-                }
-                return object2;
+                object1 = null;
             }
+        }
+
+        // Validate that object2 is not dead
+        if (object2 != null)
+        {
+            IUnitStats stats2 = object2.GetComponent<IUnitStats>();
+            if (stats2 == null || stats2.IsDead())  // Skip if dead or missing IUnitStats
+            {
+                object2 = null;
+            }
+        }
+
+        // If both objects are null, return null
+        if (object1 == null && object2 == null)
+        {
+            return null;
+        }
+
+        // If only one object is valid, return it
+        if (object1 != null && object2 == null)
+        {
             return object1;
         }
-        return object2;
+        if (object2 != null && object1 == null)
+        {
+            return object2;
+        }
+
+        // If both objects are valid, return the closest one
+        Vector3 obj1distanceDifference = object1.position - position;
+        Vector3 obj2distanceDifference = object2.position - position;
+
+        return (obj1distanceDifference.sqrMagnitude < obj2distanceDifference.sqrMagnitude) ? object1 : object2;
     }
+
     
-    public static GameObject FindClosestAlly(GameObject nav)
+    public GameObject FindClosestAlly(GameObject nav)
     {
         wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
         GameObject closestTarget = null;
@@ -149,7 +174,7 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
     
-    public static GameObject FindClosestEnemy(GameObject nav)
+    public GameObject FindClosestEnemy(GameObject nav)
     {
         enemyArray = GameObject.FindGameObjectsWithTag("Enemy"); 
         GameObject closestTarget = null;

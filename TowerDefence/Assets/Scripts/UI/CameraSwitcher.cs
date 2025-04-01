@@ -13,10 +13,12 @@ public class CameraSwitcher : MonoBehaviour
     {
         playerCamera.enabled = true;
         pauseCamera.enabled = false;
+        Debug.Log("Switching to player camera");
     }
 
     public void ShowPauseCamera()
     {
+        Debug.Log("Switching to pause camera");
         playerCamera.enabled = false;
         pauseCamera.enabled = true;
     }    

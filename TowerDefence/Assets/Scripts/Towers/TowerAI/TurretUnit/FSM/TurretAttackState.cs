@@ -18,6 +18,8 @@ public class TurretAttackState : TurretBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private TurretAttackHandler turretAttackHandler;
+    private readonly UnitTracker unitTracker;
+
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -45,6 +47,9 @@ public class TurretAttackState : TurretBaseState
             Debug.LogError("GameObject is missing an TurretAttackHandler component!");
         }
         
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        
         turretLayerMask = turretAttackHandler.layerMask;  
         shootLocation = turretAttackHandler.shootLocation;
         range = turretAttackHandler.range;
@@ -53,7 +58,7 @@ public class TurretAttackState : TurretBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Turret Unit: Attack State");
-        closestTarget = UnitTracker.FindClosestEnemy(go)?.transform;
+        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)

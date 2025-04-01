@@ -46,7 +46,7 @@ public class TowerHealth : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            UnitTracker.UnitTargets.Remove(gameObject);
+            unitTracker.UnitTargets.Remove(gameObject);
             return true;
         }
         return false;

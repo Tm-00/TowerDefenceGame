@@ -12,15 +12,20 @@ public class FlightMoveState : FlightBaseState
 
     private bool allunitsdead;
         
+    private readonly UnitTracker unitTracker;
+    
     // reference to the core node 
     private Transform coreNodePosition;
     
     // Constructor.
     public FlightMoveState(GameObject go)
     {
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
     }
     
     // Enter
@@ -53,17 +58,15 @@ public class FlightMoveState : FlightBaseState
         {
             return new FlightFinishedState(go);
         }
-        //TODO add a death state transition + a health script for this enemy type
-        // TODO add a game over script for finished state
         return null;
     }
 
     private void FilterTargets()
     {
-        var cloestEnemy = UnitTracker.FindClosestWallUnit(agent);
-        if (cloestEnemy != null && UnitTracker.UnitTargets.Count > 1)
+        var closestEnemy = unitTracker.FindClosestWallUnit(agent);
+        if (closestEnemy != null && unitTracker.UnitTargets.Count > 1)
         {
-            closestTarget = UnitTracker.FindClosestWallUnit(agent).transform.position;
+            closestTarget = unitTracker.FindClosestWallUnit(agent).transform.position;
             agent.destination = closestTarget;
             allunitsdead = false;
         }

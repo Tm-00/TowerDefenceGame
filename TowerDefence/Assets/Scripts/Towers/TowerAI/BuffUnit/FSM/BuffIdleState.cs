@@ -5,9 +5,14 @@ using UnityEngine;
 
 public class BuffIdleState : BuffBaseState
 {
+    
+    private readonly UnitTracker unitTracker;
+    
     public BuffIdleState(GameObject go)
     {
-        Debug.Log("Turret: IdleState");
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        Debug.Log("Buff: IdleState");
     }
     public override void Enter(GameObject go)
     {
@@ -26,9 +31,9 @@ public class BuffIdleState : BuffBaseState
 
     public override BuffBaseState HandleInput(GameObject go)
     {
-        if (UnitTracker.UnitTargets != null && TowerPlacement.hasBeenPlaced)
+        if (unitTracker.UnitTargets != null && TowerPlacement.hasBeenPlaced)
         {
-            if (UnitTracker.UnitTargets.Count >= 1)
+            if (unitTracker.UnitTargets.Count >= 1)
             {
                 return new BuffLocateAllyState(go);
             }

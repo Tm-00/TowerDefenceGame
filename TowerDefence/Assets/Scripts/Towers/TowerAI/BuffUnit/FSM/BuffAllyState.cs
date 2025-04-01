@@ -18,6 +18,8 @@ public class BuffAllyState : BuffBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private readonly BuffHandler buffHandler;
+    private readonly UnitTracker unitTracker;
+
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -55,7 +57,7 @@ public class BuffAllyState : BuffBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Healer: Heal State");
-        closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
+        closestAlly = unitTracker.FindClosestAlly(go)?.transform;
     }
 
     public override void Update(GameObject go)

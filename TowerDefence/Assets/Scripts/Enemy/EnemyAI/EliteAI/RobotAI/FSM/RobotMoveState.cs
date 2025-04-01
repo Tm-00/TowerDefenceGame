@@ -15,12 +15,14 @@ public class RobotMoveState : RobotBaseState
     // reference to the core node 
     private Transform coreNodePosition;
     
+    private readonly UnitTracker unitTracker;
+    
     // Constructor.
     public RobotMoveState(GameObject go)
     {
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
-        coreNodePosition = UnitTracker.UnitTargets[0].transform;
+        coreNodePosition = unitTracker.UnitTargets[0].transform;
     }
     
     // Enter
@@ -60,10 +62,10 @@ public class RobotMoveState : RobotBaseState
 
     private void FilterTargets()
     {
-        var cloestEnemy = UnitTracker.FindClosestWallUnit(agent);
-        if (cloestEnemy != null && UnitTracker.UnitTargets.Count > 1)
+        var cloestEnemy = unitTracker.FindClosestWallUnit(agent);
+        if (cloestEnemy != null && unitTracker.UnitTargets.Count > 1)
         {
-            closestTarget = UnitTracker.FindClosestWallUnit(agent).transform.position;
+            closestTarget = unitTracker.FindClosestWallUnit(agent).transform.position;
             agent.destination = closestTarget;
             allunitsdead = false;
         }

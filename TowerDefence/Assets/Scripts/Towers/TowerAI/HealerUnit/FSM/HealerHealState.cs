@@ -18,6 +18,8 @@ public class HealerHealState : HealerBaseState
     private IAttackHandler attackHandler; 
     private IRotatable rotatable;
     private readonly HealerHealHandler healerHealHandler;
+    private readonly UnitTracker unitTracker;
+
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -54,7 +56,7 @@ public class HealerHealState : HealerBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Healer: Heal State");
-        closestAlly = UnitTracker.FindClosestAlly(go)?.transform;
+        closestAlly = unitTracker.FindClosestAlly(go)?.transform;
     }
 
     public override void Update(GameObject go)
