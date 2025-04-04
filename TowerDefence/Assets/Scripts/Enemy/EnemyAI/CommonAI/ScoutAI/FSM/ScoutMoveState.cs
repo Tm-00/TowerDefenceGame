@@ -16,12 +16,15 @@ public class ScoutMoveState : ScoutBaseState
     private Transform coreNodePosition;
     
     private readonly UnitTracker unitTracker;
+    
 
     
     // Constructor.
     public ScoutMoveState(GameObject go)
     {
         // assign variables 
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
     }

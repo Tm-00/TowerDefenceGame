@@ -40,9 +40,9 @@ public class HealerIdleState : HealerBaseState
 
     public override HealerBaseState HandleInput(GameObject go)
     {
-        if (unitTracker.EnemyTargets != null && towerPlacement.hasBeenPlaced)
+        if (unitTracker.UnitTargets != null && towerPlacement.hasBeenPlaced)
         {
-            if (unitTracker.EnemyTargets.Count >= 1)
+            if (unitTracker.UnitTargets.Count >= 1)
             {
                 return new HealerLocateAllyState(go);
             }

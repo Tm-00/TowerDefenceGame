@@ -14,9 +14,9 @@ public class UnitTracker : MonoBehaviour
     private int knownEnemySpawns;
     public static int currentUnitsSpawned;
     public static int currentEnemiesSpawned;
-    public static GameObject[] wallUnitArray;
-    public static GameObject[] floorUnitArray;
-    public static GameObject[] enemyArray;
+    private GameObject[] wallUnitArray;
+    private GameObject[] floorUnitArray;    
+    private GameObject[] enemyArray;
     
    
     
@@ -63,7 +63,7 @@ public class UnitTracker : MonoBehaviour
         return false;
     }
     
-    public GameObject FindClosestWallUnit(NavMeshAgent nav)
+    public GameObject FindClosestWallUnit(GameObject nav)
     {
         wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
         GameObject closestTarget = null;
@@ -86,7 +86,7 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
     
-    public GameObject FindClosestFloorUnit(NavMeshAgent nav)
+    public GameObject FindClosestFloorUnit(GameObject nav)
     {
         floorUnitArray = GameObject.FindGameObjectsWithTag("FloorUnit"); 
         GameObject closestTarget = null;
@@ -105,7 +105,7 @@ public class UnitTracker : MonoBehaviour
         return closestTarget;
     }
 
-    public Transform FindClosestUnit(NavMeshAgent nav)
+    public Transform FindClosestUnit(GameObject nav)
     {
         var object1 = FindClosestWallUnit(nav)?.transform;
         var object2 = FindClosestFloorUnit(nav)?.transform;
@@ -152,26 +152,6 @@ public class UnitTracker : MonoBehaviour
         Vector3 obj2distanceDifference = object2.position - position;
 
         return (obj1distanceDifference.sqrMagnitude < obj2distanceDifference.sqrMagnitude) ? object1 : object2;
-    }
-
-    
-    public GameObject FindClosestAlly(GameObject nav)
-    {
-        wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
-        GameObject closestTarget = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = nav.transform.position;
-        foreach (GameObject go in wallUnitArray)
-        {
-            Vector3 distanceDifference = go.transform.position - position;
-            float currentDistance = distanceDifference.sqrMagnitude;
-            if (currentDistance < distance)
-            {
-                closestTarget = go;
-                distance = currentDistance;
-            }
-        }
-        return closestTarget;
     }
     
     public GameObject FindClosestEnemy(GameObject nav)

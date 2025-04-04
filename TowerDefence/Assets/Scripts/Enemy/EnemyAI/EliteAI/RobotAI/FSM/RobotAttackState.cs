@@ -8,6 +8,7 @@ public class RobotAttackState : RobotBaseState
     [Header("Robot Values")] 
     private readonly float rotationSpeed = 1.0f;
     private NavMeshAgent agent;
+    private GameObject enemy;
     
     [Header("Target Values")] 
     private Transform coreNodePosition;
@@ -51,6 +52,7 @@ public class RobotAttackState : RobotBaseState
         robotLayerMask = robotAttackHandler.layerMask;
         shootLocation = robotAttackHandler.shootLocation;
         range = robotAttackHandler.range;
+        enemy = go;
     }
     
     // Enter
@@ -59,7 +61,7 @@ public class RobotAttackState : RobotBaseState
         Debug.Log("Robot Drone: Attack State");
         agent = go.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
-        closestTarget = unitTracker.FindClosestUnit(agent)?.transform;
+        closestTarget = unitTracker.FindClosestUnit(enemy)?.transform;
     }
 
   public override void Update(GameObject go)

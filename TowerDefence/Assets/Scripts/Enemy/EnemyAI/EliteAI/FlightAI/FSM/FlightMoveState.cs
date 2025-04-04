@@ -7,6 +7,7 @@ public class FlightMoveState : FlightBaseState
     
     // will be able to reference itself
     private NavMeshAgent agent;
+    private GameObject enemy;
 
     private Vector3 closestTarget;
 
@@ -26,6 +27,7 @@ public class FlightMoveState : FlightBaseState
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
+        enemy = go;
     }
     
     // Enter
@@ -50,7 +52,7 @@ public class FlightMoveState : FlightBaseState
     public override FlightBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 6 && allunitsdead != true)
+        if (Vector3.Distance(agent.transform.position, closestTarget) <= 15 && allunitsdead != true)
         {
             return new FlightAttackState(go);
         }
@@ -63,10 +65,10 @@ public class FlightMoveState : FlightBaseState
 
     private void FilterTargets()
     {
-        var closestEnemy = unitTracker.FindClosestWallUnit(agent);
+        var closestEnemy = unitTracker.FindClosestWallUnit(enemy);
         if (closestEnemy != null && unitTracker.UnitTargets.Count > 1)
         {
-            closestTarget = unitTracker.FindClosestWallUnit(agent).transform.position;
+            closestTarget = unitTracker.FindClosestWallUnit(enemy).transform.position;
             agent.destination = closestTarget;
             allunitsdead = false;
         }

@@ -7,29 +7,26 @@ public class HealerLocateAllyState : HealerBaseState
 {
     private Vector3 closestTarget;
     private float speed = 1.0f;
-    private GameObject closestAlly;
+    private GameObject gameManager;
     private readonly UnitTracker unitTracker;
 
     
     public HealerLocateAllyState(GameObject go)
     {
-     
+        gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
     }
     public override void Enter(GameObject go)
     {
-        Debug.Log("Turret: LocateEnemyState");
+        Debug.Log("Healer: LocateAllyState");
     }
 
     public override void Update(GameObject go)
     { 
-        closestAlly = unitTracker.FindClosestAlly(go);
+        var closestAlly = unitTracker.FindClosestWallUnit(go)?.gameObject;
         if (closestAlly != null)
         {
-            closestTarget = unitTracker.FindClosestAlly(go).transform.position;
-            Vector3 targetDirection = closestTarget - go.transform.position;
-            float singlestep = speed * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-            go.transform.rotation = Quaternion.LookRotation(newDirection);
+            closestTarget = unitTracker.FindClosestWallUnit(go).transform.position;
         }
     }
 
@@ -41,7 +38,7 @@ public class HealerLocateAllyState : HealerBaseState
     public override HealerBaseState HandleInput(GameObject go)
     {
         // Move -> Heal
-        if (closestAlly != null)
+        if (Vector3.Distance(go.transform.position, closestTarget) <= 10)
         {
             return new HealerHealState(go);
         }

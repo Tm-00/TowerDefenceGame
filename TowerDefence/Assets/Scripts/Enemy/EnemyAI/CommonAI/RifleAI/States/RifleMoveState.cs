@@ -7,6 +7,7 @@ public class RifleMoveState : RifleBaseState
     
     // will be able to reference itself
     private NavMeshAgent agent;
+    private GameObject enemy;
 
     private Vector3 closestTarget;
 
@@ -26,6 +27,7 @@ public class RifleMoveState : RifleBaseState
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
+        enemy = go;
     }
     
     // Enter
@@ -65,7 +67,7 @@ public class RifleMoveState : RifleBaseState
 
     private void FilterTargets()
     {
-        var closestUnit = unitTracker.FindClosestUnit(agent);
+        var closestUnit = unitTracker.FindClosestUnit(enemy);
         if (closestUnit != null && unitTracker.UnitTargets.Count > 1)
         {
             closestTarget = closestUnit.transform.position;

@@ -46,13 +46,13 @@ public class MeleeAttackState : MeleeBaseState
         }
 
         meleeAttackHandler = go.GetComponent<MeleeAttackHandler>();
-        if (rotatable == null)
+        if (meleeAttackHandler == null)
         {
             Debug.LogError("GameObject is missing an TurretAttackHandler component!");
         }  
         
         meleeStats = go.GetComponent<MeleeStats>();
-        if (rotatable == null)
+        if (meleeStats == null)
         {
             Debug.LogError("GameObject is missing an MeleeStats component!");
         }

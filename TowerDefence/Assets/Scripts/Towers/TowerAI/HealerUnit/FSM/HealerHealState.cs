@@ -10,7 +10,7 @@ public class HealerHealState : HealerBaseState
     private const float RotationSpeed = 1.0f;
     
     [Header("Target Values")] 
-    private Transform closestAlly;
+    private Transform closestTarget;
     private readonly LayerMask healLayerMask;
     private RaycastHit hit;
     
@@ -46,13 +46,13 @@ public class HealerHealState : HealerBaseState
         }
 
         healerHealHandler = go.GetComponent<HealerHealHandler>();
-        if (rotatable == null)
+        if (healerHealHandler == null)
         {
             Debug.LogError("GameObject is missing an HealHandler component!");
         }  
         
         healerStats = go.GetComponent<HealerStats>();
-        if (rotatable == null)
+        if (healerStats == null)
         {
             Debug.LogError("GameObject is missing an HealerStats component!");
         }   
@@ -66,15 +66,17 @@ public class HealerHealState : HealerBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Healer: Heal State");
-        closestAlly = unitTracker.FindClosestAlly(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
-        if (closestAlly)
+        // can't use cloest unit because it includes itself
+        closestTarget = unitTracker.FindClosestWallUnit(go).transform;
+        
+        if (closestTarget != null)
         {
             // rotate unit towards target
-            rotatable.RotateToTarget(go, closestAlly, RotationSpeed);
+            rotatable.RotateToTarget(go, closestTarget, RotationSpeed);
             
             // check if the shootlocation is assigned 
             if (shootLocation != null)
@@ -86,7 +88,7 @@ public class HealerHealState : HealerBaseState
                     var targetHit = hit.collider.gameObject;
                     
                     // check that the target hit was the cloest target then perform attack methods
-                    if (targetHit != null && targetHit == closestAlly.gameObject)
+                    if (targetHit != null && targetHit == closestTarget.gameObject)
                     {
                         healerHealHandler.Attack(targetHit);
                     }

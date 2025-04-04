@@ -7,6 +7,7 @@ public class FlightAttackState : FlightBaseState
     [Header("Flight Values")] 
     private readonly float rotationSpeed = 1.0f;
     private NavMeshAgent agent;
+    private GameObject enemy;
     
     [Header("Target Values")] 
     private Transform coreNodePosition;
@@ -47,9 +48,12 @@ public class FlightAttackState : FlightBaseState
             Debug.LogError("GameObject is missing an FlightAttackHandler component!");
         }
         
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
         flightLayerMask = flightAttackHandler.layerMask;
         shootLocation = flightAttackHandler.shootLocation;
         range = flightAttackHandler.range;
+        enemy = go;
     }
     
     // Enter
@@ -58,7 +62,7 @@ public class FlightAttackState : FlightBaseState
         Debug.Log("Flight Drone: Attack State");
         agent = go.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
-        closestTarget = unitTracker.FindClosestUnit(agent)?.transform;
+        closestTarget = unitTracker.FindClosestUnit(enemy)?.transform;
     }
 
  public override void Update(GameObject go)

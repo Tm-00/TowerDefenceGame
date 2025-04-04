@@ -7,7 +7,7 @@ public class BuffLocateAllyState : BuffBaseState
 {
     private Vector3 closestTarget;
     private float speed = 1.0f;
-    private readonly UnitTracker unitTracker;
+    private UnitTracker unitTracker;
 
     
     public BuffLocateAllyState(GameObject go)
@@ -17,12 +17,15 @@ public class BuffLocateAllyState : BuffBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Turret: LocateEnemyState");
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>();
     }
 
     public override void Update(GameObject go)
     {
-        var cloestEnemy = unitTracker.FindClosestEnemy(go);
-        if (cloestEnemy != null)
+        var closestEnemy = unitTracker.FindClosestEnemy(go);
+        
+        if (closestEnemy != null)
         {
             closestTarget = unitTracker.FindClosestEnemy(go).transform.position;
             Vector3 targetDirection = closestTarget - go.transform.position;

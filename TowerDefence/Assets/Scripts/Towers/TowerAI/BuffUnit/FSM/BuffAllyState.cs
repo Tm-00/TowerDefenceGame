@@ -67,7 +67,7 @@ public class BuffAllyState : BuffBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Healer: Heal State");
-        closestAlly = unitTracker.FindClosestAlly(go)?.transform;
+        closestAlly = unitTracker.FindClosestUnit(go)?.transform;
     }
 
     public override void Update(GameObject go)

@@ -13,7 +13,7 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Heal Values")]
-    internal int healAmount = 1;
+    internal int healAmount = 50;
     public readonly float range = 20f;
     private readonly float aoeRadius = 10f;
     public bool unitDied;

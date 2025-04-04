@@ -11,6 +11,8 @@ public class RobotMoveState : RobotBaseState
     private Vector3 closestTarget;
 
     private bool allunitsdead;
+    
+    private GameObject enemy;
         
     // reference to the core node 
     private Transform coreNodePosition;
@@ -23,6 +25,7 @@ public class RobotMoveState : RobotBaseState
         // assign variables 
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
+        enemy = go;
     }
     
     // Enter
@@ -62,10 +65,10 @@ public class RobotMoveState : RobotBaseState
 
     private void FilterTargets()
     {
-        var cloestEnemy = unitTracker.FindClosestWallUnit(agent);
+        var cloestEnemy = unitTracker.FindClosestWallUnit(enemy);
         if (cloestEnemy != null && unitTracker.UnitTargets.Count > 1)
         {
-            closestTarget = unitTracker.FindClosestWallUnit(agent).transform.position;
+            closestTarget = unitTracker.FindClosestWallUnit(enemy).transform.position;
             agent.destination = closestTarget;
             allunitsdead = false;
         }

@@ -12,7 +12,7 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 0;
+    internal int damageAmount = 5;
     public readonly float range = 10f;
     private readonly float aoeRadius = 5f;
     public bool enemyKilled;
@@ -84,7 +84,6 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         
         if (targetHealth != null && targetHealth.IsDead())  
         {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
             enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
         }
     }

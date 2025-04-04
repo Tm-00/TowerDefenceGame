@@ -7,6 +7,7 @@ public class RifleAttackState : RifleBaseState
     [Header("Rifle Values")] 
     private readonly float rotationSpeed = 1.0f;
     private NavMeshAgent agent;
+    private GameObject enemy;
     
     [Header("Target Values")] 
     private Transform coreNodePosition;
@@ -55,21 +56,20 @@ public class RifleAttackState : RifleBaseState
         shootLocation = rifleAttackHandler.shootLocation;
         range = rifleAttackHandler.range;
         agent = go.gameObject.GetComponent<NavMeshAgent>();
+        enemy = go;
     }
     
     // Enter
     public override void Enter(GameObject go)
     {
         Debug.Log("Rifle Drone: Attack State");
-        agent = go.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
-        //closestTarget = unitTracker.FindClosestUnit(agent);
     }
 
     // Update
     public override void Update(GameObject go)
     {
-        closestTarget = unitTracker.FindClosestUnit(agent);
+        closestTarget = unitTracker.FindClosestUnit(enemy);
         
         if (closestTarget != null)
         {
