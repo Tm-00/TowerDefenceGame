@@ -5,9 +5,23 @@ using UnityEngine;
 
 public class MeleeIdleState : MeleeBaseState
 {
+    [Header("Class References")]
+    private readonly UnitTracker unitTracker;
+    private readonly TowerPlacement towerPlacement;
+    
+    [Header("Game Objects")]
+    private readonly GameObject player;
+    private readonly GameObject gameManager;
+    
     public MeleeIdleState(GameObject go)
     {
         Debug.Log("Turret: IdleState");
+        
+        gameManager = GameObject.Find("GameManager");
+        player = GameObject.Find("Player");
+        
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        towerPlacement = player.GetComponent<TowerPlacement>();
     }
     public override void Enter(GameObject go)
     {
@@ -26,9 +40,9 @@ public class MeleeIdleState : MeleeBaseState
 
     public override MeleeBaseState HandleInput(GameObject go)
     {
-        if (UnitTracker.EnemyTargets != null && TowerPlacement.hasBeenPlaced)
+        if (unitTracker.EnemyTargets != null && towerPlacement.hasBeenPlaced)
         {
-            if (UnitTracker.EnemyTargets.Count >= 1)
+            if (unitTracker.EnemyTargets.Count >= 1)
             {
                 return new MeleeLocateEnemyState(go);
             }

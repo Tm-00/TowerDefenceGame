@@ -5,11 +5,11 @@ public class MissileStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Missile Stats")] 
     private float maxHealth = 50f;
-    private float currentHealth;
+    internal float currentHealth;
     private float scoreValue = 5;
     private float resourceValue = 10;
     
-    [Header("Class")] 
+    [Header("Class References")] 
     private UnitTracker unitTracker; 
     private MissileAttackHandler missileAttackHandler;
     private ScoreManager scoreManager;
@@ -24,6 +24,7 @@ public class MissileStats : MonoBehaviour, IUnitStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         resourceManager = FindObjectOfType<ResourceManager>();
+        unitTracker = FindObjectOfType<UnitTracker>();
         currentHealth = maxHealth;
         hasBeenPlaced = false;
     }
@@ -63,7 +64,7 @@ public class MissileStats : MonoBehaviour, IUnitStats, IStats
     {
         Debug.Log("Missile unit has died.");
         scoreManager.RemoveScore(scoreValue);
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
         hasBeenPlaced = false;
     }
     

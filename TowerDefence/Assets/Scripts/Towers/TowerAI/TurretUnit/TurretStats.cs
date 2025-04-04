@@ -1,21 +1,20 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TurretStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Turret Stats")] 
-    private float maxHealth = 50f;
-    private float currentHealth;
-    private float scoreValue = 5;
-    private float resourceValue = 10;
+    private readonly float maxHealth = 50f;
+    internal float currentHealth;
+    private readonly float scoreValue = 5;
+    private readonly float resourceValue = 10;
     
-    [Header("Class")] 
+    [Header("Class References")] 
     private UnitTracker unitTracker; 
     private TurretAttackHandler turretAttackHandler;
     private ScoreManager scoreManager;
     private ResourceManager resourceManager;
-
+    
     [Header("Health Bar")]
     public Image healthBar;
     
@@ -25,6 +24,7 @@ public class TurretStats : MonoBehaviour, IUnitStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         resourceManager = FindObjectOfType<ResourceManager>();
+        unitTracker = FindObjectOfType<UnitTracker>();
         currentHealth = maxHealth;
         hasBeenPlaced = false;
     }
@@ -64,7 +64,7 @@ public class TurretStats : MonoBehaviour, IUnitStats, IStats
     {
         Debug.Log("Turret unit has died.");
         scoreManager.RemoveScore(scoreValue);
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
         hasBeenPlaced = false;
     }
     

@@ -53,7 +53,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager.AddScore(scoreValue);
         Debug.Log("Robot unit has died.");
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
     }
     
     public void ApplyBuff(int amount)

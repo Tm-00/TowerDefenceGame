@@ -19,6 +19,8 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
     void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
+        unitTracker = FindObjectOfType<UnitTracker>();
+        //todo add a increase in resource when enemy units die 
         currentHealth = maxHealth;
     }
     
@@ -50,7 +52,7 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
     public void Die()
     {
         Debug.Log("Rifle unit has died.");
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
         scoreManager.AddScore(scoreValue);
     }
     

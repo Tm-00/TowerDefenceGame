@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
@@ -15,7 +16,7 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
     internal int buffAmount = 15;
     public readonly float range = 50f;
     private readonly float aoeRadius = 5f;
-    public bool enemyKilled;
+    public bool unitDied;
     
     [Header("Cooldowns")]
     private float cooldown = 3;
@@ -72,31 +73,30 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             cooldownTime = cooldown;
-            targetStats.ApplyBuff(buffAmount);
+            targetStats?.ApplyBuff(buffAmount);
         }
     }
         
     // Perform a death check and set enemyKilled to true if an enemy is killed
     public void DeathCheck(GameObject targethit)
     {
-        IEnemyStats targetHealth = targethit?.GetComponent<IEnemyStats>();  
+        IUnitStats targetHealth = targethit?.GetComponent<IUnitStats>(); 
         
         if (targetHealth != null && targetHealth.IsDead())  
         {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
-            enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
+            unitDied = true;  // Set enemyKilled to true when an enemy is killed
         }
     }
     
     // check if the enemy has been killed
     public bool IsEnemyKilled()
     {
-        return enemyKilled;
+        return unitDied;
     }
 
     // reset the enemyKilled status
     public void ResetEnemyKilledStatus()
     {
-        enemyKilled = false;
+        unitDied = false;
     }
 }

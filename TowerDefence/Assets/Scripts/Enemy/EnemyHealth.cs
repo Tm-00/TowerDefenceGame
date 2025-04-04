@@ -32,7 +32,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            UnitTracker.EnemyTargets.Remove(gameObject);
+            unitTracker.EnemyTargets.Remove(gameObject);
             return true;
         }
         return false;

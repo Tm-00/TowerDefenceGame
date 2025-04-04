@@ -5,7 +5,8 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Lane Stats")] 
     private float maxHealth = 50f;
-    private float currentHealth;
+
+    internal float currentHealth;
     private float scoreValue = 5;
     private float resourceValue = 10;
     
@@ -23,6 +24,7 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         resourceManager = FindObjectOfType<ResourceManager>();
+        unitTracker = FindObjectOfType<UnitTracker>();
         currentHealth = maxHealth;
         hasBeenPlaced = false;
     }
@@ -62,7 +64,7 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
     {
         Debug.Log("Lane unit has died.");
         scoreManager.RemoveScore(scoreValue);
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
         hasBeenPlaced = false;
     }
     

@@ -4,27 +4,35 @@ using UnityEngine;
 
 public class LaserDeadState : LaserBaseState
 {
+    [Header("Class References")]
+    internal LaserStats laserStats;
+    
     public LaserDeadState(GameObject go)
     {
-        
+        laserStats = go.GetComponent<LaserStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Laser: DeadState");
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override LaserBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (laserStats.currentHealth > 0)
+        {
+            return new LaserIdleState(go);
+        }
+        return null;
     }
 }

@@ -50,7 +50,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
     public void Die()
     {
         Debug.Log("Scout unit has died.");
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
         scoreManager.AddScore(scoreValue);
     }
     

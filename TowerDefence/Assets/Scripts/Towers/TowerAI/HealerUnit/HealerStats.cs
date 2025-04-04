@@ -5,11 +5,12 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Healer Stats")] 
     private float maxHealth = 50f;
-    private float currentHealth;
+
+    internal float currentHealth;
     private float scoreValue = 5;
     private float resourceValue = 10;
 
-    [Header("Class")] 
+    [Header("Class References")] 
     private UnitTracker unitTracker; 
     private HealerHealHandler healerHealHandler;
     private ScoreManager scoreManager;
@@ -22,6 +23,7 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
     
     void Start()
     {
+        unitTracker = FindObjectOfType<UnitTracker>();
         scoreManager = FindObjectOfType<ScoreManager>();
         resourceManager = FindObjectOfType<ResourceManager>();
         currentHealth = maxHealth;
@@ -63,7 +65,7 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
     {
         Debug.Log("Heal unit has died.");
         scoreManager.RemoveScore(scoreValue);
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
         hasBeenPlaced = false;
     }
     

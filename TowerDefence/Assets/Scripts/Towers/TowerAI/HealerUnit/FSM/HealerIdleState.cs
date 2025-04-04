@@ -5,9 +5,23 @@ using UnityEngine;
 
 public class HealerIdleState : HealerBaseState
 {
+    [Header("Class References")]
+    private readonly UnitTracker unitTracker;
+    private readonly TowerPlacement towerPlacement;
+    
+    [Header("Game Objects")]
+    private readonly GameObject player;
+    private readonly GameObject gameManager;
+    
     public HealerIdleState(GameObject go)
     {
-        Debug.Log("Turret: IdleState");
+        Debug.Log("Healer: IdleState");
+        
+        gameManager = GameObject.Find("GameManager");
+        player = GameObject.Find("Player");
+        
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        towerPlacement = player.GetComponent<TowerPlacement>();
     }
     public override void Enter(GameObject go)
     {
@@ -26,9 +40,9 @@ public class HealerIdleState : HealerBaseState
 
     public override HealerBaseState HandleInput(GameObject go)
     {
-        if (UnitTracker.EnemyTargets != null && TowerPlacement.hasBeenPlaced)
+        if (unitTracker.EnemyTargets != null && towerPlacement.hasBeenPlaced)
         {
-            if (UnitTracker.EnemyTargets.Count >= 1)
+            if (unitTracker.EnemyTargets.Count >= 1)
             {
                 return new HealerLocateAllyState(go);
             }

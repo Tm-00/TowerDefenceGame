@@ -5,14 +5,23 @@ using UnityEngine;
 
 public class BuffIdleState : BuffBaseState
 {
-    
+    [Header("Class References")]
     private readonly UnitTracker unitTracker;
+    private readonly TowerPlacement towerPlacement;
+    
+    [Header("Game Objects")]
+    private readonly GameObject player;
+    private readonly GameObject gameManager;
     
     public BuffIdleState(GameObject go)
     {
-        GameObject gameManager = GameObject.Find("GameManager");
-        unitTracker = gameManager.GetComponent<UnitTracker>();
         Debug.Log("Buff: IdleState");
+        
+        gameManager = GameObject.Find("GameManager");
+        player = GameObject.Find("Player");
+        
+        unitTracker = gameManager.GetComponent<UnitTracker>();
+        towerPlacement = player.GetComponent<TowerPlacement>();
     }
     public override void Enter(GameObject go)
     {
@@ -31,7 +40,7 @@ public class BuffIdleState : BuffBaseState
 
     public override BuffBaseState HandleInput(GameObject go)
     {
-        if (unitTracker.UnitTargets != null && TowerPlacement.hasBeenPlaced)
+        if (unitTracker.UnitTargets != null && towerPlacement.hasBeenPlaced)
         {
             if (unitTracker.UnitTargets.Count >= 1)
             {

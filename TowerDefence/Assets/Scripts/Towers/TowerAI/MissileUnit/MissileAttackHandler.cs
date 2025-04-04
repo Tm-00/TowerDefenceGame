@@ -25,8 +25,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     {
         layerMask = LayerMask.GetMask("Enemies");
     }
-
-    // Implement Attack from IAttackHandler
+    
     public void Attack(GameObject targetHit)
     {
         if (targetHit != null)
@@ -72,7 +71,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             cooldownTime = cooldown;
-            targetStats.ApplyDamage(damageAmount);
+            targetStats?.ApplyDamage(damageAmount);
         }
     }
     
@@ -83,6 +82,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         
         if (targetHealth != null && targetHealth.IsDead())  
         {
+            //TODO remove all of these add add them to the death states 
             ObjectPoolManager.ReturnObjectToPool(targethit);
             enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
         }

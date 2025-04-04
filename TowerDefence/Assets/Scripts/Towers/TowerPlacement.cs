@@ -10,7 +10,7 @@ public class TowerPlacement : MonoBehaviour
     [SerializeField] private LayerMask placementCollideMask;
     [SerializeField] private LayerMask placementCheckMask;
     public static GameObject unit;
-    public static bool hasBeenPlaced;
+    public bool hasBeenPlaced;
     private int totalUnits = 0;
     
     

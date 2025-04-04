@@ -4,27 +4,35 @@ using UnityEngine;
 
 public class MissileDeadState : MissileBaseState
 {
+    [Header("Class References")]
+    internal MissileStats missileStats;
+    
     public MissileDeadState(GameObject go)
     {
-        
+        missileStats = go.GetComponent<MissileStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Missile: DeadState");
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override MissileBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (missileStats.currentHealth > 0)
+        {
+            return new MissileIdleState(go);
+        }
+        return null;
     }
 }

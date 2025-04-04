@@ -4,27 +4,36 @@ using UnityEngine;
 
 public class LaneDeadState : LaneBaseState
 {
+    [Header("Class References")]
+    private readonly LaneStats laneStats;
+    
     public LaneDeadState(GameObject go)
     {
-        
+        laneStats = go.GetComponent<LaneStats>();
+
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Lane: DeadState");
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override LaneBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (laneStats.currentHealth > 0)
+        {
+            return new LaneIdleState(go);
+        }
+        return null;
     }
 }

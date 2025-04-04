@@ -1,30 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TurretDeadState : TurretBaseState
 {
+    [Header("Class References")]
+    internal TurretStats turretStats;
+    
     public TurretDeadState(GameObject go)
     {
-        
+        turretStats = go.GetComponent<TurretStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Turret: DeadState");
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override TurretBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (turretStats.currentHealth > 0)
+        {
+            return new TurretIdleState(go);
+        }
+        return null;
     }
 }

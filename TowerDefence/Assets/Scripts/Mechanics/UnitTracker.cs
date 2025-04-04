@@ -7,7 +7,7 @@ public class UnitTracker : MonoBehaviour
 {
     
     public readonly List<GameObject> UnitTargets = new List<GameObject>();
-    public static readonly List<GameObject> EnemyTargets = new List<GameObject>();
+    public readonly List<GameObject> EnemyTargets = new List<GameObject>();
     [SerializeField] private GameObject coreNode;
 
     private int KnownUnitSpawns;

@@ -4,27 +4,35 @@ using UnityEngine;
 
 public class MeleeDeadState : MeleeBaseState
 {
+    [Header("Class References")]
+    internal MeleeStats meleeStats;
+    
     public MeleeDeadState(GameObject go)
     {
-        
+        meleeStats = go.GetComponent<MeleeStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Melee: DeadState");
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override MeleeBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (meleeStats.currentHealth > 0)
+        {
+            return new MeleeIdleState(go);
+        }
+        return null; 
     }
 }

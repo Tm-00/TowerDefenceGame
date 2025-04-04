@@ -7,17 +7,19 @@ using UnityEngine.AI;
 public class MissileAttackState : MissileBaseState
 {
     [Header("Turret Values")] 
-    private readonly float rotationSpeed = 1.0f;
+    private const float RotationSpeed = 1.0f;
     
     [Header("Target Values")] 
     private Transform closestTarget;
     private readonly LayerMask missileLayerMask;
     private RaycastHit hit;
     
+    [Header("Interface References")]
+    private readonly IRotatable rotatable;
+    
     [Header("Class References")]
-    private IAttackHandler attackHandler; 
-    private IRotatable rotatable;
     private readonly MissileAttackHandler missileAttackHandler;
+    private readonly MissileStats missileStats;
     private readonly UnitTracker unitTracker;
     
     [Header("Attack Foundations")]
@@ -30,7 +32,9 @@ public class MissileAttackState : MissileBaseState
     
     public MissileAttackState(GameObject go)
     {
-        attackHandler = go.GetComponent<IAttackHandler>();
+        var attackHandler = go.GetComponent<IAttackHandler>();
+        var gameManager = GameObject.Find("GameManager");
+        
         if (attackHandler == null)
         {
             Debug.LogError("GameObject is missing an IAttackHandler component!");
@@ -46,11 +50,15 @@ public class MissileAttackState : MissileBaseState
         if (rotatable == null)
         {
             Debug.LogError("GameObject is missing an MissileAttackHandler component!");
+        }   
+        
+        missileStats = go.GetComponent<MissileStats>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an MissileStats component!");
         }
         
-        GameObject gameManager = GameObject.Find("GameManager");
         unitTracker = gameManager.GetComponent<UnitTracker>();
-        
         missileLayerMask = missileAttackHandler.layerMask;
         shootLocation = missileAttackHandler.shootLocation;
         range = missileAttackHandler.range;
@@ -64,22 +72,25 @@ public class MissileAttackState : MissileBaseState
 
     public override void Update(GameObject go)
     {
-        // rotate unit towards target
-        rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
-            
-        // check if the shootlocation is assigned 
-        if (shootLocation != null)
+        if (closestTarget!= null)
         {
-            // shoot a raycast at a max distance of the range relating to the unit
-            if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, missileLayerMask))
+            // rotate unit towards target
+            rotatable.RotateToTarget(go, closestTarget, RotationSpeed);
+            
+            // check if the shootlocation is assigned 
+            if (shootLocation != null)
             {
-                // confirm a target was hit then store it as a gameobject 
-                var targetHit = hit.collider.gameObject;
-                    
-                // check that the target hit was the cloest target then perform attack methods
-                if (targetHit != null && targetHit == closestTarget.gameObject)
+                // shoot a raycast at a max distance of the range relating to the unit
+                if (Physics.Raycast(shootLocation.position, go.transform.TransformDirection(Vector3.forward), out hit, range, missileLayerMask))
                 {
-                    missileAttackHandler.Attack(targetHit);
+                    // confirm a target was hit then store it as a gameobject 
+                    var targetHit = hit.collider.gameObject;
+                    
+                    // check that the target hit was the cloest target then perform attack methods
+                    if (targetHit != null && targetHit == closestTarget.gameObject)
+                    {
+                        missileAttackHandler.Attack(targetHit);
+                    }
                 }
             }
         }
@@ -93,6 +104,14 @@ public class MissileAttackState : MissileBaseState
     public override MissileBaseState HandleInput(GameObject go)
     {
         // if the unit kills an enemy or their target dies go to the locate state to find a new target 
-        return missileAttackHandler.IsEnemyKilled() ? new MissileLocateEnemyState(go) : null;
+        if (missileAttackHandler.IsEnemyKilled())
+        {
+            return new MissileLocateEnemyState(go);
+        }
+        if (missileStats.currentHealth <= 0)
+        {
+            return new MissileDeadState(go);
+        }
+        return null;
     }
 }

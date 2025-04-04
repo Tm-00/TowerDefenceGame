@@ -24,13 +24,11 @@ public interface IRotatable
         float singleStep = rotationSpeed * Time.deltaTime;
         Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singleStep, 0.0f);
         go.transform.localRotation = Quaternion.LookRotation(newDirection);
-        Debug.DrawRay(go.transform.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(go.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
     
-    private void DrawSTRay(Vector3 targetDirection, GameObject go, Transform shootLocation)
-    {
-        Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
-        Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
-    }
+    // private void DrawSTRay(Vector3 targetDirection, GameObject go, Transform shootLocation)
+    // {
+    //     Debug.DrawRay(shootLocation.position, targetDirection * 10f, Color.red);  // Red line pointing towards target
+    //     Debug.DrawRay(shootLocation.transform.position, go.transform.forward * 10f, Color.green); // Green line showing current forward direction
+    // }
 }

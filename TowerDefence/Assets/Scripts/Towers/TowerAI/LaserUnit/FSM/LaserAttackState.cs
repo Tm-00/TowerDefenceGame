@@ -13,23 +13,27 @@ public class LaserAttackState : LaserBaseState
     private Transform closestTarget;
     private readonly LayerMask laserLayerMask;
     private RaycastHit hit;
+
+    [Header("Interface References")]
+    private readonly IRotatable rotatable;
     
     [Header("Class References")]
-    private IAttackHandler attackHandler; 
-    private IRotatable rotatable;
-    private LaserAttackHandler laserAttackHandler;
+    private readonly LaserAttackHandler laserAttackHandler;
+    private readonly LaserStats laserStats;
     private readonly UnitTracker unitTracker;
 
-    
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
+    
     
     [Header("Attack Values")]
     private readonly float range;
     
     public LaserAttackState(GameObject go)
     {
-        attackHandler = go.GetComponent<IAttackHandler>();
+        var attackHandler = go.GetComponent<IAttackHandler>();
+        var gameManager = GameObject.Find("GameManager");
+        
         if (attackHandler == null)
         {
             Debug.LogError("GameObject is missing an IAttackHandler component!");
@@ -45,8 +49,15 @@ public class LaserAttackState : LaserBaseState
         if (rotatable == null)
         {
             Debug.LogError("GameObject is missing an LaserAttackHandler component!");
+        }  
+        
+        laserStats = go.GetComponent<LaserStats>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an LaserStats component!");
         }
         
+        unitTracker = gameManager.GetComponent<UnitTracker>();
         laserLayerMask = laserAttackHandler.layerMask;  
         shootLocation = laserAttackHandler.shootLocation;
         range = laserAttackHandler.range;
@@ -82,6 +93,7 @@ public class LaserAttackState : LaserBaseState
                 }
             }
         }
+        Debug.DrawRay(shootLocation.transform.position, shootLocation.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
     public override void Exit(GameObject go)
     {
@@ -91,6 +103,14 @@ public class LaserAttackState : LaserBaseState
     public override LaserBaseState HandleInput(GameObject go)
     {
         // if the unit kills an enemy or their target dies go to the locate state to find a new target 
-        return laserAttackHandler.IsEnemyKilled() ? new LaserLocateEnemyState(go) : null;
+        if (laserAttackHandler.IsEnemyKilled())
+        {
+            return new LaserLocateEnemyState(go);
+        }
+        if (laserStats.currentHealth <= 0)
+        {
+            return new LaserDeadState(go);
+        }
+        return null;
     }
 }

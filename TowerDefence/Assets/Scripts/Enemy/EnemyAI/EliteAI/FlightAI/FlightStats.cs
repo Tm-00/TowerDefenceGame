@@ -51,7 +51,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager.AddScore(scoreValue);
         Debug.Log("Flight unit has died.");
-        UnitTracker.EnemyTargets.Remove(gameObject);
+        unitTracker.EnemyTargets.Remove(gameObject);
     }
     
     public void ApplyBuff(int amount)

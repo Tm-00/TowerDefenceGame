@@ -6,21 +6,22 @@ using UnityEngine.AI;
 
 public class TurretAttackState : TurretBaseState
 {
-    [Header("Turret Values")] 
-    private readonly float rotationSpeed = 1.0f;
-    
+    [Header("Turret Values")]
+    private const float RotationSpeed = 1.0f;
+
     [Header("Target Values")] 
     private Transform closestTarget;
     private readonly LayerMask turretLayerMask;
     private RaycastHit hit;
+
+    [Header("Interface References")]
+    private readonly IRotatable rotatable;
     
     [Header("Class References")]
-    private IAttackHandler attackHandler; 
-    private IRotatable rotatable;
-    private TurretAttackHandler turretAttackHandler;
+    private readonly TurretAttackHandler turretAttackHandler;
+    private readonly TurretStats turretStats;
     private readonly UnitTracker unitTracker;
 
-    
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
     
@@ -29,7 +30,9 @@ public class TurretAttackState : TurretBaseState
     
     public TurretAttackState(GameObject go)
     {
-        attackHandler = go.GetComponent<IAttackHandler>();
+        var attackHandler = go.GetComponent<IAttackHandler>();
+        var gameManager = GameObject.Find("GameManager");
+        
         if (attackHandler == null)
         {
             Debug.LogError("GameObject is missing an IAttackHandler component!");
@@ -47,9 +50,14 @@ public class TurretAttackState : TurretBaseState
             Debug.LogError("GameObject is missing an TurretAttackHandler component!");
         }
         
-        GameObject gameManager = GameObject.Find("GameManager");
-        unitTracker = gameManager.GetComponent<UnitTracker>();
+        turretStats = go.GetComponent<TurretStats>();
+        if (rotatable == null)
+        {
+            Debug.LogError("GameObject is missing an TurretStats component!");
+        }
         
+        
+        unitTracker = gameManager.GetComponent<UnitTracker>();
         turretLayerMask = turretAttackHandler.layerMask;  
         shootLocation = turretAttackHandler.shootLocation;
         range = turretAttackHandler.range;
@@ -66,7 +74,7 @@ public class TurretAttackState : TurretBaseState
         if (closestTarget != null)
         {
             // rotate unit towards target
-            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+            rotatable.RotateToTarget(go, closestTarget, RotationSpeed);
             
             // check if the shootlocation is assigned 
             if (shootLocation != null)
@@ -85,6 +93,7 @@ public class TurretAttackState : TurretBaseState
                 }
             }
         }
+        Debug.DrawRay(shootLocation.transform.position, shootLocation.transform.forward * 10f, Color.green); // Green line showing current forward direction
     }
 
     public override void Exit(GameObject go)
@@ -95,6 +104,14 @@ public class TurretAttackState : TurretBaseState
     public override TurretBaseState HandleInput(GameObject go)
     {
         // if the unit kills an enemy or their target dies go to the locate state to find a new target 
-        return turretAttackHandler.IsEnemyKilled() ? new TurretLocateEnemyState(go) : null;
+        if (turretAttackHandler.IsEnemyKilled())
+        {
+            return new TurretLocateEnemyState(go);
+        }
+        if (turretStats.currentHealth <= 0)
+        {
+            return new TurretDeadState(go);
+        }
+        return null;
     }
 }

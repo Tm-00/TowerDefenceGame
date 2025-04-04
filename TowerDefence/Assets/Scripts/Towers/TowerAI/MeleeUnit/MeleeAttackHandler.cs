@@ -12,7 +12,7 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 35;
+    internal int damageAmount = 0;
     public readonly float range = 10f;
     private readonly float aoeRadius = 5f;
     public bool enemyKilled;
@@ -73,7 +73,7 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             cooldownTime = cooldown;
-            targetStats.ApplyDamage(damageAmount);
+            targetStats?.ApplyDamage(damageAmount);
         }
     }
     
