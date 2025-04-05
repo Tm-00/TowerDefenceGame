@@ -20,6 +20,7 @@ public class RifleAttackState : RifleBaseState
     private IRotatable rotatable;
     private readonly RifleAttackHandler rifleAttackHandler;
     private readonly UnitTracker unitTracker;
+    private readonly RifleStats rifleStats;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -52,6 +53,7 @@ public class RifleAttackState : RifleBaseState
         GameObject gameManager = GameObject.Find("GameManager");
         unitTracker = gameManager.GetComponent<UnitTracker>();
         
+        rifleStats = go.GetComponent<RifleStats>();
         rifleLayerMask = rifleAttackHandler.layerMask;
         shootLocation = rifleAttackHandler.shootLocation;
         range = rifleAttackHandler.range;
@@ -106,6 +108,10 @@ public class RifleAttackState : RifleBaseState
         if (rifleAttackHandler.IsEnemyKilled())
         {
             return new RifleMoveState(go);
+        }
+        if (rifleStats.currentHealth <= 0)
+        {
+            return new RifleDeadState(go);
         }
         // if the unit kills an enemy or their target dies go to the move state to find a new target 
         //return rifleAttackHandler.IsEnemyKilled() ? new RifleMoveState(go) : null;

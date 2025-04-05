@@ -4,17 +4,25 @@ using UnityEngine.AI;
 
 public class RobotFinishedState : RobotBaseState
 {
+    [Header("Class References")]
+    internal RobotStats robotStats;
+    
     private NavMeshAgent agent;
     private Transform coreNodePosition;
+    private GameObject coreNode;
+    private CNHealth cnHealth;
 
     public RobotFinishedState(GameObject go)
     {
-        
+        robotStats = go.GetComponent<RobotStats>();
+        coreNode = GameObject.Find("CoreNode");
+        cnHealth = coreNode.GetComponent<CNHealth>();
     }
 
     public override void Enter(GameObject go)
     {
-        
+        cnHealth.HealthHandler();
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
@@ -29,6 +37,9 @@ public class RobotFinishedState : RobotBaseState
 
     public override RobotBaseState HandleInput(GameObject go)
     {
-        return null;
-    }
+        if (robotStats.currentHealth > 0)
+        {
+            return new RobotIdleState(go);
+        }
+        return null;    }
 }

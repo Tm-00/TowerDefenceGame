@@ -21,6 +21,7 @@ public class RobotAttackState : RobotBaseState
     private IRotatable rotatable;
     private readonly RobotAttackHandler robotAttackHandler;
     private readonly UnitTracker unitTracker;
+    private readonly RobotStats robotStats;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -49,6 +50,7 @@ public class RobotAttackState : RobotBaseState
             Debug.LogError("GameObject is missing an RobotAttackHandler component!");
         }
         
+        robotStats = go.GetComponent<RobotStats>();
         robotLayerMask = robotAttackHandler.layerMask;
         shootLocation = robotAttackHandler.shootLocation;
         range = robotAttackHandler.range;
@@ -97,6 +99,10 @@ public class RobotAttackState : RobotBaseState
     // input
     public override RobotBaseState HandleInput(GameObject go)
     {
+        if (robotStats.currentHealth <= 0)
+        {
+            return new RobotDeadState(go);
+        }
         // if the unit kills an enemy or their target dies go to the move state to find a new target 
         return robotAttackHandler.IsEnemyKilled() ? new RobotMoveState(go) : null;
     }

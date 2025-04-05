@@ -5,10 +5,13 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Healer Stats")] 
     private float maxHealth = 50f;
-
     internal float currentHealth;
+    
+    internal int healAmount = 5;
+    
     private float scoreValue = 5;
     private float resourceValue = 10;
+
 
     [Header("Class References")] 
     private UnitTracker unitTracker; 
@@ -71,8 +74,11 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        currentHealth += amount;
-        healerHealHandler.healAmount += amount;
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        healAmount = Mathf.Clamp(healAmount + amount, 0, 20);
+
+        Debug.Log("new max health " + maxHealth);
+        Debug.Log("new buff amount " + healAmount);
     }
     
     public void OnSpawn()

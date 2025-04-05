@@ -10,9 +10,9 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
+    private MissileStats missileStats;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 1;
     public readonly float range = 20f;
     private readonly float aoeRadius = 10f;
     public bool enemyKilled;
@@ -24,6 +24,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
+        missileStats.GetComponent<MissileStats>();
     }
     
     public void Attack(GameObject targetHit)
@@ -71,7 +72,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             cooldownTime = cooldown;
-            targetStats?.ApplyDamage(damageAmount);
+            targetStats?.ApplyDamage(missileStats.damageAmount);
         }
     }
     
@@ -82,8 +83,6 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         
         if (targetHealth != null && targetHealth.IsDead())  
         {
-            //TODO remove all of these add add them to the death states 
-            ObjectPoolManager.ReturnObjectToPool(targethit);
             enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
         }
     }

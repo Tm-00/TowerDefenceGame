@@ -1,43 +1,28 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class CNHealth : MonoBehaviour
 {
     [SerializeField] private GameObject coreNode;
-    private static readonly int maxHealth = 10;
-    private static int currentHealth = 10;
-    private static readonly int amount = 1;
-    public static bool hit = false;
-    public static bool isDead = false;
-    
-    private static int HealthHandler(bool takenDamage)
-    {
-        if (takenDamage)
-        {
-            // Reset the flag after handling the event
-            hit = false;
-            currentHealth -= amount;
-            Debug.Log("Core Node Health: "+ currentHealth + "/" +  maxHealth);
-        }
-        return currentHealth;
-    }
+    private readonly int maxHealth = 10;
+    public int currentHealth = 10;
+    private readonly int amount = 10;
 
-    public static bool CoreNodeDead()
+
+    private void Update()
     {
         if (currentHealth <= 0)
         {
-            isDead = true;
+            SceneManager.LoadSceneAsync(0);
         }
-        return isDead;
+    }
+
+    public void HealthHandler()
+    {
+        currentHealth -= amount;
+        Debug.Log("Core Node Health: "+ currentHealth + "/" +  maxHealth);
     }
     
-    public void OnCollisionEnter(Collision col)
-    {
-        //TODO might have to reconsider how enemy tags work
-        if (col.gameObject.tag.Contains("Enemy"))
-        {
-            GameObject.Destroy(col.gameObject);
-            hit = true;
-        }
-    }
 }

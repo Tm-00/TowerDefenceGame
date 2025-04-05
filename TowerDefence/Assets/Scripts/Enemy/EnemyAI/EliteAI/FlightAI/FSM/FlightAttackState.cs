@@ -20,6 +20,7 @@ public class FlightAttackState : FlightBaseState
     private IRotatable rotatable;
     private readonly FlightAttackHandler flightAttackHandler;
     private readonly UnitTracker unitTracker;
+    private readonly FlightStats flightStats;
     
     [Header("Attack Foundations")]
     private readonly Transform shootLocation;
@@ -47,7 +48,8 @@ public class FlightAttackState : FlightBaseState
         {
             Debug.LogError("GameObject is missing an FlightAttackHandler component!");
         }
-        
+
+        flightStats = go.GetComponent<FlightStats>();
         GameObject gameManager = GameObject.Find("GameManager");
         unitTracker = gameManager.GetComponent<UnitTracker>();
         flightLayerMask = flightAttackHandler.layerMask;
@@ -98,6 +100,10 @@ public class FlightAttackState : FlightBaseState
     // input
     public override FlightBaseState HandleInput(GameObject go)
     {
+        if (flightStats.currentHealth <= 0)
+        {
+            return new FlightDeadState(go);
+        }
         // if the unit kills an enemy or their target dies go to the move state to find a new target 
         return flightAttackHandler.IsEnemyKilled() ? new FlightMoveState(go) : null;
     }

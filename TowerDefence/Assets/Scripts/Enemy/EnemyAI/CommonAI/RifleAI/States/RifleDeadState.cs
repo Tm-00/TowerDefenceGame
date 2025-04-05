@@ -4,27 +4,32 @@ using UnityEngine;
 
 public class RifleDeadState : RifleBaseState
 {
+    [Header("Class References")]
+    internal RifleStats rifleStats;
+    
     public RifleDeadState(GameObject go)
     {
-        
+        rifleStats = go.GetComponent<RifleStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
     }
 
     public override RifleBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (rifleStats.currentHealth > 0)
+        {
+            return new RifleIdleState(go);
+        }
+        return null;
     }
 }

@@ -5,7 +5,8 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Scout Stats")] 
     private float maxHealth = 50f;
-    private float currentHealth;
+
+    internal float currentHealth;
     private float scoreValue = 1;
     
     [Header("Class")]

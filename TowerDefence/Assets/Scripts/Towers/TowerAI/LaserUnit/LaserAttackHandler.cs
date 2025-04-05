@@ -6,10 +6,12 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
     [Header("Unit Values")] public Transform shootLocation;
 
-    [Header("Attack Foundations")] public LayerMask layerMask;
+    [Header("Attack Foundations")]
+    public LayerMask layerMask;
     private RaycastHit hit;
+    private LaserStats laserStats;
 
-    [Header("Attack Values")] internal int damageAmount = 50;
+    [Header("Attack Values")] 
     public readonly float range = 100f;
     public bool enemyKilled;
 
@@ -32,7 +34,7 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
-                targetStats?.ApplyDamage(damageAmount);
+                targetStats?.ApplyDamage(laserStats.damageAmount);
             }
             else
             {
@@ -49,7 +51,6 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         
         if (targetHealth != null && targetHealth.IsDead())  
         {
-            ObjectPoolManager.ReturnObjectToPool(targethit);
             enemyKilled = true;  // Set enemyKilled to true when an enemy is killed
         }
     }

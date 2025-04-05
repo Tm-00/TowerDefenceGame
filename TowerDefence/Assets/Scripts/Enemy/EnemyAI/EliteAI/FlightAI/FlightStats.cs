@@ -4,7 +4,8 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Flight Stats")] 
     private float maxHealth = 50f;
-    private float currentHealth;
+
+    internal float currentHealth;
     private float scoreValue = 10;
     
     [Header("Class")]

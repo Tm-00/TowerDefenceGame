@@ -70,7 +70,8 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        currentHealth += amount;
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        Debug.Log("new max health " + maxHealth);
     }
     
     public void OnSpawn()

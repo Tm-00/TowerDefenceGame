@@ -2,29 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoutDeadState : RifleBaseState
+public class ScoutDeadState : ScoutBaseState
 {
+    [Header("Class References")]
+    internal ScoutStats scoutStats;
+    
     public ScoutDeadState(GameObject go)
     {
-        
+        scoutStats = go.GetComponent<ScoutStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+      
     }
 
-    public override RifleBaseState HandleInput(GameObject go)
+    public override ScoutBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (scoutStats.currentHealth > 0)
+        {
+            return new ScoutIdleState(go);
+        }
+        return null;
     }
 }

@@ -5,7 +5,8 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Robot Stats")] 
     private float maxHealth = 50f;
-    private float currentHealth;
+
+    internal float currentHealth;
     private float scoreValue = 10;
 
     

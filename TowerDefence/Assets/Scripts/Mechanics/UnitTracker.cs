@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,17 +15,28 @@ public class UnitTracker : MonoBehaviour
     private int knownEnemySpawns;
     public static int currentUnitsSpawned;
     public static int currentEnemiesSpawned;
+    private List<GameObject> wallUnitList;
+    private List<GameObject> floorUnitList;    
+    private List<GameObject> enemyList;
     private GameObject[] wallUnitArray;
-    private GameObject[] floorUnitArray;    
-    private GameObject[] enemyArray;
-    
-   
-    
+    private GameObject[] floorUnitArray;
+    private GameObject[] enemyUnitArray;
+    private GameObject gos;
+
+    private void Awake()
+    {
+        wallUnitList = new List<GameObject>();
+        floorUnitList = new List<GameObject>();
+        enemyList = new List<GameObject>();
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
         //coreNodePosition = coreNode.transform;
         UnitTargets.Insert(0, coreNode);
+     
     }
 
     // Update is called once per frame
@@ -65,21 +77,33 @@ public class UnitTracker : MonoBehaviour
     
     public GameObject FindClosestWallUnit(GameObject nav)
     {
-        wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit"); 
+        wallUnitList.Clear();
+        
+        wallUnitArray = GameObject.FindGameObjectsWithTag("WallUnit");
+        
+        foreach (var t in wallUnitArray)
+        {
+            if (t != nav)
+            {
+                wallUnitList.Add(t);
+            }
+        }
+        
         GameObject closestTarget = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = nav.transform.position;
-        foreach (GameObject go in wallUnitArray)
+        float minDistance = Mathf.Infinity;
+        Vector3 navPosition = nav.transform.position;
+        
+        foreach (var go in wallUnitList)
         {
             IUnitStats targetIfPlaced = go.GetComponent<IUnitStats>();
-            if (targetIfPlaced.hasBeenPlaced)
+            
+            if (targetIfPlaced != null && targetIfPlaced.hasBeenPlaced)
             {
-                Vector3 distanceDifference = go.transform.position - position;
-                float currentDistance = distanceDifference.sqrMagnitude;
-                if (currentDistance < distance)
+                float currentDistance = (go.transform.position - navPosition).sqrMagnitude;
+                if (currentDistance < minDistance)
                 {
                     closestTarget = go;
-                    distance = currentDistance;
+                    minDistance = currentDistance;
                 }
             }
         }
@@ -88,18 +112,32 @@ public class UnitTracker : MonoBehaviour
     
     public GameObject FindClosestFloorUnit(GameObject nav)
     {
-        floorUnitArray = GameObject.FindGameObjectsWithTag("FloorUnit"); 
-        GameObject closestTarget = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = nav.transform.position;
-        foreach (GameObject go in floorUnitArray)
+        floorUnitList.Clear();
+        floorUnitArray = GameObject.FindGameObjectsWithTag("FloorUnit");
+        
+        foreach (var t in floorUnitArray)
         {
-            Vector3 distanceDifference = go.transform.position - position;
-            float currentDistance = distanceDifference.sqrMagnitude;
-            if (currentDistance < distance)
+            if (t != nav)
             {
-                closestTarget = go;
-                distance = currentDistance;
+                floorUnitList.Add(t);
+            }
+        }
+        
+        GameObject closestTarget = null;
+        float minDistance = Mathf.Infinity;
+        Vector3 navPosition = nav.transform.position;
+        
+        foreach (GameObject go in floorUnitList)
+        {
+            IUnitStats targetIfPlaced = go.GetComponent<IUnitStats>();
+            if (targetIfPlaced != null && targetIfPlaced.hasBeenPlaced)
+            {
+                float currentDistance = (go.transform.position - navPosition).sqrMagnitude;
+                if (currentDistance < minDistance)
+                {
+                    closestTarget = go;
+                    minDistance = currentDistance;
+                }
             }
         }
         return closestTarget;
@@ -156,11 +194,21 @@ public class UnitTracker : MonoBehaviour
     
     public GameObject FindClosestEnemy(GameObject nav)
     {
-        enemyArray = GameObject.FindGameObjectsWithTag("Enemy"); 
+        enemyList.Clear();
+        enemyUnitArray = GameObject.FindGameObjectsWithTag("Enemy");
+        
+        foreach (var t in enemyUnitArray)
+        {
+            if (t != nav)
+            {
+                enemyList.Add(t);
+            }
+        }
+        
         GameObject closestTarget = null;
         float distance = Mathf.Infinity;
         Vector3 position = nav.transform.position;
-        foreach (GameObject go in enemyArray)
+        foreach (GameObject go in enemyList)
         {
             Vector3 distanceDifference = go.transform.position - position;
             float currentDistance = distanceDifference.sqrMagnitude;

@@ -10,9 +10,9 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
+    private MeleeStats meleeStats;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 5;
     public readonly float range = 10f;
     private readonly float aoeRadius = 5f;
     public bool enemyKilled;
@@ -25,6 +25,7 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
+        meleeStats = GetComponent<MeleeStats>();
     }
     
     // Implement Attack from IAttackHandler
@@ -73,7 +74,7 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             cooldownTime = cooldown;
-            targetStats?.ApplyDamage(damageAmount);
+            targetStats?.ApplyDamage(meleeStats.damageAmount);
         }
     }
     

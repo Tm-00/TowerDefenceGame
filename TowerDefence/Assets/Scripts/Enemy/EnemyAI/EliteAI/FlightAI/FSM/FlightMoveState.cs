@@ -14,6 +14,8 @@ public class FlightMoveState : FlightBaseState
     private bool allunitsdead;
         
     private readonly UnitTracker unitTracker;
+
+    private FlightStats flightStats;
     
     // reference to the core node 
     private Transform coreNodePosition;
@@ -28,6 +30,7 @@ public class FlightMoveState : FlightBaseState
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
         enemy = go;
+        flightStats = go.GetComponent<FlightStats>();
     }
     
     // Enter
@@ -59,6 +62,11 @@ public class FlightMoveState : FlightBaseState
         if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
         {
             return new FlightFinishedState(go);
+        }
+
+        if (flightStats.currentHealth <= 0)
+        {
+            return new FlightDeadState(go);
         }
         return null;
     }

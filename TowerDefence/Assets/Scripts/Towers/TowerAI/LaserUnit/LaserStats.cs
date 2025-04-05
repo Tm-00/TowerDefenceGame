@@ -4,9 +4,11 @@ using UnityEngine.UI;
 public class LaserStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Laser Stats")] 
-    private readonly float maxHealth = 50f;
-
+    private float maxHealth = 50f;
     internal float currentHealth;
+    
+    internal int damageAmount = 50;
+    
     private readonly float scoreValue = 5;
     private readonly float resourceValue = 10;
     
@@ -71,8 +73,11 @@ public class LaserStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        currentHealth += amount;
-        laserAttackHandler.damageAmount += amount;
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        damageAmount = Mathf.Clamp(damageAmount + amount, 0, 20);
+
+        Debug.Log("new max health " + maxHealth);
+        Debug.Log("new buff amount " + damageAmount);
     }
     
     public void OnSpawn()

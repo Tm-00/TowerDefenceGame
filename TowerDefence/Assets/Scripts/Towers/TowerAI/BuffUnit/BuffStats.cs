@@ -5,7 +5,10 @@ public class BuffStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Buff Stats")] 
     private float maxHealth = 50f;
+    
+    internal int buffAmount = 15;
 
+    
     internal float currentHealth;
     private float scoreValue = 5;
     private float resourceValue = 10;
@@ -70,8 +73,11 @@ public class BuffStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        currentHealth += amount;
-        buffHandler.buffAmount += amount;
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        buffAmount = Mathf.Clamp(buffAmount + amount, 0, 20);
+
+        Debug.Log("new max health " + maxHealth);
+        Debug.Log("new buff amount " + buffAmount);
     }
 
     public void OnSpawn()

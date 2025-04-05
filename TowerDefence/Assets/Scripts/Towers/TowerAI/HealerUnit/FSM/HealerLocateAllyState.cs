@@ -23,10 +23,11 @@ public class HealerLocateAllyState : HealerBaseState
 
     public override void Update(GameObject go)
     { 
-        var closestAlly = unitTracker.FindClosestWallUnit(go)?.gameObject;
+        var closestAlly = unitTracker?.FindClosestUnit(go).gameObject;
+        
         if (closestAlly != null)
         {
-            closestTarget = unitTracker.FindClosestWallUnit(go).transform.position;
+            closestTarget = unitTracker.FindClosestUnit(go).transform.position;
         }
     }
 

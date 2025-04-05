@@ -4,27 +4,32 @@ using UnityEngine;
 
 public class FlightDeadState : FlightBaseState
 {
+    [Header("Class References")]
+    internal FlightStats flightStats;
+
     public FlightDeadState(GameObject go)
     {
-        
+        flightStats = go.GetComponent<FlightStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
     }
 
     public override FlightBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (flightStats.currentHealth > 0)
+        {
+            return new FlightIdleState(go);
+        }
+        return null;
     }
 }

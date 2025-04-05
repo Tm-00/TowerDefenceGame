@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class BuffLocateAllyState : BuffBaseState
 {
     private Vector3 closestTarget;
-    private float speed = 1.0f;
     private UnitTracker unitTracker;
 
     
@@ -23,15 +22,11 @@ public class BuffLocateAllyState : BuffBaseState
 
     public override void Update(GameObject go)
     {
-        var closestEnemy = unitTracker.FindClosestEnemy(go);
+        var closestAlly = unitTracker?.FindClosestUnit(go);
         
-        if (closestEnemy != null)
+        if (closestAlly != null)
         {
-            closestTarget = unitTracker.FindClosestEnemy(go).transform.position;
-            Vector3 targetDirection = closestTarget - go.transform.position;
-            float singlestep = speed * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(go.transform.forward, targetDirection, singlestep, 0.0f);
-            go.transform.rotation = Quaternion.LookRotation(newDirection);
+            closestTarget = unitTracker.FindClosestUnit(go).transform.position;
         }
     }
 

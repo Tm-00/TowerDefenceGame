@@ -4,27 +4,35 @@ using UnityEngine;
 
 public class RobotDeadState : RobotBaseState
 {
+    [Header("Class References")]
+    internal RobotStats robotStats;
+    
+    
     public RobotDeadState(GameObject go)
     {
-        
+        robotStats = go.GetComponent<RobotStats>();
     }
     public override void Enter(GameObject go)
     {
-        throw new System.NotImplementedException();
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void Exit(GameObject go)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override RobotBaseState HandleInput(GameObject go)
     {
-        throw new System.NotImplementedException();
+        if (robotStats.currentHealth > 0)
+        {
+            return new RobotIdleState(go);
+        }
+        return null;
     }
 }

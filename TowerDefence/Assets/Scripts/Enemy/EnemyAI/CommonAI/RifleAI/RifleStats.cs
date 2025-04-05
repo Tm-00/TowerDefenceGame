@@ -5,7 +5,8 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Rifle Stats")] 
     private readonly float maxHealth = 50f;
-    private float currentHealth;
+
+    internal float currentHealth;
     private readonly float scoreValue = 5;
     
     [Header("Class")] 

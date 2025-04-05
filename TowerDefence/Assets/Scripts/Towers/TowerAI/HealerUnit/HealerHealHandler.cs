@@ -11,9 +11,9 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     [Header("Heal Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
+    private HealerStats healerStats;
     
     [Header("Heal Values")]
-    internal int healAmount = 50;
     public readonly float range = 20f;
     private readonly float aoeRadius = 10f;
     public bool unitDied;
@@ -25,6 +25,7 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
+        healerStats = GetComponent<HealerStats>();
     }
     
     // Implement Attack from IAttackHandler
@@ -74,7 +75,7 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             cooldownTime = cooldown;
-            targetStats?.ApplyHeal(healAmount);
+            targetStats?.ApplyHeal(healerStats.healAmount);
         }
     }
     

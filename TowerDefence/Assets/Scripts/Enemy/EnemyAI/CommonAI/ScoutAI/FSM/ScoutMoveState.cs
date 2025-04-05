@@ -11,6 +11,8 @@ public class ScoutMoveState : ScoutBaseState
     private Vector3 closestTarget;
 
     private bool allunitsdead;
+
+    private ScoutStats scoutStats;
         
     // reference to the core node 
     private Transform coreNodePosition;
@@ -27,6 +29,7 @@ public class ScoutMoveState : ScoutBaseState
         unitTracker = gameManager.GetComponent<UnitTracker>();
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
+        scoutStats = go.GetComponent<ScoutStats>();
     }
     
     // Enter
@@ -54,6 +57,10 @@ public class ScoutMoveState : ScoutBaseState
         if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
         {
             return new ScoutFinishedState(go);
+        }
+        if (scoutStats.currentHealth <= 0)
+        {
+            return new ScoutDeadState(go);
         }
         return null;
     }

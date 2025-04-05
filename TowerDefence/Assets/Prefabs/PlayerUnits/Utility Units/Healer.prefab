@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e47da68e176a094fafc4bbc7d9f5002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootLocation: {fileID: 2890530633123384697}
+  shootLocation: {fileID: 1553333686606973815}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -646,11 +646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &2890530633123384697 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3907833259527411700, guid: d7803f906b93c0947a71f0c38f75738b, type: 3}
-  m_PrefabInstance: {fileID: 2172516155479218829}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6258095030075631665 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5260041272821379772, guid: d7803f906b93c0947a71f0c38f75738b, type: 3}

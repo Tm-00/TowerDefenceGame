@@ -9,6 +9,8 @@ public class RifleMoveState : RifleBaseState
     private NavMeshAgent agent;
     private GameObject enemy;
 
+    private RifleStats rifleStats;
+
     private Vector3 closestTarget;
 
     private bool allunitsdead;
@@ -28,6 +30,8 @@ public class RifleMoveState : RifleBaseState
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
         enemy = go;
+
+        rifleStats = go.GetComponent<RifleStats>();
     }
     
     // Enter
@@ -60,8 +64,11 @@ public class RifleMoveState : RifleBaseState
         {
             return new RifleFinishedState(go);
         }
-        //TODO add a death state transition + a health script for this enemy type
-        // TODO add a game over script for finished state
+
+        if (rifleStats.currentHealth <= 0)
+        {
+            return new RifleDeadState(go);
+        }
         return null;
     }
 

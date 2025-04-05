@@ -13,6 +13,8 @@ public class RobotMoveState : RobotBaseState
     private bool allunitsdead;
     
     private GameObject enemy;
+
+    private RobotStats robotStats;
         
     // reference to the core node 
     private Transform coreNodePosition;
@@ -26,6 +28,7 @@ public class RobotMoveState : RobotBaseState
         agent = go.gameObject.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
         enemy = go;
+        robotStats = go.GetComponent<RobotStats>();
     }
     
     // Enter
@@ -58,8 +61,10 @@ public class RobotMoveState : RobotBaseState
         {
             return new RobotFinishedState(go);
         }
-        //TODO add a death state transition + a health script for this enemy type
-        // TODO add a game over script for finished state
+        if (robotStats.currentHealth <= 0)
+        {
+            return new RobotDeadState(go);
+        }
         return null;
     }
 

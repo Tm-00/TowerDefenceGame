@@ -13,7 +13,8 @@ public class BuffDeadState : BuffBaseState
     }
     public override void Enter(GameObject go)
     {
- 
+        Debug.Log("Buffer: DeadState");
+        ObjectPoolManager.ReturnObjectToPool(go);
     }
 
     public override void Update(GameObject go)

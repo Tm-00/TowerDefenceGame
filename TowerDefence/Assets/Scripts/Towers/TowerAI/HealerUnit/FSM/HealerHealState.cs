@@ -27,7 +27,7 @@ public class HealerHealState : HealerBaseState
     
     [Header("Attack Values")]
     private readonly float range;
-    private readonly float aoeRadius; // AoE radius for heal
+    private readonly float aoeRadius; 
 
     public HealerHealState(GameObject go)
     {
@@ -70,8 +70,7 @@ public class HealerHealState : HealerBaseState
 
     public override void Update(GameObject go)
     {
-        // can't use cloest unit because it includes itself
-        closestTarget = unitTracker.FindClosestWallUnit(go).transform;
+        closestTarget = unitTracker?.FindClosestFloorUnit(go).transform;
         
         if (closestTarget != null)
         {

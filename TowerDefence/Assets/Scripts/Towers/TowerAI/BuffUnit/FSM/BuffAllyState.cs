@@ -27,7 +27,7 @@ public class BuffAllyState : BuffBaseState
     
     [Header("Attack Values")]
     private readonly float range;
-    private readonly float aoeRadius; // AoE radius for buffs
+    private readonly float aoeRadius; 
     
 
     public BuffAllyState(GameObject go)
@@ -47,13 +47,13 @@ public class BuffAllyState : BuffBaseState
         }
 
         buffHandler = go.GetComponent<BuffHandler>();
-        if (rotatable == null)
+        if (buffHandler == null)
         {
             Debug.LogError("GameObject is missing an BuffHandler component!");
         }
         
         buffStats = go.GetComponent<BuffStats>();
-        if (rotatable == null)
+        if (buffStats == null)
         {
             Debug.LogError("GameObject is missing an BuffStats component!");
         }
@@ -66,12 +66,13 @@ public class BuffAllyState : BuffBaseState
     
     public override void Enter(GameObject go)
     {
-        Debug.Log("Healer: Heal State");
-        closestAlly = unitTracker.FindClosestUnit(go)?.transform;
+        Debug.Log("Buffer: Buff State");
     }
 
     public override void Update(GameObject go)
     {
+        closestAlly = unitTracker?.FindClosestUnit(go).transform;
+        
         if (closestAlly != null)
         {
             // rotate unit towards target
@@ -90,6 +91,7 @@ public class BuffAllyState : BuffBaseState
                     if (targetHit != null && targetHit == closestAlly.gameObject)
                     {
                         buffHandler.Attack(targetHit);
+                        buffHandler.buffApplied = true;
                     }
                 }
             }

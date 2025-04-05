@@ -13,18 +13,22 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Buff Values")]
-    internal int buffAmount = 15;
     public readonly float range = 50f;
     private readonly float aoeRadius = 5f;
     public bool unitDied;
+    public bool buffApplied;
     
     [Header("Cooldowns")]
     private float cooldown = 3;
     private float cooldownTime;
+
+    private BuffStats buffStats;
     
     void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
+        buffApplied = false;
+        buffStats = GetComponent<BuffStats>();
     }
     
     // Implement Attack from IAttackHandler
@@ -73,7 +77,7 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
         {
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             cooldownTime = cooldown;
-            targetStats?.ApplyBuff(buffAmount);
+            targetStats?.ApplyBuff(buffStats.buffAmount);
         }
     }
         
@@ -84,7 +88,7 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
         
         if (targetHealth != null && targetHealth.IsDead())  
         {
-            unitDied = true;  // Set enemyKilled to true when an enemy is killed
+            unitDied = true;  
         }
     }
     

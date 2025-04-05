@@ -6,6 +6,9 @@ public class MeleeStats : MonoBehaviour, IUnitStats, IStats
     [Header("Melee Stats")] 
     private float maxHealth = 50f;
     internal float currentHealth;
+    
+    internal int damageAmount = 5;
+    
     private float scoreValue = 5;
     private float resourceValue = 10;
     
@@ -44,7 +47,7 @@ public class MeleeStats : MonoBehaviour, IUnitStats, IStats
     public void ApplyHeal(float amount)
     {
         currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        //currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Melee current hp " + currentHealth);
     }
@@ -70,8 +73,11 @@ public class MeleeStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        currentHealth += amount;
-        meleeAttackHandler.damageAmount += amount;
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        damageAmount = Mathf.Clamp(damageAmount + amount, 0, 20);
+
+        Debug.Log("new max health " + maxHealth);
+        Debug.Log("new buff amount " + damageAmount);
     }
     
     public void OnSpawn()
