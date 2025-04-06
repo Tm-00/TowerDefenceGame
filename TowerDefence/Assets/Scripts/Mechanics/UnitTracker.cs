@@ -9,7 +9,7 @@ public class UnitTracker : MonoBehaviour
     
     public readonly List<GameObject> UnitTargets = new List<GameObject>();
     public readonly List<GameObject> EnemyTargets = new List<GameObject>();
-    [SerializeField] private GameObject coreNode;
+    private GameObject coreNode;
 
     private int KnownUnitSpawns;
     private int knownEnemySpawns;
@@ -28,6 +28,7 @@ public class UnitTracker : MonoBehaviour
         wallUnitList = new List<GameObject>();
         floorUnitList = new List<GameObject>();
         enemyList = new List<GameObject>();
+        coreNode = GameObject.Find("CoreNode");
     }
 
 

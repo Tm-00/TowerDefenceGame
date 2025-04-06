@@ -2605,12 +2605,12 @@ MonoBehaviour:
   common2: {fileID: 1785821350392903418, guid: 66b5938e7d5d10041905270fc541e679, type: 3}
   elite1: {fileID: 5514447930200123060, guid: e4273f5a876829d4ca17d692fa4c70d1, type: 3}
   elite2: {fileID: 8877446834361509729, guid: 614b3f11fd467b44284d0c8e6d7c1aaf, type: 3}
-  boss: {fileID: 0}
-  amount1: 1
+  boss: {fileID: 6381298362927677358, guid: 5a3342bd8502b5e43851200e1723d0e6, type: 3}
+  amount1: 0
   amount2: 0
   amount3: 0
   amount4: 0
-  amount5: 0
+  amount5: 1
 --- !u!4 &1086233708
 Transform:
   m_ObjectHideFlags: 0
@@ -2639,7 +2639,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf14b29efcccb74d9070dab8973f4d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coreNode: {fileID: 1768794013}
 --- !u!114 &1086233710
 MonoBehaviour:
   m_ObjectHideFlags: 0

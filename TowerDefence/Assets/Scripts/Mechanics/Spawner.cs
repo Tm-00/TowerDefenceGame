@@ -18,7 +18,6 @@ public class spawner : MonoBehaviour
     void Start()
     {
         populateList();
-        Debug.Log(wave[0]);
         StartCoroutine(SpawnEnemiesCoroutine());
     }
 
@@ -59,6 +58,7 @@ public class spawner : MonoBehaviour
         wave.Add(common2);
         wave.Add(elite1);
         wave.Add(elite2);
+        wave.Add(boss);
         
         amountToSpawn.Add(amount1);
         amountToSpawn.Add(amount2);

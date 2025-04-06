@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5777294455380007757}
   m_Layer: 10
   m_Name: FlightShootLocation
-  m_TagString: FlightShootLocation
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

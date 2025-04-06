@@ -13,14 +13,6 @@ TagManager:
   - CanPlaceWallUnit
   - CanPlaceFloorUnit
   - GameManager
-  - MeleeShootLocation
-  - HealShootLocation
-  - RifleShootLocation
-  - FlightShootLocation
-  - RobotShootLocation
-  - LaserShootLocation
-  - MissileShootLocation
-  - TurretShootLocation
   layers:
   - Default
   - TransparentFX
