@@ -37,7 +37,7 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
         }
     }
     
-    public void ApplyAoeHeal(Vector3 aoeCenter)
+    private void ApplyAoeHeal(Vector3 aoeCenter)
     {
         // Find all colliders within the aoeRadius around the hit point
         Collider[] hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius, layerMask);

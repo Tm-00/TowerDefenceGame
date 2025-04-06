@@ -7,6 +7,9 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
     internal float currentHealth;
     private float scoreValue = 25;
     
+    internal int damageAmount = 5;
+    internal int healAmount = 5;
+    
     [Header("Class")]
     private UnitTracker unitTracker; 
     private readonly BossAttackHandler bossAttackHandler;

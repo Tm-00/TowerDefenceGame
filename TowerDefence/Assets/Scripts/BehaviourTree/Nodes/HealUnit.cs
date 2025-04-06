@@ -3,20 +3,20 @@ using Pada1.BBCore;
 using Pada1.BBCore.Tasks;
 using BBUnity.Actions;
 
-[Action("MyActions/AttackUnit")]
-[Help("use the closest target found in the previous action and shoot at it")]
-public class AttackUnit : GOAction
+[Action("MyActions/HealUnit")]
+[Help("use the closest target found in the previous action and heal it")]
+public class HealUnit : GOAction
 {
     [InParam("shootLocation")]
     private Transform shootLocation;
     
-    [InParam("closestTarget")] 
-    public Transform closestTarget;
+    [InParam("closestAlly")] 
+    public Transform closestAlly;
     
     private GameObject targetToShoot;
     
     private RaycastHit hit;
-    private LayerMask unitLayerMask;
+    private LayerMask allyLayerMask;
     
     // private IRotatable rotatable;
     // private IAttackHandler attackHandler;
@@ -27,9 +27,6 @@ public class AttackUnit : GOAction
     private bool enemyKilled;
     private float range;
     
-   // private readonly float rotationSpeed = 1.0f;
-    
-    
     public override void OnStart()
     {
         
@@ -38,8 +35,8 @@ public class AttackUnit : GOAction
         bossAttackHandler = gameObject.GetComponent<BossAttackHandler>();
         bossStats = gameObject.GetComponent<BossStats>();
 
-        unitLayerMask = bossAttackHandler.unitLayerMask;
-        range = bossAttackHandler.range;
+        allyLayerMask = bossAttackHandler.allyLayerMask;
+        range = bossAttackHandler.healRange;
         
         if (shootLocation == null)
         {
@@ -52,7 +49,6 @@ public class AttackUnit : GOAction
         }
         base.OnStart();
     }
-    
     
     public override TaskStatus OnUpdate()
     {     
@@ -67,18 +63,17 @@ public class AttackUnit : GOAction
         
         if (shootLocation != null)
         {
-            if (Physics.Raycast(shootLocation.position, gameObject.transform.TransformDirection(Vector3.forward), out hit, range, unitLayerMask))
+            if (Physics.Raycast(shootLocation.position, gameObject.transform.TransformDirection(Vector3.forward), out hit, range, allyLayerMask))
             {
                 // confirm a target was hit then store it as a gameobject 
                 var targetHit = hit.collider.gameObject;
                 // check that the target hit was the cloest target then perform attack methods
-                if (targetHit != null && targetHit.transform == closestTarget)
+                if (targetHit != null && targetHit.transform == closestAlly)
                 {
-                    bossAttackHandler.Attack(targetHit);
+                    bossAttackHandler.Heal(targetHit);
                 }
             }
         }
         return TaskStatus.COMPLETED;
     } 
 }
-
