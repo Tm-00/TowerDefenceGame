@@ -27,6 +27,7 @@ public class LocateUtilityUnits : BasePrimitiveAction
     
     public override TaskStatus OnUpdate()
     {
+        //Debug.Log("we here");
         if (unitTracker == null)
         {
             Debug.LogError("UnitTracker is null.");
@@ -42,7 +43,6 @@ public class LocateUtilityUnits : BasePrimitiveAction
         closestAlly = unitTracker.FindClosestUnit(boss);
         if (closestAlly != null)
         {
-            Debug.Log("doesn't equal null");
             closestTarget = closestAlly;
             ct = closestTarget.position;
             return TaskStatus.COMPLETED;

@@ -46,13 +46,11 @@ public class UnitTracker : MonoBehaviour
         if (UnitsSpawned())
         {
             UnitTargets.Add(TowerPlacement.unit);
-            //Debug.Log(UnitTargets.Count);
         }
         
         if (EnemiesSpawned())
         {
             EnemyTargets.Add(spawner.Enemy);
-            Debug.Log(EnemyTargets.Count);
         }
     }
 
