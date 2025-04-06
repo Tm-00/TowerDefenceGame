@@ -13,7 +13,7 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Buff Values")]
-    public readonly float range = 50f;
+    public readonly float range = 25f;
     private readonly float aoeRadius = 5f;
     public bool unitDied;
     public bool buffApplied;

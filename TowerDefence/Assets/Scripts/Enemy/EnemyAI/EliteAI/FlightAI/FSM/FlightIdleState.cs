@@ -52,7 +52,7 @@ public class FlightIdleState : FlightBaseState
             // idle if at the core node
             if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
             {
-                return new FlightIdleState(go);
+                return new FlightFinishedState(go);
             }
         }
         return null;

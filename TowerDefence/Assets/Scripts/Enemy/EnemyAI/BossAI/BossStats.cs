@@ -3,17 +3,18 @@ using UnityEngine.UI;
 public class BossStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Boss Stats")] 
-    private float maxHealth = 150f;
+    private float maxHealth = 1f;
     internal float currentHealth;
     private float scoreValue = 25;
     
-    internal int damageAmount = 5;
+    internal int damageAmount = 1;
     internal int healAmount = 5;
     
     [Header("Class")]
     private UnitTracker unitTracker; 
     private readonly BossAttackHandler bossAttackHandler;
     private ScoreManager scoreManager;
+    private CNHealth cnHealth;
     
     [Header("Health Bar")]
     public Image healthBar;
@@ -23,6 +24,8 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
+        unitTracker = GetComponent<UnitTracker>();
+        cnHealth = FindObjectOfType<CNHealth>();
     }
     
     public void ApplyDamage(float amount)
@@ -59,8 +62,9 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
     public void Die()
     {
         scoreManager.AddScore(scoreValue);
-        Debug.Log("Flight unit has died.");
+        Debug.Log("Boss unit has died.");
         unitTracker.EnemyTargets.Remove(gameObject);
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 
     public bool CanSpawn()
@@ -72,5 +76,11 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
     {
         currentHealth = maxHealth;
         healthBar.fillAmount = currentHealth;
+    }
+
+    public void Finished()
+    {
+        cnHealth.HealthHandler();
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }

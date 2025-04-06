@@ -17,7 +17,7 @@ public class MissileLocateEnemyState : MissileBaseState
     }
     public override void Enter(GameObject go)
     {
-        Debug.Log("Turret: LocateEnemyState");
+        Debug.Log("Missile: LocateEnemyState");
     }
 
     public override void Update(GameObject go)
@@ -41,7 +41,7 @@ public class MissileLocateEnemyState : MissileBaseState
     public override MissileBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(go.transform.position, closestTarget) <= 50)
+        if (Vector3.Distance(go.transform.position, closestTarget) <= 25)
         {
             return new MissileAttackState(go);
         }

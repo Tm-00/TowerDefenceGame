@@ -17,7 +17,7 @@ public class LaserLocateEnemyState : LaserBaseState
     }
     public override void Enter(GameObject go)
     {
-        Debug.Log("Turret: LocateEnemyState");
+        Debug.Log("Laser: LocateEnemyState");
     }
 
     public override void Update(GameObject go)
@@ -41,7 +41,7 @@ public class LaserLocateEnemyState : LaserBaseState
     public override LaserBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(go.transform.position, closestTarget) <= 10)
+        if (Vector3.Distance(go.transform.position, closestTarget) <= 25)
         {
             return new LaserAttackState(go);
         }

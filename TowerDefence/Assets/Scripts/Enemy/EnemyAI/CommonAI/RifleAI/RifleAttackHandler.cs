@@ -14,7 +14,7 @@ public class RifleAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     
     [Header("Attack Values")] 
     internal int damageAmount = 5;
-    public readonly float range = 100f;
+    public readonly float range = 25f;
     private bool enemyKilled;
     
     [Header("Cooldowns")]

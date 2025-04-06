@@ -10,10 +10,10 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
-    private MissileStats missileStats;
+    private TurretStats turretStats;
     
     [Header("Attack Values")] 
-    public readonly float range = 10f;
+    public readonly float range = 25f;
     private bool enemyKilled;
     
     [Header("Cooldowns")] 
@@ -24,7 +24,7 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
-        missileStats = GetComponent<MissileStats>();
+        turretStats = GetComponent<TurretStats>();
     }
 
     // Implement Attack from IAttackHandler
@@ -36,7 +36,7 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
-                targetStats?.ApplyDamage(missileStats.damageAmount);
+                targetStats?.ApplyDamage(turretStats.damageAmount);
             }
             else
             {

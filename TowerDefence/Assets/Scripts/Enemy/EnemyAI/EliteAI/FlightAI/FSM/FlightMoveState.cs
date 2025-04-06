@@ -55,7 +55,7 @@ public class FlightMoveState : FlightBaseState
     public override FlightBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 15 && allunitsdead != true)
+        if (Vector3.Distance(agent.transform.position, closestTarget) <= 20 && allunitsdead != true)
         {
             return new FlightAttackState(go);
         }

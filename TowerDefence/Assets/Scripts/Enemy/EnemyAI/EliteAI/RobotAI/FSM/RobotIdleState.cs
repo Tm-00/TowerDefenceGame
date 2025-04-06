@@ -51,7 +51,7 @@ public class RobotIdleState : RobotBaseState
             // idle if at the core node
             if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
             {
-                return new RobotIdleState(go);
+                return new RobotFinishedState(go);
             }
         }
         return null;

@@ -88,8 +88,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1.1, z: 0}
+  m_Size: {x: 2, y: 5, z: 2}
+  m_Center: {x: 0, y: 2.7, z: 0}
 --- !u!114 &6265636809432881882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +131,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  enemyKilled: 0
+  unitDied: 0
+  buffApplied: 0
 --- !u!1001 &351227452904833775
 PrefabInstance:
   m_ObjectHideFlags: 0

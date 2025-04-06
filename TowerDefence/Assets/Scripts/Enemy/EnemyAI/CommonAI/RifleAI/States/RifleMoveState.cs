@@ -56,7 +56,7 @@ public class RifleMoveState : RifleBaseState
     public override RifleBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 10)
+        if (Vector3.Distance(agent.transform.position, closestTarget) <= 20)
         {
             return new RifleAttackState(go);
         }

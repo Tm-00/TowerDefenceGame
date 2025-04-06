@@ -472,7 +472,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6381298362927677358}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 2
   m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
@@ -504,8 +504,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 1.2, z: 0}
+  m_Size: {x: 2, y: 5, z: 2}
+  m_Center: {x: 0, y: 2.7, z: 0}
 --- !u!114 &1554825919062861317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,10 +574,12 @@ MonoBehaviour:
     - {fileID: 6381298362927677358}
     - {fileID: 5277577797062908321}
     - {fileID: 1355829374463459690}
+    - {fileID: 6442987714770807606}
     objectParamsNames:
     - BossGO
     - shootLocation
     - UnitTracker
+    - BossStats
     objectParamsLostDefaultValue: 
     layerMaskParams: []
     layerMaskParamsNames: []

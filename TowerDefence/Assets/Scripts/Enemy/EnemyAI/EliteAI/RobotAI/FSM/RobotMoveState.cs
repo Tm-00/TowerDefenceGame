@@ -53,7 +53,7 @@ public class RobotMoveState : RobotBaseState
     public override RobotBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(agent.transform.position, closestTarget) <= 6 && allunitsdead != true)
+        if (Vector3.Distance(agent.transform.position, closestTarget) <= 20 && allunitsdead != true)
         {
             return new RobotAttackState(go);
         }

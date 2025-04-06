@@ -49,10 +49,10 @@ public class RifleIdleState : RifleBaseState
                 return new RifleMoveState(go);
             }
             
-            // idle if at the core node
+            //if at the core node
             if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
             {
-                return new RifleIdleState(go);
+                return new RifleFinishedState(go);
             }
         }
         return null;

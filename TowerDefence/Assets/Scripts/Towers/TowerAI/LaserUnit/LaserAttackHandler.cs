@@ -12,7 +12,7 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private LaserStats laserStats;
 
     [Header("Attack Values")] 
-    public readonly float range = 100f;
+    public readonly float range = 25f;
     public bool enemyKilled;
 
     [Header("Cooldowns")] public float cooldown = 7.5f;
@@ -23,6 +23,7 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
+        laserStats = GetComponent<LaserStats>();
     }
 
     // Implement Attack from IAttackHandler

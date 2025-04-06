@@ -13,7 +13,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private MissileStats missileStats;
     
     [Header("Attack Values")] 
-    public readonly float range = 20f;
+    public readonly float range = 25f;
     private readonly float aoeRadius = 10f;
     public bool enemyKilled;
     
@@ -24,7 +24,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Enemies");
-        missileStats.GetComponent<MissileStats>();
+        missileStats = GetComponent<MissileStats>();
     }
     
     public void Attack(GameObject targetHit)
