@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 6265636809432881882}
   - component: {fileID: -1287577086222453869}
   - component: {fileID: -3405589754656694609}
+  - component: {fileID: 300390823716679623}
   m_Layer: 6
   m_Name: Buff
   m_TagString: FloorUnit
@@ -133,6 +134,27 @@ MonoBehaviour:
     m_Bits: 0
   unitDied: 0
   buffApplied: 0
+--- !u!95 &300390823716679623
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5657659185751161299}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 85c1988c9b83e3940a1ab7f4eb41c79c, type: 3}
+  m_Controller: {fileID: 9100000, guid: 6a8b80811112d4d42a77ea69127f5788, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &351227452904833775
 PrefabInstance:
   m_ObjectHideFlags: 0

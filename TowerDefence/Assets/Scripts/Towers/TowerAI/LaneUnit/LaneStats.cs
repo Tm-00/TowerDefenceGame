@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LaneStats : MonoBehaviour, IUnitStats, IStats
+public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
 {
     [Header("Lane Stats")] 
     private float maxHealth = 50f;
@@ -18,6 +19,11 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
     [Header("Health Bar")]
     public Image healthBar;
     
+    [Header("Animator")] 
+    private Animator anim;
+    AnimatorStateInfo currentStateInfo;
+    private int laneActionHash = Animator.StringToHash("LaneAction");
+    
     public bool hasBeenPlaced { get; set; }
     
     void Start()
@@ -27,10 +33,17 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
         unitTracker = FindObjectOfType<UnitTracker>();
         currentHealth = maxHealth;
         hasBeenPlaced = false;
+        anim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        var closestEnemy = unitTracker.FindClosestEnemy(gameObject);
     }
 
     public void ApplyDamage(float amount)
     {
+        anim.SetTrigger(laneActionHash);
         currentHealth -= amount;
         Debug.Log(" Lane current hp " + currentHealth);
         healthBar.fillAmount = currentHealth / maxHealth;
@@ -88,4 +101,5 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats
         }
         return false;
     }
+    
 }

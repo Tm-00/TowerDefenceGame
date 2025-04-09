@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 3942360156729431835}
   - component: {fileID: -3385605194069409703}
   - component: {fileID: -559197547395881237}
+  - component: {fileID: 3550657279982469137}
   m_Layer: 6
   m_Name: Healer
   m_TagString: FloorUnit
@@ -132,6 +133,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   unitDied: 0
+--- !u!95 &3550657279982469137
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5165760642615900159}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 85c1988c9b83e3940a1ab7f4eb41c79c, type: 3}
+  m_Controller: {fileID: 9100000, guid: 1bd9172d5ebe4b64da601928e583bb36, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &596180781212131225
 PrefabInstance:
   m_ObjectHideFlags: 0

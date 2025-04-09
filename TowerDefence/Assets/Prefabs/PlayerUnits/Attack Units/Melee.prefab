@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 6531801342155602986}
   - component: {fileID: 4214139538631114850}
   - component: {fileID: 1453951754381356300}
+  - component: {fileID: -9046753331337979284}
   m_Layer: 6
   m_Name: Melee
   m_TagString: FloorUnit
@@ -132,6 +133,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   enemyKilled: 0
+--- !u!95 &-9046753331337979284
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8901036928270487224}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: a39d150aebfb4ce449f4a4f23709b822, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &609463605670881939
 PrefabInstance:
   m_ObjectHideFlags: 0

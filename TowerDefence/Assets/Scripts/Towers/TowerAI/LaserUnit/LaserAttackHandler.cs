@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,14 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     public readonly float range = 25f;
     public bool enemyKilled;
 
-    [Header("Cooldowns")] public float cooldown = 7.5f;
+    [Header("Cooldowns")] 
+    public float cooldown = 1f;
     private float cooldownTime;
-
+    
+    [Header("Animator")] 
+    [SerializeField] private Animator anim;
+    AnimatorStateInfo currentStateInfo;
+    private int shootTriggerHash = Animator.StringToHash("Shoot");
 
     // Start is called before the first frame update
     private void Awake()
@@ -26,14 +32,30 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         laserStats = GetComponent<LaserStats>();
     }
 
+    private void Update()
+    {
+        var state = anim.GetCurrentAnimatorStateInfo(0);
+      //  Debug.Log("Current animation: " + state.fullPathHash);
+        
+        int shootStateHash = Animator.StringToHash("Base Layer.Shoot");
+      //  Debug.Log("Shoot hash: " + shootStateHash);
+
+      // if (state.fullPathHash == shootStateHash)
+      // {
+      //     Debug.Log(true);
+      // }
+    }
+
     // Implement Attack from IAttackHandler
     public void Attack(GameObject targetHit)
     {
+        
         if (targetHit != null)
         {
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             if (cooldownTime <= 0)
             {
+                anim.SetTrigger(shootTriggerHash);
                 cooldownTime = cooldown;
                 targetStats?.ApplyDamage(laserStats.damageAmount);
             }

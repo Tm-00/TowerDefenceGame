@@ -30,6 +30,11 @@ public class RobotAttackState : RobotBaseState
     [Header("Attack Values")]
     private readonly float range;
     
+    [Header("Animator")] 
+    [SerializeField] private Animator anim;
+    private int shootTriggerHash = Animator.StringToHash("RobotShoot");
+    private int speedHash = Animator.StringToHash("RobotSpeed");
+    
     public RobotAttackState(GameObject go)
     {
         attackHandler = go.GetComponent<IAttackHandler>();
@@ -50,6 +55,14 @@ public class RobotAttackState : RobotBaseState
             Debug.LogError("GameObject is missing an RobotAttackHandler component!");
         }
         
+        anim = go.GetComponent<Animator>();
+        if (anim != null)
+        {
+            Debug.Log("success");
+        }
+        
+        GameObject gameManager = GameObject.Find("GameManager");
+        unitTracker = gameManager.GetComponent<UnitTracker>(); 
         robotStats = go.GetComponent<RobotStats>();
         robotLayerMask = robotAttackHandler.layerMask;
         shootLocation = robotAttackHandler.shootLocation;
@@ -60,6 +73,7 @@ public class RobotAttackState : RobotBaseState
     // Enter
     public override void Enter(GameObject go)
     {
+        anim.SetFloat(speedHash, 1);
         Debug.Log("Robot Drone: Attack State");
         agent = go.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
@@ -83,17 +97,21 @@ public class RobotAttackState : RobotBaseState
                     // check that the target hit was the cloest target then perform attack methods
                     if (targetHit != null && targetHit == closestTarget.gameObject)
                     {
+                        //anim.SetTrigger(shootTriggerHash);
                         robotAttackHandler.Attack(targetHit);
                     }
                 }
             }
         }
+        Debug.DrawRay(shootLocation.transform.position, shootLocation.transform.forward * 10f, Color.green); // Green line showing current forward direction
+
     }
   
     // Exit
     public override void Exit(GameObject go)
     {
         robotAttackHandler.ResetEnemyKilledStatus(); 
+        anim.SetFloat(speedHash, 0);
     }
     
     // input

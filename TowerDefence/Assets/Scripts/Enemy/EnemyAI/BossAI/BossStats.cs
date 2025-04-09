@@ -3,7 +3,7 @@ using UnityEngine.UI;
 public class BossStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Boss Stats")] 
-    private float maxHealth = 1f;
+    private float maxHealth = 1000f;
     internal float currentHealth;
     private float scoreValue = 25;
     

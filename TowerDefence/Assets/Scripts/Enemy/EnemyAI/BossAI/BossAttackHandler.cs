@@ -1,12 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BossAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
     [Header("Boss Values")] 
     public Transform shootLocation;
-
+    private NavMeshAgent nav;
+    private float currentSpeed;
+    
     [Header("Attack Foundations")] 
     public LayerMask allyLayerMask;
     public LayerMask unitLayerMask;
@@ -25,12 +29,34 @@ public class BossAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private readonly float cooldown = 5f;
     private float cooldownTime;
     
+    [Header("Animator")] 
+    private Animator anim;
+    AnimatorStateInfo currentStateInfo;
+    private int bossShootTriggerHash = Animator.StringToHash("isAttacking");
+    private int bossSpeedHash = Animator.StringToHash("isMoving");
+    
     
     private void Awake()
     {
         allyLayerMask = LayerMask.GetMask("Enemies");
         unitLayerMask = LayerMask.GetMask("Towers");
         bossStats = GetComponent<BossStats>();
+        anim = GetComponent<Animator>();
+        nav = GetComponent<NavMeshAgent>();
+    }
+
+    private void Update()
+    {
+        currentSpeed = nav.velocity.magnitude;
+        if (currentSpeed > 0.1)
+        {
+            anim.SetFloat(bossSpeedHash, 1);
+        }
+        else
+        {
+            anim.SetFloat(bossSpeedHash, 0);
+        }
+        
     }
 
     public void Attack(GameObject targetHit)
@@ -41,6 +67,7 @@ public class BossAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             if (cooldownTime <= 0)
             {
                 cooldownTime = cooldown;
+                anim.SetTrigger(bossShootTriggerHash);
                 targetStats?.ApplyDamage(bossStats.damageAmount);
             }
             else

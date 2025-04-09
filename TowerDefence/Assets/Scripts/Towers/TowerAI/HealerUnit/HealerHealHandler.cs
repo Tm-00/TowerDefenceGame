@@ -22,10 +22,16 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     private float cooldown = 3;
     private float cooldownTime;
     
+    [Header("Animator")] 
+    private Animator anim;
+    AnimatorStateInfo currentStateInfo;
+    private int healActionHash = Animator.StringToHash("HealAction");
+    
     void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
         healerStats = GetComponent<HealerStats>();
+        anim = GetComponent<Animator>();
     }
     
     // Implement Attack from IAttackHandler
@@ -55,6 +61,7 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
             // Loop through each unique enemy and apply damage
             foreach (GameObject targetHit in uniqueAllies)
             {
+                anim.SetTrigger(healActionHash);
                 UnitAoeHeal(targetHit);
                 DeathCheck(targetHit);
             }

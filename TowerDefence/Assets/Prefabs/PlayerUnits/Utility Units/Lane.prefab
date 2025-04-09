@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 262100348478503372}
   - component: {fileID: 7650960545724115903}
   - component: {fileID: 2180459953396606267}
+  - component: {fileID: 1205303775419385805}
   m_Layer: 6
   m_Name: Lane
   m_TagString: FloorUnit
@@ -82,6 +83,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 2217997088528576539}
+--- !u!95 &1205303775419385805
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242763812648948908}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 85c1988c9b83e3940a1ab7f4eb41c79c, type: 3}
+  m_Controller: {fileID: 9100000, guid: bc8fdd84d9aa15140a7b04a122945862, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2209696423521500540
 PrefabInstance:
   m_ObjectHideFlags: 0

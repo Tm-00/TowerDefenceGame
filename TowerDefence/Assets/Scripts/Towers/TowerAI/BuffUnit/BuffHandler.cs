@@ -24,11 +24,18 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
 
     private BuffStats buffStats;
     
+    [Header("Animator")] 
+    private Animator anim;
+    AnimatorStateInfo currentStateInfo;
+    private int buffActionHash = Animator.StringToHash("BuffAction");
+
+    
     void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
         buffApplied = false;
         buffStats = GetComponent<BuffStats>();
+        anim = GetComponent<Animator>();
     }
     
     // Implement Attack from IAttackHandler
@@ -58,6 +65,7 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
             // Loop through each unique enemy and apply damage
             foreach (GameObject targetHit in uniqueAllies)
             {
+                anim.SetTrigger(buffActionHash);
                 UnitAoeBuff(targetHit);
                 DeathCheck(targetHit);
             }

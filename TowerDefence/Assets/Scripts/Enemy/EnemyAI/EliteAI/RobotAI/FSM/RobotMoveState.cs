@@ -19,7 +19,13 @@ public class RobotMoveState : RobotBaseState
     // reference to the core node 
     private Transform coreNodePosition;
     
+    private float currentSpeed;
+    
     private readonly UnitTracker unitTracker;
+    
+    [Header("Animator")] 
+    private Animator anim;
+    private int speedHash = Animator.StringToHash("RobotSpeed");
     
     // Constructor.
     public RobotMoveState(GameObject go)
@@ -32,24 +38,32 @@ public class RobotMoveState : RobotBaseState
         coreNodePosition = unitTracker.UnitTargets[0].transform;
         enemy = go;
         robotStats = go.GetComponent<RobotStats>();
+        anim = go.GetComponent<Animator>();
+        if (anim != null)
+        {
+            Debug.Log("success");
+        }
     }
     
     // Enter
     public override void Enter(GameObject go)
     {
+        
         Debug.Log("Rifle Drone: Move State");
     }
     
     // Update
     public override void Update(GameObject go)
     {
+        currentSpeed = agent.velocity.magnitude;
+        anim.SetFloat(speedHash, currentSpeed);
         FilterTargets();
     }
     
     // Exit
     public override void Exit(GameObject gameObject)
-    {
-        
+    { 
+        anim.SetFloat(speedHash, 0);
     }
     
     // Input

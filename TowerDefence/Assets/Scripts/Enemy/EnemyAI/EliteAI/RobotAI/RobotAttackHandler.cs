@@ -12,6 +12,7 @@ public class RobotAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     [Header("Attack Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
+    private NavMeshAgent nav;
     
     [Header("Attack Values")]
     internal int damageAmount = 50;
@@ -22,32 +23,49 @@ public class RobotAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private readonly float cooldown = 5f;
     private float cooldownTime;
 
+    private float currentSpeed;
 
+    [Header("Animator")] 
+    //[SerializeField] private Animator anim;
+    private Animator anim;
+    AnimatorStateInfo currentStateInfo;
+    private int shootTriggerHash = Animator.StringToHash("RobotShoot");
+    private int speedHash = Animator.StringToHash("RobotSpeed");
+
+    
+    
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
+        anim = GetComponent<Animator>();
+        nav = GetComponent<NavMeshAgent>();
+        
     }
     
 
     // Update is called once per frame
     void Update()
     {
-        
+        currentSpeed = nav.velocity.magnitude;
     }
 
     // Implement Attack from IAttackHandler
     public void Attack(GameObject targetHit)
     {
+        
         if (targetHit != null)
         {
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             if (cooldownTime <= 0)
             {
+                anim.SetFloat(speedHash, currentSpeed);
+                anim.SetTrigger(shootTriggerHash);
                 cooldownTime = cooldown;
                 targetStats?.ApplyDamage(damageAmount);
             }
             else
             {
+               // anim.SetBool(reloadBoolHash, true);
                 cooldownTime -= Time.deltaTime;
             }
             DeathCheck(targetHit);
