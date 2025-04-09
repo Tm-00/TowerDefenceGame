@@ -1617,9 +1617,9 @@ MonoBehaviour:
   elite2: {fileID: 8877446834361509729, guid: 614b3f11fd467b44284d0c8e6d7c1aaf, type: 3}
   boss: {fileID: 6381298362927677358, guid: 5a3342bd8502b5e43851200e1723d0e6, type: 3}
   amount1: 0
-  amount2: 0
-  amount3: 0
-  amount4: 0
+  amount2: 1
+  amount3: 1
+  amount4: 1
   amount5: 1
 --- !u!4 &1086233708
 Transform:

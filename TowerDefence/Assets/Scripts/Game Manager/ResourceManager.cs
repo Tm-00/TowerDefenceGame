@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     [Header("Resources")] 
-    private static float totalResource = 30;
+    private static float totalResource = 40;
     public  float currentResource;
 
     [Header("Cooldowns")] 

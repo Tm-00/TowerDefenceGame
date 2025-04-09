@@ -48,7 +48,6 @@ public class PauseManager : MonoBehaviour
             yield return null;
         }
         
-
         Time.timeScale = 0f;
         isPaused = true;
         isCountingDown = false;
