@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class BuffAllyState : BuffBaseState
 {
     [Header("Buff Values")] 
-    private const float RotationSpeed = 1.0f;
+    private const float RotationSpeed = 10.0f;
     
     [Header("Target Values")] 
     private Transform closestAlly;

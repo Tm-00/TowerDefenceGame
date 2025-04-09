@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class LaserAttackState : LaserBaseState
 {
     [Header("Laser Values")] 
-    private readonly float rotationSpeed = 1.0f;
+    private const float RotationSpeed = 10.0f;
     
     [Header("Target Values")] 
     private Transform closestTarget;
@@ -74,7 +74,7 @@ public class LaserAttackState : LaserBaseState
         if (closestTarget != null)
         {
             // rotate unit towards target
-            rotatable.RotateToTarget(go, closestTarget, rotationSpeed);
+            rotatable.RotateToTarget(go, closestTarget, RotationSpeed);
             
             // check if the shootlocation is assigned 
             if (shootLocation != null)

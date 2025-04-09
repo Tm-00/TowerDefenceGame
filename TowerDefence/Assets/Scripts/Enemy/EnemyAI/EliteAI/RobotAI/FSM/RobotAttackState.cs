@@ -6,7 +6,7 @@ public class RobotAttackState : RobotBaseState
 {
     
     [Header("Robot Values")] 
-    private readonly float rotationSpeed = 1.0f;
+    private readonly float rotationSpeed = 10.0f;
     private NavMeshAgent agent;
     private GameObject enemy;
     

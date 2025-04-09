@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class MeleeAttackState : MeleeBaseState
 {
     [Header("Turret Values")] 
-    private const float RotationSpeed = 1.0f;
+    private const float RotationSpeed = 10.0f;
     
     [Header("Target Values")] 
     private Transform closestTarget;

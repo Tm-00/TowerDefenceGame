@@ -35,6 +35,9 @@ public class BossAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private int bossShootTriggerHash = Animator.StringToHash("isAttacking");
     private int bossSpeedHash = Animator.StringToHash("isMoving");
     
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
     
     private void Awake()
     {
@@ -66,6 +69,8 @@ public class BossAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             if (cooldownTime <= 0)
             {
+                src.clip = audioClip;
+                src.Play(); 
                 cooldownTime = cooldown;
                 anim.SetTrigger(bossShootTriggerHash);
                 targetStats?.ApplyDamage(bossStats.damageAmount);

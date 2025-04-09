@@ -58,6 +58,8 @@ public class RobotAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             if (cooldownTime <= 0)
             {
+                src.clip = audioClip;
+                src.Play(); 
                 anim.SetFloat(speedHash, currentSpeed);
                 anim.SetTrigger(shootTriggerHash);
                 cooldownTime = cooldown;
@@ -71,6 +73,10 @@ public class RobotAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             DeathCheck(targetHit);
         }
     }
+    
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
     
     // Perform a death check and set enemyKilled to true if an enemy is killed
     public void DeathCheck(GameObject targethit)

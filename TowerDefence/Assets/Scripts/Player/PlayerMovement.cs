@@ -32,11 +32,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            _velocity.y = 1f;
+            _velocity.y = 2f;
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
-            _velocity.y = -1f;
+            _velocity.y = -2f;
         }
 
         characterController.Move(MoveVector * speed * Time.deltaTime);

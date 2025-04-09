@@ -12,6 +12,10 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
     public LayerMask layerMask;
     private RaycastHit hit;
     
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
+    
     [Header("Buff Values")]
     public readonly float range = 25f;
     private readonly float aoeRadius = 5f;
@@ -43,6 +47,8 @@ public class BuffHandler : MonoBehaviour, IAttackHandler, IRotatable
     {
         if (targetHit != null)
         {
+            src.clip = audioClip;
+            src.Play(); 
             ApplyAoeBuff(targetHit.transform.position);
         }
     }

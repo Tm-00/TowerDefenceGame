@@ -21,6 +21,10 @@ public class FlightAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private readonly float cooldown = 5f;
     private float cooldownTime;
     
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
+    
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Towers");
@@ -34,6 +38,8 @@ public class FlightAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             IUnitStats targetStats = targetHit.GetComponent<IUnitStats>();
             if (cooldownTime <= 0)
             {
+                src.clip = audioClip;
+                src.Play(); 
                 cooldownTime = cooldown;
                 targetStats?.ApplyDamage(damageAmount);
             }

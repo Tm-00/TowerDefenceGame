@@ -5,8 +5,8 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     [Header("Scores")] 
-    private static float score;
-    private float highScore;
+    public float score;
+    public float highScore;
     
     [Header("UI")] 
     public TextMeshProUGUI scoreDisplay;

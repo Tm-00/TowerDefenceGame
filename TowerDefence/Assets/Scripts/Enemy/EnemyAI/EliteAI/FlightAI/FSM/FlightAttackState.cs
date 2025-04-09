@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class FlightAttackState : FlightBaseState
 {
     [Header("Flight Values")] 
-    private readonly float rotationSpeed = 1.0f;
+    private readonly float rotationSpeed = 10.0f;
     private NavMeshAgent agent;
     private GameObject enemy;
     

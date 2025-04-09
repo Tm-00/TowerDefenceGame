@@ -60,7 +60,7 @@ public class RifleMoveState : RifleBaseState
         {
             return new RifleAttackState(go);
         }
-        if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
+        if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 10)
         {
             return new RifleFinishedState(go);
         }

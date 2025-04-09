@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
+    
     [Header("Unit Values")] 
     public Transform shootLocation;
     
@@ -53,6 +57,8 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             // Loop through each unique enemy and apply damage
             foreach (GameObject targetHit in uniqueEnemies)
             {
+                src.clip = audioClip;
+                src.Play(); 
                 UnitAoeAttack(targetHit);
                 DeathCheck(targetHit);
             }

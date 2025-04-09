@@ -8,6 +8,10 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     [Header("Unit Values")] 
     public Transform shootLocation;
 
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
+    
     [Header("Heal Foundations")] 
     public LayerMask layerMask;
     private RaycastHit hit;
@@ -39,6 +43,8 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     {
         if (targetHit != null)
         {
+            src.clip = audioClip;
+            src.Play(); 
             ApplyAoeHeal(targetHit.transform.position);
         }
     }

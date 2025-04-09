@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
+    
     [Header("Unit Values")] 
     public Transform shootLocation;
     
@@ -35,6 +39,8 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             if (cooldownTime <= 0)
             {
+                src.clip = audioClip;
+                src.Play(); 
                 cooldownTime = cooldown;
                 targetStats?.ApplyDamage(turretStats.damageAmount);
             }

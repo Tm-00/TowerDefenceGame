@@ -6,6 +6,10 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
 {
     [Header("Lane Stats")] 
     private float maxHealth = 50f;
+    
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
 
     internal float currentHealth;
     private float scoreValue = 5;
@@ -43,6 +47,8 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
 
     public void ApplyDamage(float amount)
     {
+        src.clip = audioClip;
+        src.Play(); 
         anim.SetTrigger(laneActionHash);
         currentHealth -= amount;
         Debug.Log(" Lane current hp " + currentHealth);

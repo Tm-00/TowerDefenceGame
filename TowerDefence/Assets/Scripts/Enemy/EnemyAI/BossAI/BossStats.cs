@@ -80,7 +80,7 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
 
     public void Finished()
     {
-        cnHealth.HealthHandler();
+        cnHealth.HealthHandler(5);
         ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }

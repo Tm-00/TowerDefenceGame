@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
 {
-    [Header("Unit Values")] public Transform shootLocation;
+    [Header("Audio")]
+    public AudioSource src;
+    public AudioClip audioClip;
+    
+    [Header("Unit Values")] 
+    public Transform shootLocation;
 
     [Header("Attack Foundations")]
     public LayerMask layerMask;
@@ -55,6 +60,8 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
             IEnemyStats targetStats = targetHit.GetComponent<IEnemyStats>();
             if (cooldownTime <= 0)
             {
+                src.clip = audioClip;
+                src.Play(); 
                 anim.SetTrigger(shootTriggerHash);
                 cooldownTime = cooldown;
                 targetStats?.ApplyDamage(laserStats.damageAmount);
