@@ -68,6 +68,7 @@ public class MeleeStats : MonoBehaviour, IUnitStats, IStats
         Debug.Log("Melee unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     

@@ -13,6 +13,9 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
     private UnitTracker unitTracker; 
     private ScoreManager scoreManager;
     
+    private float rv = 4;
+    private ResourceManager resourceManager;
+    
     [Header("Health Bar")]
     public Image healthBar;
     
@@ -21,6 +24,8 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
+        resourceManager = FindObjectOfType<ResourceManager>();
+
     }
 
     public void ApplyDamage(float amount)
@@ -52,6 +57,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
     {
         Debug.Log("Scout unit has died.");
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(rv);
         scoreManager.AddScore(scoreValue);
     }
     

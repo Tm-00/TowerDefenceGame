@@ -5,7 +5,7 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Rifle Stats")] 
     private readonly float maxHealth = 50f;
-
+    
     internal float currentHealth;
     private readonly float scoreValue = 5;
     
@@ -14,6 +14,9 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
     private readonly RifleAttackHandler rifleAttackHandler;
     private ScoreManager scoreManager;
     
+    private float rv = 4;
+    private ResourceManager resourceManager;
+    
     [Header("Health Bar")]
     public Image healthBar;
     
@@ -21,8 +24,8 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         unitTracker = FindObjectOfType<UnitTracker>();
-        //todo add a increase in resource when enemy units die 
         currentHealth = maxHealth;
+        resourceManager = FindObjectOfType<ResourceManager>();
     }
     
     public void ApplyDamage(float amount)
@@ -54,6 +57,7 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
     {
         Debug.Log("Rifle unit has died.");
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(rv);
         scoreManager.AddScore(scoreValue);
     }
     

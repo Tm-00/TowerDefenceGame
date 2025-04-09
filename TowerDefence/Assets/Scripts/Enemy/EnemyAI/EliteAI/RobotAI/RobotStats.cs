@@ -15,6 +15,9 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
     private readonly RobotAttackHandler robotAttackHandler;
     private ScoreManager scoreManager;
     
+    private float rv = 4;
+    private ResourceManager resourceManager;
+    
     [Header("Health Bar")]
     public Image healthBar;
     
@@ -23,6 +26,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
+        resourceManager = FindObjectOfType<ResourceManager>();
     }
     
     public void ApplyDamage(float amount)
@@ -54,6 +58,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager.AddScore(scoreValue);
         Debug.Log("Robot unit has died.");
+        resourceManager.AddResource(rv);
         unitTracker.EnemyTargets.Remove(gameObject);
     }
     

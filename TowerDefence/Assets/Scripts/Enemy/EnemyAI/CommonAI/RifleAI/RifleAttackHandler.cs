@@ -13,7 +13,7 @@ public class RifleAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 5;
+    internal int damageAmount = 25;
     public readonly float range = 25f;
     private bool enemyKilled;
     

@@ -68,6 +68,7 @@ public class MissileStats : MonoBehaviour, IUnitStats, IStats
         Debug.Log("Missile unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     

@@ -69,6 +69,7 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
         Debug.Log("Heal unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     

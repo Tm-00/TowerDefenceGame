@@ -7,7 +7,8 @@ public class TurretLocateEnemyState : TurretBaseState
 {
     private Vector3 closestTarget;
     private float speed = 1.0f;
-    
+
+    private TurretStats turretStats;
     private readonly UnitTracker unitTracker;
 
     
@@ -15,6 +16,7 @@ public class TurretLocateEnemyState : TurretBaseState
     {
         GameObject gameManager = GameObject.Find("GameManager");
         unitTracker = gameManager.GetComponent<UnitTracker>();
+        turretStats = go.GetComponent<TurretStats>();
     }
     public override void Enter(GameObject go)
     {
@@ -45,6 +47,10 @@ public class TurretLocateEnemyState : TurretBaseState
         if (Vector3.Distance(go.transform.position, closestTarget) <= 10)
         {
             return new TurretAttackState(go);
+        }
+        if (turretStats.currentHealth <= 0)
+        {
+            return new TurretDeadState(go);
         }
 
         return null;

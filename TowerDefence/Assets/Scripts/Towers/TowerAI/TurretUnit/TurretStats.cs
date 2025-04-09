@@ -68,6 +68,7 @@ public class TurretStats : MonoBehaviour, IUnitStats, IStats
         Debug.Log("Turret unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     

@@ -13,6 +13,9 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
     private readonly FlightAttackHandler flightAttackHandler;
     private ScoreManager scoreManager;
     
+    private float rv = 4;
+    private ResourceManager resourceManager;
+    
     [Header("Health Bar")]
     public Image healthBar;
     
@@ -21,6 +24,8 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
+        resourceManager = FindObjectOfType<ResourceManager>();
+
     }
     
     public void ApplyDamage(float amount)
@@ -52,6 +57,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
     {
         scoreManager.AddScore(scoreValue);
         Debug.Log("Flight unit has died.");
+        resourceManager.AddResource(rv);
         unitTracker.EnemyTargets.Remove(gameObject);
     }
     

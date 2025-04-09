@@ -37,6 +37,13 @@ public class ResourceManager : MonoBehaviour
         currentResourceAmount.text = "Resources: " + currentResource + " / " + totalResource;
     }
     
+    public void AddResource(float unitCost)
+    {
+        currentResource = Mathf.Clamp(currentResource, 0, totalResource);
+        currentResource += unitCost/2;
+        currentResourceAmount.text = "Resources: " + currentResource + " / " + totalResource;
+    }
+    
     private void AddCurrentResource()
     {
         if (currentResourceCooldown <= 0)

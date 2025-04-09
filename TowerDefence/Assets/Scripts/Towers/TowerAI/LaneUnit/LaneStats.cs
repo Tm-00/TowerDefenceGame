@@ -78,6 +78,7 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
         Debug.Log("Lane unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     

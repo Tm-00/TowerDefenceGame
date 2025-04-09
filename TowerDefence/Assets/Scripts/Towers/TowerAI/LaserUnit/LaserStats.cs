@@ -68,6 +68,7 @@ public class LaserStats : MonoBehaviour, IUnitStats, IStats
         Debug.Log("Laser unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     

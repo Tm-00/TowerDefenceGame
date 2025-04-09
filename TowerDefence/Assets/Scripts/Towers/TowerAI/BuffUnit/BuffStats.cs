@@ -68,6 +68,7 @@ public class BuffStats : MonoBehaviour, IUnitStats, IStats
         Debug.Log("Buff unit has died.");
         scoreManager.RemoveScore(scoreValue);
         unitTracker.EnemyTargets.Remove(gameObject);
+        resourceManager.AddResource(resourceValue);
         hasBeenPlaced = false;
     }
     
