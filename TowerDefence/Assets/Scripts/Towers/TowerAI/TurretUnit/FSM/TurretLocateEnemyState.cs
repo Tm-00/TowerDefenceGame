@@ -44,7 +44,7 @@ public class TurretLocateEnemyState : TurretBaseState
     public override TurretBaseState HandleInput(GameObject go)
     {
         // Move -> Attack
-        if (Vector3.Distance(go.transform.position, closestTarget) <= 10)
+        if (Vector3.Distance(go.transform.position, closestTarget) <= 25)
         {
             return new TurretAttackState(go);
         }

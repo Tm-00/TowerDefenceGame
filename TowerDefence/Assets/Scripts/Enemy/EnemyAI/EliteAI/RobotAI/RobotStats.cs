@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class RobotStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Robot Stats")] 
-    private float maxHealth = 50f;
+    private float maxHealth = 200f;
 
     internal float currentHealth;
     private float scoreValue = 10;

@@ -4,13 +4,13 @@ using UnityEngine.UI;
 public class HealerStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Healer Stats")] 
-    private float maxHealth = 50f;
+    private float maxHealth = 75f;
     internal float currentHealth;
     
-    internal int healAmount = 5;
+    internal int healAmount = 50;
     
     private float scoreValue = 5;
-    private float resourceValue = 10;
+    private float resourceValue = 20;
 
 
     [Header("Class References")] 

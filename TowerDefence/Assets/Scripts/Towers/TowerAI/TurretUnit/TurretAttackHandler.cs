@@ -21,7 +21,7 @@ public class TurretAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private bool enemyKilled;
     
     [Header("Cooldowns")] 
-    private readonly float cooldown = 5f;
+    private readonly float cooldown = 4f;
     private float cooldownTime;
     
     // Start is called before the first frame update

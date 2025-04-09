@@ -15,7 +15,7 @@ public class RobotAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private NavMeshAgent nav;
     
     [Header("Attack Values")]
-    internal int damageAmount = 50;
+    internal int damageAmount = 40;
     public readonly float range = 25f;
     private bool enemyKilled;
     

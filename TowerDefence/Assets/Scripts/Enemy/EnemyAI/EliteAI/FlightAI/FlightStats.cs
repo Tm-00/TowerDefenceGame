@@ -3,7 +3,7 @@ using UnityEngine.UI;
 public class FlightStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Flight Stats")] 
-    private float maxHealth = 50f;
+    private float maxHealth = 150f;
 
     internal float currentHealth;
     private float scoreValue = 10;
@@ -25,6 +25,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
         resourceManager = FindObjectOfType<ResourceManager>();
+        unitTracker = FindObjectOfType<UnitTracker>();
 
     }
     

@@ -3,12 +3,12 @@ using UnityEngine.UI;
 public class BossStats : MonoBehaviour, IEnemyStats, IStats
 {
     [Header("Boss Stats")] 
-    private float maxHealth = 1000f;
+    private float maxHealth = 500f;
     internal float currentHealth;
     private float scoreValue = 25;
     
-    internal int damageAmount = 1;
-    internal int healAmount = 5;
+    internal int damageAmount = 50;
+    internal int healAmount = 15;
     
     [Header("Class")]
     private UnitTracker unitTracker; 

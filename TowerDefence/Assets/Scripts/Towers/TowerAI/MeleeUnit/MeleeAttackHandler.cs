@@ -22,7 +22,7 @@ public class MeleeAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     public bool enemyKilled;
     
     [Header("Cooldowns")]
-    private float cooldown = 3;
+    private float cooldown = 5;
     private float cooldownTime;
     
     // Start is called before the first frame update

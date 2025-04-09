@@ -22,7 +22,7 @@ public class LaserAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     public bool enemyKilled;
 
     [Header("Cooldowns")] 
-    public float cooldown = 1f;
+    public float cooldown = 10f;
     private float cooldownTime;
     
     [Header("Animator")] 

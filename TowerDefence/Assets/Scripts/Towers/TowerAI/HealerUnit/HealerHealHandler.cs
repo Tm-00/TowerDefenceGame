@@ -23,7 +23,7 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     public bool unitDied;
     
     [Header("Cooldowns")]
-    private float cooldown = 3;
+    private float cooldown = 10;
     private float cooldownTime;
     
     [Header("Animator")] 

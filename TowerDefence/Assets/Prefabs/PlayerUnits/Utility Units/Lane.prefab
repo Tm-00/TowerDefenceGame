@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 8.55, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1654273887567599643}
@@ -247,6 +247,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 1818165686354989130, guid: d7803f906b93c0947a71f0c38f75738b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5260041272821379772, guid: d7803f906b93c0947a71f0c38f75738b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -325,7 +329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5260041272821379772, guid: d7803f906b93c0947a71f0c38f75738b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.8
+      value: 3.68
       objectReference: {fileID: 0}
     - target: {fileID: 5260041272821379772, guid: d7803f906b93c0947a71f0c38f75738b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

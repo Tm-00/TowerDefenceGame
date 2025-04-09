@@ -25,7 +25,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
         resourceManager = FindObjectOfType<ResourceManager>();
-
+        unitTracker = FindObjectOfType<UnitTracker>();
     }
 
     public void ApplyDamage(float amount)

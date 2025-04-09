@@ -22,7 +22,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     public bool enemyKilled;
     
     [Header("Cooldowns")]
-    private float cooldown = 3;
+    private float cooldown = 10;
     private float cooldownTime;
     
     private void Awake()

@@ -40,7 +40,7 @@ MonoBehaviour:
     />\r\n      <outputParams />\r\n      <localParams />\r\n    </SequenceNode>\r\n   
     <ActionNode id=\"66\" action=\"Basic/WaitForSeconds\">\r\n      <inputParams>\r\n       
     <inputValues>\r\n          <entry name=\"seconds\" type=\"System.Single\" isBlackboard=\"False\"
-    value=\"5\" />\r\n        </inputValues>\r\n      </inputParams>\r\n      <outputParams
+    value=\"7\" />\r\n        </inputValues>\r\n      </inputParams>\r\n      <outputParams
     />\r\n      <localParams />\r\n    </ActionNode>\r\n    <RepeatUntilSuccess id=\"67\">\r\n     
     <child>\r\n        <SequenceNode id=\"62\" />\r\n      </child>\r\n      <inputParams
     />\r\n      <outputParams />\r\n      <localParams />\r\n    </RepeatUntilSuccess>\r\n   
@@ -140,90 +140,90 @@ MonoBehaviour:
     />\r\n          <RepeatUntilSuccess id=\"67\" />\r\n          <ActionNode id=\"75\"
     />\r\n        </nodes>\r\n      </_nodes>\r\n    </BehaviorTree>\r\n    <SequenceNode
     id=\"30\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"903.1808 -1037.915\" name=\"Sequence\" description=\"Executes all
-    its children in sequence until all of them are successful\" cardinality=\"-1\"
-    hasParent=\"False\">\r\n          <BehaviorTree id=\"30\" />\r\n        </data>\r\n     
-    </_data>\r\n    </SequenceNode>\r\n    <ActionNode id=\"66\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"-215.1331 601.241\" name=\"Basic/WaitForSeconds\"
-    description=\"Action that success after a period of time.\" cardinality=\"0\"
-    hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n          <ActionNode
-    id=\"66\" />\r\n          <SequenceNode id=\"30\" />\r\n        </data>\r\n     
-    </_data>\r\n    </ActionNode>\r\n    <RepeatUntilSuccess id=\"67\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"387.5326
-    491.2427\" name=\"Repeat Until Success\" description=\"Repeats the execution
-    of its child node until it success\" cardinality=\"1\" hasParent=\"True\">\r\n         
-    <BehaviorTree id=\"30\" />\r\n          <RepeatUntilSuccess id=\"67\" />\r\n         
-    <SequenceNode id=\"30\" />\r\n        </data>\r\n      </_data>\r\n    </RepeatUntilSuccess>\r\n   
-    <ActionNode id=\"41\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"1379.32 1160.43\" name=\"GameObject/ClosestGameObjectWithTag\" description=\"Finds
-    the closest game object with a given tag\" cardinality=\"0\" hasParent=\"True\">\r\n         
+    position=\"1831.181 -895.915\" name=\"Sequence\" description=\"Executes all its
+    children in sequence until all of them are successful\" cardinality=\"-1\" hasParent=\"False\">\r\n         
+    <BehaviorTree id=\"30\" />\r\n        </data>\r\n      </_data>\r\n    </SequenceNode>\r\n   
+    <ActionNode id=\"66\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"True\"
+    position=\"712.8669 743.241\" name=\"Basic/WaitForSeconds\" description=\"Action
+    that success after a period of time.\" cardinality=\"0\" hasParent=\"True\">\r\n         
+    <BehaviorTree id=\"30\" />\r\n          <ActionNode id=\"66\" />\r\n         
+    <SequenceNode id=\"30\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
+    <RepeatUntilSuccess id=\"67\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
+    selected=\"False\" position=\"1315.533 633.2427\" name=\"Repeat Until Success\"
+    description=\"Repeats the execution of its child node until it success\" cardinality=\"1\"
+    hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n          <RepeatUntilSuccess
+    id=\"67\" />\r\n          <SequenceNode id=\"30\" />\r\n        </data>\r\n     
+    </_data>\r\n    </RepeatUntilSuccess>\r\n    <ActionNode id=\"41\">\r\n     
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"2307.32
+    1302.43\" name=\"GameObject/ClosestGameObjectWithTag\" description=\"Finds the
+    closest game object with a given tag\" cardinality=\"0\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"30\" />\r\n          <ActionNode id=\"41\" />\r\n         
     <SequenceNode id=\"30\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
     <ActionNode id=\"40\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"1715.822 1164.607\" name=\"Navigation/MoveToGameObject\" description=\"Moves
+    position=\"2643.822 1306.607\" name=\"Navigation/MoveToGameObject\" description=\"Moves
     the game object towards a given target by using a NavMeshAgent\" cardinality=\"0\"
     hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n          <ActionNode
     id=\"40\" />\r\n          <SequenceNode id=\"30\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ActionNode id=\"75\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"True\" position=\"2246 1644\" name=\"MyActions/Finished\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"3174 1786\" name=\"MyActions/Finished\"
     description=\"handles the boss reaching the core node\" cardinality=\"0\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"30\" />\r\n          <ActionNode id=\"75\" />\r\n         
     <SequenceNode id=\"30\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
     <SequenceNode id=\"62\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"447.5845 727.963\" name=\"Sequence\" description=\"Executes all its
+    position=\"1375.584 869.963\" name=\"Sequence\" description=\"Executes all its
     children in sequence until all of them are successful\" cardinality=\"-1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"30\" />\r\n          <SequenceNode id=\"62\" />\r\n         
     <RepeatUntilSuccess id=\"67\" />\r\n        </data>\r\n      </_data>\r\n   
     </SequenceNode>\r\n    <RepeatUntilFailed id=\"56\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"64.36902 833.3558\" name=\"Repeat
+    <data breakpoint=\"0\" selected=\"False\" position=\"992.369 975.3557\" name=\"Repeat
     Until Failed\" description=\"Repeats the execution of its child node until it
     fails\" cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"30\"
     />\r\n          <RepeatUntilFailed id=\"56\" />\r\n          <SequenceNode id=\"62\"
     />\r\n        </data>\r\n      </_data>\r\n    </RepeatUntilFailed>\r\n    <RepeatUntilFailed
     id=\"57\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"576.5449 847.3558\" name=\"Repeat Until Failed\" description=\"Repeats
+    position=\"1504.545 989.3557\" name=\"Repeat Until Failed\" description=\"Repeats
     the execution of its child node until it fails\" cardinality=\"1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"30\" />\r\n          <RepeatUntilFailed id=\"57\" />\r\n         
     <SequenceNode id=\"62\" />\r\n        </data>\r\n      </_data>\r\n    </RepeatUntilFailed>\r\n   
     <SequenceNode id=\"52\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"120.004 948.1428\" name=\"Sequence\" description=\"Executes all its
+    position=\"1048.004 1090.143\" name=\"Sequence\" description=\"Executes all its
     children in sequence until all of them are successful\" cardinality=\"-1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"30\" />\r\n          <SequenceNode id=\"52\" />\r\n         
     <RepeatUntilFailed id=\"56\" />\r\n        </data>\r\n      </_data>\r\n    </SequenceNode>\r\n   
     <SequenceNode id=\"59\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"576.5449 973.3579\" name=\"Sequence\" description=\"Executes all its
+    position=\"1504.545 1115.358\" name=\"Sequence\" description=\"Executes all its
     children in sequence until all of them are successful\" cardinality=\"-1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"30\" />\r\n          <SequenceNode id=\"59\" />\r\n         
     <RepeatUntilFailed id=\"57\" />\r\n        </data>\r\n      </_data>\r\n    </SequenceNode>\r\n   
     <ActionNode id=\"53\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"-300.777 1223.188\" name=\"MyActions/LocateUtility\" description=\"calls
+    position=\"627.223 1365.188\" name=\"MyActions/LocateUtility\" description=\"calls
     the FindClosestUnit method from unit tracker and from the list finds the utility
     units\" cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"30\"
     />\r\n          <ActionNode id=\"53\" />\r\n          <SequenceNode id=\"52\"
     />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n    <ActionNode
     id=\"54\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"58.22205 1228.522\" name=\"Navigation/MoveToPosition\" description=\"Moves
+    position=\"986.222 1370.522\" name=\"Navigation/MoveToPosition\" description=\"Moves
     the game object to a given position by using a NavMeshAgent\" cardinality=\"0\"
     hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n          <ActionNode
     id=\"54\" />\r\n          <SequenceNode id=\"52\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ActionNode id=\"55\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"300.5503 1224.855\" name=\"MyActions/AttackUnit\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"1228.55 1366.855\" name=\"MyActions/AttackUnit\"
     description=\"use the closest target found in the previous action and shoot at
     it\" cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"30\"
     />\r\n          <ActionNode id=\"55\" />\r\n          <SequenceNode id=\"52\"
     />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n    <ActionNode
     id=\"58\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"488.6299 1173.358\" name=\"MyActions/LocateAllies\" description=\"calls
+    position=\"1416.63 1315.358\" name=\"MyActions/LocateAllies\" description=\"calls
     the FindClosestEnemy method from unit tracker and from the list finds the units\"
     cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n         
     <ActionNode id=\"58\" />\r\n          <SequenceNode id=\"59\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ActionNode id=\"60\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"681.2109 1178.44\" name=\"Navigation/MoveToPosition\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"1609.211 1320.44\" name=\"Navigation/MoveToPosition\"
     description=\"Moves the game object to a given position by using a NavMeshAgent\"
     cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n         
     <ActionNode id=\"60\" />\r\n          <SequenceNode id=\"59\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ActionNode id=\"61\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"886.2944 1171.108\" name=\"MyActions/HealUnit\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"1814.294 1313.108\" name=\"MyActions/HealUnit\"
     description=\"use the closest target found in the previous action and heal it\"
     cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"30\" />\r\n         
     <ActionNode id=\"61\" />\r\n          <SequenceNode id=\"59\" />\r\n        </data>\r\n     

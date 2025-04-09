@@ -13,12 +13,12 @@ public class RifleAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private RaycastHit hit;
     
     [Header("Attack Values")] 
-    internal int damageAmount = 25;
+    internal int damageAmount = 20;
     public readonly float range = 25f;
     private bool enemyKilled;
     
     [Header("Cooldowns")]
-    private readonly float cooldown = 5f;
+    private readonly float cooldown = 3f;
     private float cooldownTime;
     
     [Header("Audio")]

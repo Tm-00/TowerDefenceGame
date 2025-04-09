@@ -7,7 +7,7 @@ public class MeleeStats : MonoBehaviour, IUnitStats, IStats
     private float maxHealth = 50f;
     internal float currentHealth;
     
-    internal int damageAmount = 5;
+    internal int damageAmount = 35;
     
     private float scoreValue = 5;
     private float resourceValue = 10;

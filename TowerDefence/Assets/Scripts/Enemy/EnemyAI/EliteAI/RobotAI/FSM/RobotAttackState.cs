@@ -77,11 +77,12 @@ public class RobotAttackState : RobotBaseState
         Debug.Log("Robot Drone: Attack State");
         agent = go.GetComponent<NavMeshAgent>();
         coreNodePosition = unitTracker.UnitTargets[0].transform;
-        closestTarget = unitTracker.FindClosestUnit(enemy)?.transform;
     }
 
   public override void Update(GameObject go)
     {
+        closestTarget = unitTracker.FindClosestUnit(enemy)?.transform;
+        
         if (closestTarget != null)
         {
             // rotate unit towards target

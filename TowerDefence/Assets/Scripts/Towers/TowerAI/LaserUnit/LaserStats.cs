@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class LaserStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Laser Stats")] 
-    private float maxHealth = 5000f;
+    private float maxHealth = 75;
     internal float currentHealth;
     
-    internal int damageAmount = 1;
+    internal int damageAmount = 50;
     
     private readonly float scoreValue = 5;
     private readonly float resourceValue = 10;

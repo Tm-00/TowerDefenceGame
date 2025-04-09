@@ -4,13 +4,13 @@ using UnityEngine.UI;
 public class MissileStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Missile Stats")] 
-    private float maxHealth = 50f;
+    private float maxHealth = 150f;
     internal float currentHealth;
     
-    internal int damageAmount = 1;
+    internal int damageAmount = 35;
     
     private float scoreValue = 5;
-    private float resourceValue = 10;
+    private float resourceValue = 14;
     
     [Header("Class References")] 
     private UnitTracker unitTracker; 

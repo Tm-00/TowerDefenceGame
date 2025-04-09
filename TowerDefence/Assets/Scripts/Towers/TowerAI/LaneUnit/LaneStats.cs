@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
 {
     [Header("Lane Stats")] 
-    private float maxHealth = 50f;
+    private float maxHealth = 200f;
     
     [Header("Audio")]
     public AudioSource src;
@@ -13,7 +13,7 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
 
     internal float currentHealth;
     private float scoreValue = 5;
-    private float resourceValue = 10;
+    private float resourceValue = 20;
     
     [Header("Class")] 
     private UnitTracker unitTracker; 

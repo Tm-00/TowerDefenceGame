@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class TurretStats : MonoBehaviour, IUnitStats, IStats
 {
     [Header("Turret Stats")] 
-    private float maxHealth = 50f;
+    private float maxHealth = 100f;
     internal float currentHealth;
     
     internal int damageAmount = 25;

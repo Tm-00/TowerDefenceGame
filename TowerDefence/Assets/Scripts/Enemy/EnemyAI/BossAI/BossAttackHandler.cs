@@ -18,7 +18,7 @@ public class BossAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
     private BossStats bossStats;
     
     [Header("Attack Values")] 
-    public readonly float range = 100f;
+    public readonly float range = 25f;
     private bool enemyKilled;
     
     [Header("Heal Values")]

@@ -6,7 +6,7 @@ public class BuffStats : MonoBehaviour, IUnitStats, IStats
     [Header("Buff Stats")] 
     private float maxHealth = 50f;
     
-    internal int buffAmount = 15;
+    internal int buffAmount = 20;
 
     
     internal float currentHealth;
