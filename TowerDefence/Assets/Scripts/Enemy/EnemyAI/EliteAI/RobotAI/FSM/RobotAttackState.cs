@@ -122,6 +122,11 @@ public class RobotAttackState : RobotBaseState
         {
             return new RobotDeadState(go);
         }
+
+        if (closestTarget == null)
+        {
+            return new RobotMoveState(go);
+        }
         // if the unit kills an enemy or their target dies go to the move state to find a new target 
         return robotAttackHandler.IsEnemyKilled() ? new RobotMoveState(go) : null;
     }

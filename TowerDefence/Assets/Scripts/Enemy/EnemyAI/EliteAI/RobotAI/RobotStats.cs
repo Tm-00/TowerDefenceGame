@@ -7,7 +7,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
     private float maxHealth = 200f;
 
     internal float currentHealth;
-    private float scoreValue = 10;
+    private float scoreValue = 16;
 
     
     [Header("Class")]
@@ -27,6 +27,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
         scoreManager = FindObjectOfType<ScoreManager>();
         currentHealth = maxHealth;
         resourceManager = FindObjectOfType<ResourceManager>();
+        unitTracker = FindObjectOfType<UnitTracker>();
     }
     
     public void ApplyDamage(float amount)
@@ -43,8 +44,7 @@ public class RobotStats : MonoBehaviour, IEnemyStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth += amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Robot unit healed, current HP: " + currentHealth);
     }

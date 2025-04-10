@@ -46,8 +46,7 @@ public class MissileStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Missile current hp " + currentHealth);
     }
@@ -74,8 +73,8 @@ public class MissileStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
-        damageAmount = Mathf.Clamp(damageAmount + amount, 0, 20);
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 175);
+        damageAmount = Mathf.Clamp(damageAmount + amount, 0, 55);
 
         Debug.Log("new max health " + maxHealth);
         Debug.Log("new buff amount " + damageAmount);

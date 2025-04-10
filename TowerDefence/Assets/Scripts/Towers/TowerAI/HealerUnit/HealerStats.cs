@@ -7,7 +7,7 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
     private float maxHealth = 75f;
     internal float currentHealth;
     
-    internal int healAmount = 50;
+    internal int healAmount = 20;
     
     private float scoreValue = 5;
     private float resourceValue = 20;
@@ -47,8 +47,7 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Heal current hp " + currentHealth);
     }
@@ -75,8 +74,8 @@ public class HealerStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
-        healAmount = Mathf.Clamp(healAmount + amount, 0, 20);
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 100);
+        healAmount = Mathf.Clamp(healAmount + amount, 0, 40);
 
         Debug.Log("new max health " + maxHealth);
         Debug.Log("new buff amount " + healAmount);

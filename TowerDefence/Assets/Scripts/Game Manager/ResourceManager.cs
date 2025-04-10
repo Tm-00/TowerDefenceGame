@@ -32,15 +32,13 @@ public class ResourceManager : MonoBehaviour
 
     public void SubtractResource(float unitCost)
     {
-        currentResource = Mathf.Clamp(currentResource, 0, totalResource);
-        currentResource -= unitCost;
+        currentResource = Mathf.Clamp(currentResource - unitCost, 0, totalResource);
         currentResourceAmount.text = "Resources: " + currentResource + " / " + totalResource;
     }
     
     public void AddResource(float unitCost)
     {
-        currentResource = Mathf.Clamp(currentResource, 0, totalResource);
-        currentResource += unitCost/2;
+        currentResource = Mathf.Clamp(currentResource + unitCost/2,  0, totalResource);
         currentResourceAmount.text = "Resources: " + currentResource + " / " + totalResource;
     }
     
@@ -48,11 +46,10 @@ public class ResourceManager : MonoBehaviour
     {
         if (currentResourceCooldown <= 0)
         {
-            currentResource = Mathf.Clamp(currentResource, 0, totalResource);
-            currentResource += 1;
+            currentResource = Mathf.Clamp(currentResource += 1, 0, totalResource);
             if (currentResourceCooldownTimer > 5)
             {
-                currentResourceCooldownTimer = Mathf.Clamp(currentResourceCooldownTimer, 5, 15);
+                currentResourceCooldownTimer = Mathf.Clamp(currentResourceCooldownTimer - 1, 5, 15);
                 totalResourceCooldownTimer -= 1;
             }
             currentResourceCooldown = currentResourceCooldownTimer;
@@ -77,6 +74,4 @@ public class ResourceManager : MonoBehaviour
         currentResourceAmount.text = "Resources: " + currentResource + " / " + totalResource;
         totalResourceCooldown -= Time.deltaTime;
     }
-    
-    //TODO implement Upgrades
 }

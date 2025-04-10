@@ -40,21 +40,18 @@ public class ScoutIdleState : ScoutBaseState
     // Input
     public override ScoutBaseState HandleInput(GameObject go)
     {
-        // Idle -> Move
-        if ( unitTracker.UnitTargets != null)
+
+        // go to move state that handles target selection and where to go
+        if (unitTracker.UnitTargets != null)
         {
-            // go to move state that handles target selection and where to go
-            if (unitTracker.UnitTargets.Count == 1) 
-            {
-                // Change the state -> MoveState.
-                return new ScoutMoveState(go);
-            }
-            // idle if at the core node
-            if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
-            {
-                return new ScoutIdleState(go);
-            }
+            return new ScoutMoveState(go);
         }
+        // idle if at the core node
+        if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
+        {
+            return new ScoutIdleState(go);
+        }
+        
         return null;
     }
 }

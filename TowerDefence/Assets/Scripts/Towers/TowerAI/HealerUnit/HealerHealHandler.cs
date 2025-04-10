@@ -43,8 +43,8 @@ public class HealerHealHandler : MonoBehaviour, IAttackHandler, IRotatable
     {
         if (targetHit != null)
         {
-            src.clip = audioClip;
-            src.Play(); 
+            //src.clip = audioClip;
+           // src.Play(); 
             ApplyAoeHeal(targetHit.transform.position);
         }
     }

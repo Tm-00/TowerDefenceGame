@@ -39,20 +39,16 @@ public class RobotIdleState : RobotBaseState
     // Input
     public override RobotBaseState HandleInput(GameObject go)
     {
-        // Idle -> Move
-        if ( unitTracker.UnitTargets != null)
+        // Change the state -> MoveState.
+        if (unitTracker.UnitTargets != null)
         {
-            // go to move state that handles target selection and where to go
-            if (unitTracker.UnitTargets.Count == 1) 
-            {
-                // Change the state -> MoveState.
-                return new RobotMoveState(go);
-            }
-            // idle if at the core node
-            if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
-            {
-                return new RobotFinishedState(go);
-            }
+            return new RobotMoveState(go);
+        }
+            
+        // idle if at the core node
+        if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
+        {
+            return new RobotFinishedState(go);
         }
         return null;
     }

@@ -7,7 +7,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
     private float maxHealth = 50f;
 
     internal float currentHealth;
-    private float scoreValue = 1;
+    private float scoreValue = 3;
     
     [Header("Class")]
     private UnitTracker unitTracker; 
@@ -42,8 +42,7 @@ public class ScoutStats : MonoBehaviour, IEnemyStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Scout unit healed, current HP: " + currentHealth);
     }

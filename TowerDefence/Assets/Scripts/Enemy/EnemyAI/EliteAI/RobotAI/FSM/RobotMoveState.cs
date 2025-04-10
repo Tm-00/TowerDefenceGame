@@ -48,8 +48,8 @@ public class RobotMoveState : RobotBaseState
     // Enter
     public override void Enter(GameObject go)
     {
-        
-        Debug.Log("Rifle Drone: Move State");
+        anim.SetFloat(speedHash, 1);
+        Debug.Log("Robot Drone: Move State");
     }
     
     // Update

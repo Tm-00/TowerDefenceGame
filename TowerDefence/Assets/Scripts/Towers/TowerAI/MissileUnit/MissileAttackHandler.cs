@@ -39,7 +39,7 @@ public class MissileAttackHandler : MonoBehaviour, IAttackHandler, IRotatable
         }
     }
     
-    public void ApplyAoeDamage(Vector3 aoeCenter)
+    private void ApplyAoeDamage(Vector3 aoeCenter)
     {
         // Find all colliders within the aoeRadius around the hit point
         Collider[] hitColliders = Physics.OverlapSphere(aoeCenter, aoeRadius, layerMask);

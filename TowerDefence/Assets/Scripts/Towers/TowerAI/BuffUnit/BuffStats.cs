@@ -46,8 +46,7 @@ public class BuffStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log(" Buff current hp " + currentHealth);
     }
@@ -74,7 +73,7 @@ public class BuffStats : MonoBehaviour, IUnitStats, IStats
     
     public void ApplyBuff(int amount)
     {
-        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 75);
         buffAmount = Mathf.Clamp(buffAmount + amount, 0, 20);
 
         Debug.Log("new max health " + maxHealth);

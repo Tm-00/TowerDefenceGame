@@ -62,8 +62,7 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Lane current hp " + currentHealth);
     }
@@ -90,7 +89,7 @@ public class LaneStats : MonoBehaviour, IUnitStats, IStats, IRotatable
     
     public void ApplyBuff(int amount)
     {
-        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 65);
+        maxHealth = Mathf.Clamp(maxHealth + amount + 5, 0, 225);
         Debug.Log("new max health " + maxHealth);
     }
     

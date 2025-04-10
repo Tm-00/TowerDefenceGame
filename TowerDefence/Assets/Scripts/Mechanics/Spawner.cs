@@ -51,7 +51,7 @@ public class spawner : MonoBehaviour
                     Enemy = enemyTypes[i];
                     totalEnemies++;
                     UnitTracker.currentEnemiesSpawned = totalEnemies;
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(4f);
                 }
             }
             

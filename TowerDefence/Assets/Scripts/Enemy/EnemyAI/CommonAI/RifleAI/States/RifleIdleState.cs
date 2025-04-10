@@ -42,18 +42,14 @@ public class RifleIdleState : RifleBaseState
         // Idle -> Move
         if (unitTracker.UnitTargets != null)
         {
-            // go to move state that handles target selection and where to go
-            if (unitTracker.UnitTargets.Count >= 1) 
-            {
-                // Change the state -> MoveState.
-                return new RifleMoveState(go);
-            }
+            // Change the state -> MoveState.
+            return new RifleMoveState(go);
+        }
             
-            //if at the core node
-            if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
-            {
-                return new RifleFinishedState(go);
-            }
+        //if at the core node
+        if (Vector3.Distance(agent.transform.position, coreNodePosition.transform.position) <= 5)
+        {
+            return new RifleFinishedState(go);
         }
         return null;
     }

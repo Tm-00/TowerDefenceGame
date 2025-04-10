@@ -903,7 +903,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 897, y: 406}
+  m_AnchoredPosition: {x: 897, y: 275}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &275840076
@@ -3233,8 +3233,8 @@ MonoBehaviour:
   elite1: {fileID: 5514447930200123060, guid: e4273f5a876829d4ca17d692fa4c70d1, type: 3}
   elite2: {fileID: 8877446834361509729, guid: 614b3f11fd467b44284d0c8e6d7c1aaf, type: 3}
   boss: {fileID: 6381298362927677358, guid: 5a3342bd8502b5e43851200e1723d0e6, type: 3}
-  amount1: 1
-  amount2: 0
+  amount1: 0
+  amount2: 1
   amount3: 0
   amount4: 0
   amount5: 1
@@ -6749,12 +6749,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: c9430ecfcd83c164a8210007c98fa484, type: 2}
     - target: {fileID: 2084274889111950302, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
+      propertyPath: m_Carve
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084274889111950302, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084274889111950302, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
       propertyPath: m_Extents.x
       value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 2084274889111950302, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
       propertyPath: m_Extents.z
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084274889111950302, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
+      propertyPath: m_CarveOnlyStationary
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4774851228303490794, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
       propertyPath: m_IsActive
@@ -6766,6 +6778,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5081777480017867245, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7904708029111091801, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
+      propertyPath: m_Carve
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7904708029111091801, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7904708029111091801, guid: b06847cb01835ee4ead9b5cb6436bf7e, type: 3}

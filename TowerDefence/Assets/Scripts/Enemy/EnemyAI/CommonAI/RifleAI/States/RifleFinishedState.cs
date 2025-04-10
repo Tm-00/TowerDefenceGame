@@ -22,7 +22,7 @@ public class RifleFinishedState : RifleBaseState
 
     public override void Enter(GameObject go)
     {
-        cnHealth.HealthHandler(1);
+        cnHealth.HealthHandler(10);
         ObjectPoolManager.ReturnObjectToPool(go);
     }
 

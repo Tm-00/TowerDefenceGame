@@ -105,6 +105,11 @@ public class FlightAttackState : FlightBaseState
         {
             return new FlightDeadState(go);
         }
+        
+        if (closestTarget == null)
+        {
+            return new FlightMoveState(go);
+        }
         // if the unit kills an enemy or their target dies go to the move state to find a new target 
         return flightAttackHandler.IsEnemyKilled() ? new FlightMoveState(go) : null;
     }

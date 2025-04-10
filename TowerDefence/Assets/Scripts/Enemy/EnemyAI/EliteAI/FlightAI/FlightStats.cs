@@ -6,7 +6,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
     private float maxHealth = 150f;
 
     internal float currentHealth;
-    private float scoreValue = 10;
+    private float scoreValue = 16;
     
     [Header("Class")]
     private UnitTracker unitTracker; 
@@ -43,8 +43,7 @@ public class FlightStats : MonoBehaviour, IEnemyStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Flight unit healed, current HP: " + currentHealth);
     }

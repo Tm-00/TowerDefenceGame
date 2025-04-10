@@ -5,7 +5,7 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
     [Header("Boss Stats")] 
     private float maxHealth = 500f;
     internal float currentHealth;
-    private float scoreValue = 25;
+    private float scoreValue = 20;
     
     internal int damageAmount = 50;
     internal int healAmount = 15;
@@ -42,8 +42,7 @@ public class BossStats : MonoBehaviour, IEnemyStats, IStats
 
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Boss unit healed, current HP: " + currentHealth);
     }

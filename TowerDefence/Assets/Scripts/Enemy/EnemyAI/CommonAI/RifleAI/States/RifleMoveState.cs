@@ -13,7 +13,7 @@ public class RifleMoveState : RifleBaseState
 
     private Vector3 closestTarget;
 
-    private bool allunitsdead;
+   // private bool allunitsdead;
     
     private readonly UnitTracker unitTracker;
     
@@ -64,7 +64,6 @@ public class RifleMoveState : RifleBaseState
         {
             return new RifleFinishedState(go);
         }
-
         if (rifleStats.currentHealth <= 0)
         {
             return new RifleDeadState(go);
@@ -79,12 +78,12 @@ public class RifleMoveState : RifleBaseState
         {
             closestTarget = closestUnit.transform.position;
             agent.destination = closestTarget;
-            allunitsdead = false;
+            //allunitsdead = false;
         }
         else
         {
             agent.destination = coreNodePosition.transform.position;
-            allunitsdead = true;
+           // allunitsdead = true;
         }
     }
 }

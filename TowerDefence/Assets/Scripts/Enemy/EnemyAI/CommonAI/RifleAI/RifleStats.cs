@@ -42,8 +42,7 @@ public class RifleStats : MonoBehaviour, IEnemyStats, IStats
     
     public void ApplyHeal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         healthBar.fillAmount = currentHealth / maxHealth; 
         Debug.Log("Rifle unit healed, current HP: " + currentHealth);
     }

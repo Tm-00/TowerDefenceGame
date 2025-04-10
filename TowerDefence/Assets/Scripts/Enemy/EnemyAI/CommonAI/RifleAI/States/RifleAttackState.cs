@@ -109,6 +109,10 @@ public class RifleAttackState : RifleBaseState
         {
             return new RifleMoveState(go);
         }
+        if (closestTarget == null)
+        {
+            return new RifleMoveState(go);
+        }
         if (rifleStats.currentHealth <= 0)
         {
             return new RifleDeadState(go);
