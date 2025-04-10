@@ -118,11 +118,14 @@ public class RobotAttackState : RobotBaseState
     // input
     public override RobotBaseState HandleInput(GameObject go)
     {
+        if (robotAttackHandler.IsEnemyKilled())
+        {
+            return new RobotMoveState(go);
+        }
         if (robotStats.currentHealth <= 0)
         {
             return new RobotDeadState(go);
         }
-
         if (closestTarget == null)
         {
             return new RobotMoveState(go);

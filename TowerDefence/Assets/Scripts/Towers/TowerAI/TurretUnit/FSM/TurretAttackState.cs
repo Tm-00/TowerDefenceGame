@@ -66,11 +66,12 @@ public class TurretAttackState : TurretBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Turret Unit: Attack State");
-        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
+        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
+        
         if (closestTarget != null)
         {
             // rotate unit towards target

@@ -67,11 +67,12 @@ public class MissileAttackState : MissileBaseState
     public override void Enter(GameObject go)
     {
         Debug.Log("Missile Unit: Attack State");
-        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
     }
 
     public override void Update(GameObject go)
     {
+        closestTarget = unitTracker.FindClosestEnemy(go)?.transform;
+        
         if (closestTarget!= null)
         {
             // rotate unit towards target

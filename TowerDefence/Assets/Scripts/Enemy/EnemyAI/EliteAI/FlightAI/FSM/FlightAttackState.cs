@@ -101,11 +101,14 @@ public class FlightAttackState : FlightBaseState
     // input
     public override FlightBaseState HandleInput(GameObject go)
     {
+        if (flightAttackHandler.IsEnemyKilled())
+        {
+            return new FlightMoveState(go);
+        }
         if (flightStats.currentHealth <= 0)
         {
             return new FlightDeadState(go);
         }
-        
         if (closestTarget == null)
         {
             return new FlightMoveState(go);
